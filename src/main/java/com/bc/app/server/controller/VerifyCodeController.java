@@ -2,8 +2,10 @@ package com.bc.app.server.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.bc.app.server.cons.Constant;
+import com.bc.app.server.entity.SmsConfig;
 import com.bc.app.server.entity.VerifyCode;
 import com.bc.app.server.enums.ResponseMsg;
+import com.bc.app.server.service.SmsConfigService;
 import com.bc.app.server.service.VerifyCodeService;
 import com.bc.app.server.utils.CommonUtil;
 import com.bc.app.server.utils.HttpUtil;
@@ -38,10 +40,14 @@ public class VerifyCodeController {
     @Resource
     private VerifyCodeService verifyCodeService;
 
+    @Resource
+    private SmsConfigService smsConfigService;
+
     /**
      * 获取验证码
      *
      * @param phone 手机号
+     * @param type  验证码类型
      * @return ResponseEntity<String>
      */
     @ApiOperation(value = "获取验证码", notes = "获取验证码")
@@ -52,22 +58,23 @@ public class VerifyCodeController {
         ResponseEntity<String> responseEntity;
         String code = CommonUtil.generateRandomNum(6);
         try {
-            VerifyCode verifyCode = new VerifyCode(phone, code, type, 10 * 60);
+            VerifyCode verifyCode = new VerifyCode(phone, code, type, 5 * 60);
             verifyCodeService.addVerifyCode(verifyCode);
+
+            SmsConfig smsConfig = smsConfigService.getSmsConfigByType(type);
 
             if (type.equals(Constant.VERIFY_CODE_TYPE_REGISTER)) {
                 // 短信发送
                 Map<String, String> paramMap = new HashMap<>();
                 paramMap.put("phones", phone);
-                paramMap.put("signName", "");
-                paramMap.put("templateCode", "");
+                paramMap.put("signName", smsConfig.getSign());
+                paramMap.put("templateCode", smsConfig.getTemplateCode());
 
                 Map<String, String> templateParamMap = new HashMap<>();
                 templateParamMap.put("code", code);
                 paramMap.put("templateParam", JSON.toJSONString(templateParamMap));
-                HttpUtil.doPost("", paramMap);
+                HttpUtil.doPost(Constant.SERVICE_SMS_URL, paramMap);
             }
-
             responseEntity = new ResponseEntity<>(ResponseMsg.GET_VERIFY_CODE_SUCCESS.getResponseCode(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

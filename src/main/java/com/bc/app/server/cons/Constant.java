@@ -12,4 +12,9 @@ public class Constant {
      * 注册
      */
     public static final String VERIFY_CODE_TYPE_REGISTER = "0";
+
+    /**
+     * 短信服务URL
+     */
+    public static final String SERVICE_SMS_URL = "http://127.0.0.1:8086/third-party/sms";
 }

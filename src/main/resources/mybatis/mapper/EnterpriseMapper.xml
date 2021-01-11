@@ -11,6 +11,8 @@
         <id column="estiblish_date" property="estiblishDate" jdbcType="VARCHAR"/>
         <id column="reg_status" property="regStatus" jdbcType="VARCHAR"/>
         <id column="credit_code" property="creditCode" jdbcType="VARCHAR"/>
+        <id column="reg_capital" property="regCapital" jdbcType="VARCHAR"/>
+        <id column="telephone" property="telephone" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getEnterpriseListByKeyword" resultMap="enterprise" parameterType="map">
@@ -18,7 +20,8 @@
         ext.legal_person_name,
         ext.estiblish_date,
         ext.reg_status,
-        ext.credit_code
+        ext.credit_code,
+        ext.reg_capital
         from t_enterprise e
         left join t_enterprise_ext ext on e.id = ext.enterprise_id
         where name like '%${keyword}%'

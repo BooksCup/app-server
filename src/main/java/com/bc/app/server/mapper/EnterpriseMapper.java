@@ -20,4 +20,17 @@ public interface EnterpriseMapper {
      */
     List<Enterprise> getEnterpriseListByKeyword(Map<String, Object> paramMap);
 
+    /**
+     * 修改企业
+     *
+     * @param enterprise 企业
+     */
+    void updateEnterprise(Enterprise enterprise);
+
+    /**
+     * 修改企业扩展
+     * @param enterprise 企业
+     */
+    void updateEnterpriseExt(Enterprise enterprise);
+
 }

@@ -1,6 +1,7 @@
 package com.bc.app.server.controller;
 
 import com.bc.app.server.entity.Enterprise;
+import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.EnterpriseService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -46,4 +47,30 @@ public class EnterpriseController {
         }
         return responseEntity;
     }
+
+    @ApiOperation(value = "修改企业", notes = "修改企业")
+    @PutMapping(value = "/{enterpriseId}")
+    public ResponseEntity<String> updateEnterprise(
+            @PathVariable String enterpriseId,
+            @RequestParam String legalPersonName,
+            @RequestParam String shortName,
+            @RequestParam String regCapital,
+            @RequestParam String estiblishDate,
+            @RequestParam String regStatus,
+            @RequestParam String telephone) {
+        ResponseEntity<String> responseEntity;
+        try {
+            Enterprise enterprise = new Enterprise(enterpriseId, shortName, legalPersonName,
+                    estiblishDate, regStatus, regCapital, telephone);
+            enterpriseService.updateEnterprise(enterprise);
+            responseEntity = new ResponseEntity<>(ResponseMsg.UPDATE_ENTERPRISE_SUCCESS.
+                    getResponseCode(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseEntity = new ResponseEntity<>(ResponseMsg.UPDATE_ENTERPRISE_ERROR.
+                    getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
 }

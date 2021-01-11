@@ -25,4 +25,36 @@
         or short_name like '%${keyword}%'
     </select>
 
+    <update id="updateEnterprise" parameterType="com.bc.app.server.entity.Enterprise">
+        update t_enterprise
+        set
+        <if test="shortName != null and shortName !=''">
+            short_name = #{shortName},
+        </if>
+        <if test="telephone != null and telephone != ''">
+            telephone = #{telephone},
+        </if>
+        id = #{id}
+        where id = #{id}
+    </update>
+
+    <update id="updateEnterpriseExt" parameterType="com.bc.app.server.entity.Enterprise">
+        update t_enterprise_ext
+        set
+        <if test="legalPersonName != null and legalPersonName !=''">
+            legal_person_name = #{legalPersonName},
+        </if>
+        <if test="estiblishDate != null and estiblishDate != ''">
+            estiblish_date = #{estiblishDate},
+        </if>
+        <if test="regStatus != null and regStatus != ''">
+            reg_status = #{regStatus},
+        </if>
+        <if test="regCapital != null and regCapital != ''">
+            reg_capital = #{regCapital},
+        </if>
+        enterprise_id = #{id}
+        where enterprise_id = #{id}
+    </update>
+
 </mapper>

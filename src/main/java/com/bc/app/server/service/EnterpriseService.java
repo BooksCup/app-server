@@ -20,4 +20,11 @@ public interface EnterpriseService {
      */
     List<Enterprise> getEnterpriseListByKeyword(Map<String, Object> paramMap);
 
+    /**
+     * 修改企业
+     *
+     * @param enterprise 企业
+     */
+    void updateEnterprise(Enterprise enterprise);
+
 }

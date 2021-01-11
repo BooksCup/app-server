@@ -15,6 +15,23 @@ public class Enterprise {
     private String regLocation;
     private String regStatus;
     private String creditCode;
+    private String regCapital;
+    private String telephone;
+
+    public Enterprise() {
+
+    }
+
+    public Enterprise(String id, String shortName, String legalPersonName,
+                      String estiblishDate, String regStatus, String regCapital, String telephone) {
+        this.id = id;
+        this.shortName = shortName;
+        this.legalPersonName = legalPersonName;
+        this.estiblishDate = estiblishDate;
+        this.regStatus = regStatus;
+        this.regCapital = regCapital;
+        this.telephone = telephone;
+    }
 
     public String getId() {
         return id;
@@ -80,4 +97,19 @@ public class Enterprise {
         this.creditCode = creditCode;
     }
 
+    public String getRegCapital() {
+        return regCapital;
+    }
+
+    public void setRegCapital(String regCapital) {
+        this.regCapital = regCapital;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 }

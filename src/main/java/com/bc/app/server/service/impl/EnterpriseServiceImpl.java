@@ -31,4 +31,15 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return enterpriseMapper.getEnterpriseListByKeyword(paramMap);
     }
 
+    /**
+     * 修改企业
+     *
+     * @param enterprise 企业
+     */
+    @Override
+    public void updateEnterprise(Enterprise enterprise) {
+        enterpriseMapper.updateEnterprise(enterprise);
+        enterpriseMapper.updateEnterpriseExt(enterprise);
+    }
+
 }

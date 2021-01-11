@@ -17,6 +17,9 @@ public enum ResponseMsg {
 
     ADD_USER_APPLY_SUCCESS("ADD_USER_APPLY_SUCCESS", "用户申请提交成功!"),
     ADD_USER_APPLY_ERROR("ADD_USER_APPLY_ERROR", "用户申请提交失败!"),
+
+    UPDATE_ENTERPRISE_SUCCESS("UPDATE_ENTERPRISE_SUCCESS", "修改企业成功"),
+    UPDATE_ENTERPRISE_ERROR("UPDATE_ENTERPRISE_ERROR", "修改企业失败"),
     ;
 
     ResponseMsg(String responseCode, String responseMessage) {

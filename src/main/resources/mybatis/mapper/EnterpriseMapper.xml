@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.EnterpriseMapper">
+
+    <resultMap id="enterprise" type="com.bc.app.server.entity.Enterprise">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <id column="name" property="name" jdbcType="VARCHAR"/>
+        <id column="short_name" property="shortName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getEnterpriseListByKeyword" resultMap="enterprise" parameterType="map">
+        select *
+        from t_enterprise
+        where name like '%${keyword}%'
+        or short_name like '%${keyword}%'
+    </select>
+
+</mapper>

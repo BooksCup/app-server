@@ -13,12 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +45,15 @@ public class UserApplyController {
     private UserApplyService userApplyService;
 
 
+    /**
+     * 提交用户申请
+     *
+     * @param phone        手机号
+     * @param code         验证码
+     * @param password     密码
+     * @param enterpriseId 企业ID
+     * @return ResponseEntity
+     */
     @ApiOperation(value = "提交用户申请", notes = "提交用户申请")
     @PostMapping(value = "")
     public ResponseEntity<String> addUserApply(
@@ -87,6 +94,32 @@ public class UserApplyController {
             logger.error("[addUserApply] error: " + e.getMessage());
             responseEntity = new ResponseEntity<>(ResponseMsg.
                     ADD_USER_APPLY_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 获得企业下未处理的申请记录
+     *
+     * @param enterpriseId 企业ID
+     * @return 获得企业下未处理的申请记录列表
+     */
+    @ApiOperation(value = "获得企业下未处理的申请记录列表", notes = "获得企业下未处理的申请记录列表")
+    @GetMapping(value = "")
+    public ResponseEntity<List<UserApply>> getUserApplyList(
+            @RequestParam String enterpriseId) {
+        ResponseEntity<List<UserApply>> responseEntity;
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("enterpriseId", enterpriseId);
+            paramMap.put("operateStatus", Constant.OPERATE_STATUS_INIT);
+
+            List<UserApply> userApplyList = userApplyService.getUserApplyList(paramMap);
+            responseEntity = new ResponseEntity<>(userApplyList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("[getUserApplyList] error: " + e.getMessage());
+            responseEntity = new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

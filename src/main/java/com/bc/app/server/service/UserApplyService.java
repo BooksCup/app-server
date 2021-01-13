@@ -2,6 +2,9 @@ package com.bc.app.server.service;
 
 import com.bc.app.server.entity.UserApply;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 用户申请
  *
@@ -15,5 +18,13 @@ public interface UserApplyService {
      * @param userApply 用户申请
      */
     void addUserApply(UserApply userApply);
+
+    /**
+     * 获取申请列表
+     *
+     * @param paramMap 参数map
+     * @return 申请列表
+     */
+    List<UserApply> getUserApplyList(Map<String, Object> paramMap);
 
 }

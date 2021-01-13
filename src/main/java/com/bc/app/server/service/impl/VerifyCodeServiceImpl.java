@@ -6,6 +6,8 @@ import com.bc.app.server.service.VerifyCodeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 验证码
@@ -27,4 +29,16 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
     public void addVerifyCode(VerifyCode verifyCode) {
         verifyCodeMapper.addVerifyCode(verifyCode);
     }
+
+    /**
+     * 获取有效验证码列表
+     *
+     * @param paramMap 参数map
+     * @return 有效验证码列表
+     */
+    @Override
+    public List<String> getValidVerifyCodeList(Map<String, String> paramMap) {
+        return verifyCodeMapper.getValidVerifyCodeList(paramMap);
+    }
+
 }

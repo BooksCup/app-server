@@ -23,14 +23,16 @@
         )
     </insert>
 
-    <!--<select id="getVerificationCodeList" parameterType="map" resultType="String">-->
-        <!--<![CDATA[-->
-        <!--select-->
-        <!--vc_code-->
-        <!--from t_verification_code-->
-        <!--where vc_phone = #{phone}-->
-        <!--and vc_service_type = #{serviceType}-->
-        <!--and vc_expire_time > now()-->
-        <!--]]>-->
-    <!--</select>-->
+    <select id="getValidVerifyCodeList" parameterType="map" resultType="String">
+        <![CDATA[
+        select
+        code
+        from t_verify_code
+        where phone = #{phone}
+        and type = #{type}
+        and expire_time > now()
+        order by create_time desc
+        ]]>
+    </select>
+
 </mapper>

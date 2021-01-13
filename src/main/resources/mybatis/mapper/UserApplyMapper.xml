@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.UserApplyMapper">
+
+    <insert id="addUserApply" parameterType="com.bc.app.server.entity.UserApply">
+        insert into
+        t_user_apply
+        (
+        id,
+        enterprise_id,
+        phone,
+        password,
+        create_time,
+        modify_time
+        )
+        values
+        (
+        #{id},
+        #{enterpriseId},
+        #{phone},
+        #{password},
+        now(),
+        now()
+        )
+    </insert>
+
+</mapper>

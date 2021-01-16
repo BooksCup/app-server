@@ -33,4 +33,12 @@ public interface UserAppMapper {
      */
     List<App> getDefaultInstallAppList();
 
+    /**
+     * 获取应用列表
+     *
+     * @param userId 用户ID
+     * @return 应用列表
+     */
+    List<App> getAppList(String userId);
+
 }

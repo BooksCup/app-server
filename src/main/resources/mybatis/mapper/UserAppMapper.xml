@@ -4,6 +4,11 @@
 
     <resultMap id="app" type="com.bc.app.server.entity.App">
         <id column="app_id" property="appId" jdbcType="VARCHAR"/>
+        <id column="name" property="name" jdbcType="VARCHAR"/>
+        <id column="icon" property="icon" jdbcType="VARCHAR"/>
+        <id column="route" property="route" jdbcType="VARCHAR"/>
+        <id column="describe" property="describe" jdbcType="VARCHAR"/>
+        <id column="sort" property="sort" jdbcType="INTEGER"/>
     </resultMap>
 
     <insert id="batchAddUserApp" parameterType="com.bc.app.server.entity.UserApp">
@@ -35,5 +40,12 @@
         delete from t_user_app
         where user_id = #{userId}
     </delete>
+
+    <select id="getAppList" resultMap="app">
+        select a.*
+        from t_user_app ua
+        left join t_app a on ua.app_id = a.app_id
+        where ua.user_id = #{userId}
+    </select>
 
 </mapper>

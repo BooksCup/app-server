@@ -37,4 +37,15 @@ public class UserAppServiceImpl implements UserAppService {
         }
         userAppMapper.batchAddUserApp(userAppList);
     }
+
+    /**
+     * 获取应用列表
+     *
+     * @param userId 用户ID
+     * @return 应用列表
+     */
+    @Override
+    public List<App> getAppList(String userId) {
+        return userAppMapper.getAppList(userId);
+    }
 }

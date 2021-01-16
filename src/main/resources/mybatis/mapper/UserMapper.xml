@@ -4,14 +4,22 @@
     <resultMap id="user" type="com.bc.app.server.entity.User">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR"/>
+        <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR"/>
+        <result column="enterprise_address" property="enterpriseAddress" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="job_name" property="jobName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getUserByPhoneAndPassword" resultMap="user">
         select
-        *
-        from t_user
+        u.*,
+        e.name as enterprise_name,
+        e.address as enterprise_address
+        from t_user u
+        left join t_enterprise e on u.enterprise_id = e.id
         where phone = #{phone}
         and password = #{password}
     </select>

@@ -37,4 +37,16 @@ public class UserServiceImpl implements UserService {
         paramMap.put("password", password);
         return userMapper.getUserByPhoneAndPassword(paramMap);
     }
+
+    /**
+     * 根据用户ID获取用户
+     *
+     * @param userId 用户ID
+     * @return 用户
+     */
+    @Override
+    public List<User> getUserById(String userId) {
+        // 手机号密码登录
+        return userMapper.getUserById(userId);
+    }
 }

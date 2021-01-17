@@ -20,4 +20,12 @@ public interface UserService {
      */
     List<User> getUserByLogin(String phone, String password);
 
+    /**
+     * 根据用户ID获取用户
+     *
+     * @param userId 用户ID
+     * @return 用户
+     */
+    List<User> getUserById(String userId);
+
 }

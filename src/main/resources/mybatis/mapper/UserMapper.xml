@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bc.app.server.mapper.UserMapper">
+
     <resultMap id="user" type="com.bc.app.server.entity.User">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR"/>
@@ -20,8 +21,18 @@
         e.address as enterprise_address
         from t_user u
         left join t_enterprise e on u.enterprise_id = e.id
-        where phone = #{phone}
-        and password = #{password}
+        where u.phone = #{phone}
+        and u.password = #{password}
+    </select>
+
+    <select id="getUserById" resultMap="user" parameterType="String">
+        select
+        u.*,
+        e.name as enterprise_name,
+        e.address as enterprise_address
+        from t_user u
+        left join t_enterprise e on u.enterprise_id = e.id
+        where u.id = #{userId}
     </select>
 
 </mapper>

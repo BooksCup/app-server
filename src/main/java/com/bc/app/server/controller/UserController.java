@@ -57,4 +57,30 @@ public class UserController {
 
         return responseEntity;
     }
+
+    /**
+     * 根据用户ID获取用户
+     *
+     * @param userId 用户ID
+     * @return ResponseEntity
+     */
+    @ApiOperation(value = "根据用户ID获取用户", notes = "根据用户ID获取用户")
+    @GetMapping(value = "/{userId}")
+    public ResponseEntity<User> getUserById(
+            @PathVariable String userId) {
+        ResponseEntity<User> responseEntity;
+        logger.info("[getUserById] userId: " + userId);
+        List<User> userList = userService.getUserById(userId);
+
+        if (CollectionUtils.isEmpty(userList)) {
+            responseEntity = new ResponseEntity<>(new User(),
+                    HttpStatus.BAD_REQUEST);
+        } else {
+            User user = userList.get(0);
+            responseEntity = new ResponseEntity<>(user,
+                    HttpStatus.OK);
+        }
+
+        return responseEntity;
+    }
 }

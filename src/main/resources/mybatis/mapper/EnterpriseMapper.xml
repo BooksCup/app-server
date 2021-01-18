@@ -6,6 +6,7 @@
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <id column="name" property="name" jdbcType="VARCHAR"/>
         <id column="short_name" property="shortName" jdbcType="VARCHAR"/>
+        <id column="logo" property="logo" jdbcType="VARCHAR"/>
         <id column="reg_location" property="regLocation" jdbcType="VARCHAR"/>
         <id column="legal_person_name" property="legalPersonName" jdbcType="VARCHAR"/>
         <id column="estiblish_date" property="estiblishDate" jdbcType="VARCHAR"/>

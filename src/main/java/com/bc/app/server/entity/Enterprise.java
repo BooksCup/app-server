@@ -10,6 +10,7 @@ public class Enterprise {
     private String id;
     private String name;
     private String shortName;
+    private String logo;
     private String legalPersonName;
     private String estiblishDate;
     private String regLocation;
@@ -55,6 +56,14 @@ public class Enterprise {
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public String getLegalPersonName() {

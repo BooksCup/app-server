@@ -42,4 +42,15 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         enterpriseMapper.updateEnterpriseExt(enterprise);
     }
 
+    /**
+     * 根据企业ID获取企业
+     *
+     * @param enterpriseId 企业ID
+     * @return 企业
+     */
+    @Override
+    public Enterprise getEnterpriseById(String enterpriseId) {
+        return enterpriseMapper.getEnterpriseById(enterpriseId);
+    }
+
 }

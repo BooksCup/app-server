@@ -57,6 +57,7 @@ public class UserApplyController {
     @ApiOperation(value = "提交用户申请", notes = "提交用户申请")
     @PostMapping(value = "")
     public ResponseEntity<String> addUserApply(
+            @RequestParam String name,
             @RequestParam String phone,
             @RequestParam String code,
             @RequestParam String password,
@@ -80,11 +81,7 @@ public class UserApplyController {
             }
 
             // 添加用户申请
-            UserApply userApply = new UserApply();
-            userApply.setId(CommonUtil.generateId());
-            userApply.setEnterpriseId(enterpriseId);
-            userApply.setPhone(phone);
-            userApply.setPassword(password);
+            UserApply userApply = new UserApply(enterpriseId, name, phone, password);
             userApplyService.addUserApply(userApply);
 
             responseEntity = new ResponseEntity<>(ResponseMsg.

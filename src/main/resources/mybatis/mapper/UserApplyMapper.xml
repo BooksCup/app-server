@@ -14,6 +14,7 @@
         (
         id,
         enterprise_id,
+        name,
         phone,
         password,
         create_time,
@@ -23,6 +24,7 @@
         (
         #{id},
         #{enterpriseId},
+        #{name},
         #{phone},
         #{password},
         now(),

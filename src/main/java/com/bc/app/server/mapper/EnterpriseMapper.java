@@ -33,4 +33,12 @@ public interface EnterpriseMapper {
      */
     void updateEnterpriseExt(Enterprise enterprise);
 
+    /**
+     * 根据企业ID获取企业
+     *
+     * @param enterpriseId 企业ID
+     * @return 企业
+     */
+    Enterprise getEnterpriseById(String enterpriseId);
+
 }

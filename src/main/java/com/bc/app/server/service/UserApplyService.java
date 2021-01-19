@@ -27,4 +27,11 @@ public interface UserApplyService {
      */
     List<UserApply> getUserApplyList(Map<String, Object> paramMap);
 
+    /**
+     * 同意或拒绝用户申请
+     *
+     * @param paramMap 参数map
+     */
+    void agreeOrRefuseUserApply(Map<String, Object> paramMap);
+
 }

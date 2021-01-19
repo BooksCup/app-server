@@ -44,7 +44,6 @@ public class UserApplyController {
     @Resource
     private UserApplyService userApplyService;
 
-
     /**
      * 提交用户申请
      *
@@ -91,6 +90,40 @@ public class UserApplyController {
             logger.error("[addUserApply] error: " + e.getMessage());
             responseEntity = new ResponseEntity<>(ResponseMsg.
                     ADD_USER_APPLY_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
+    @ApiOperation(value = "操作用户申请", notes = "操作用户申请")
+    @PutMapping(value = "/{applyId}")
+    public ResponseEntity<String> operateUserApply(
+            @PathVariable String applyId,
+            @RequestParam String operateStatus) {
+        ResponseEntity<String> responseEntity;
+        try {
+            if (Constant.OPERATE_STATUS_AGREE.equals(operateStatus)) {
+                // 同意
+                // 用户表新增数据
+
+                // 发送同意短信
+
+            } else {
+                // 拒绝
+
+                // 发送拒绝短信
+            }
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("applyId", applyId);
+            paramMap.put("operateStatus", operateStatus);
+            userApplyService.agreeOrRefuseUserApply(paramMap);
+
+            responseEntity = new ResponseEntity<>(ResponseMsg.
+                    OPERATE_USER_APPLY_SUCCESS.getResponseCode(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("[operateUserApply] error: " + e.getMessage());
+            responseEntity = new ResponseEntity<>(ResponseMsg.
+                    OPERATE_USER_APPLY_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

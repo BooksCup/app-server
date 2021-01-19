@@ -9,8 +9,7 @@
     </resultMap>
 
     <insert id="addUserApply" parameterType="com.bc.app.server.entity.UserApply">
-        insert into
-        t_user_apply
+        insert into t_user_apply
         (
         id,
         enterprise_id,
@@ -38,5 +37,12 @@
         and operate_status = #{operateStatus}
         order by create_time desc
     </select>
+
+    <update id="agreeOrRefuseUserApply" parameterType="map">
+        update t_user_apply
+        set operate_status = #{operateStatus},
+        operate_time = now()
+        where id = #{applyId}
+    </update>
 
 </mapper>

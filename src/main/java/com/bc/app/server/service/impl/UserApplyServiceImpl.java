@@ -41,4 +41,14 @@ public class UserApplyServiceImpl implements UserApplyService {
         return userApplyMapper.getUserApplyList(paramMap);
     }
 
+    /**
+     * 同意或拒绝用户申请
+     *
+     * @param paramMap 参数map
+     */
+    @Override
+    public void agreeOrRefuseUserApply(Map<String, Object> paramMap) {
+        userApplyMapper.agreeOrRefuseUserApply(paramMap);
+    }
+
 }

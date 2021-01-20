@@ -1,6 +1,7 @@
 package com.bc.app.server.service.impl;
 
 import com.bc.app.server.entity.Enterprise;
+import com.bc.app.server.entity.User;
 import com.bc.app.server.mapper.EnterpriseMapper;
 import com.bc.app.server.service.EnterpriseService;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,17 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     @Override
     public Enterprise getEnterpriseById(String enterpriseId) {
         return enterpriseMapper.getEnterpriseById(enterpriseId);
+    }
+
+    /**
+     * 获取企业下的人员列表
+     *
+     * @param paramMap 参数map
+     * @return 企业下的人员列表
+     */
+    @Override
+    public List<User> getEnterpriseUserList(Map<String, Object> paramMap) {
+        return enterpriseMapper.getEnterpriseUserList(paramMap);
     }
 
 }

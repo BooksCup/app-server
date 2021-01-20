@@ -1,6 +1,7 @@
 package com.bc.app.server.service;
 
 import com.bc.app.server.entity.Enterprise;
+import com.bc.app.server.entity.User;
 
 import java.util.List;
 import java.util.Map;
@@ -34,4 +35,13 @@ public interface EnterpriseService {
      * @return 企业
      */
     Enterprise getEnterpriseById(String enterpriseId);
+
+    /**
+     * 获取企业下的人员列表
+     *
+     * @param paramMap 参数map
+     * @return 企业下的人员列表
+     */
+    List<User> getEnterpriseUserList(Map<String, Object> paramMap);
+
 }

@@ -16,6 +16,14 @@
         <id column="telephone" property="telephone" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="user" type="com.bc.app.server.entity.User">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <id column="name" property="name" jdbcType="VARCHAR"/>
+        <id column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <id column="department_name" property="departmentName" jdbcType="VARCHAR"/>
+        <id column="job_name" property="jobName" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <select id="getEnterpriseListByKeyword" resultMap="enterprise" parameterType="map">
         select e.*,
         ext.legal_person_name,
@@ -60,5 +68,19 @@
         enterprise_id = #{id}
         where enterprise_id = #{id}
     </update>
+
+    <select id="getEnterpriseUserList" resultMap="user" parameterType="String">
+        select
+        u.*, d.name as department_name
+        from
+        t_user u
+        left join t_department d on u.department_id = d.id
+        where u.enterprise_id = #{enterpriseId}
+        and u.job_status between 0 and 4
+        <if test="keyword != null and keyword!= ''">
+            and u.name like '%${keyword}%'
+        </if>
+        order by u.create_time desc
+    </select>
 
 </mapper>

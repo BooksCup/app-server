@@ -1,6 +1,7 @@
 package com.bc.app.server.controller;
 
 import com.bc.app.server.entity.Enterprise;
+import com.bc.app.server.entity.User;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.EnterpriseService;
 import io.swagger.annotations.ApiOperation;
@@ -76,24 +77,26 @@ public class EnterpriseController {
         }
         return responseEntity;
     }
-//
-//    @ApiOperation(value = "刷新企业logo", notes = "刷新企业logo")
-//    @PostMapping(value = "/{enterpriseId}/logo/refresh")
-//    public ResponseEntity<String> updateEnterprise(
-//            @PathVariable String enterpriseId) {
-//        ResponseEntity<String> responseEntity;
-//        try {
-//            Enterprise enterprise = new Enterprise(enterpriseId, shortName, legalPersonName,
-//                    estiblishDate, regStatus, regCapital, telephone);
-//            enterpriseService.updateEnterprise(enterprise);
-//            responseEntity = new ResponseEntity<>(ResponseMsg.UPDATE_ENTERPRISE_SUCCESS.
-//                    getResponseCode(), HttpStatus.OK);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            responseEntity = new ResponseEntity<>(ResponseMsg.UPDATE_ENTERPRISE_ERROR.
-//                    getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        return responseEntity;
-//    }
+
+    @ApiOperation(value = "获取企业下的人员列表", notes = "获取企业下的人员列表")
+    @GetMapping(value = "/{enterpriseId}/user")
+    public ResponseEntity<List<User>> getEnterpriseUserList(
+            @PathVariable String enterpriseId,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String userId) {
+        ResponseEntity<List<User>> responseEntity;
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("enterpriseId", enterpriseId);
+            paramMap.put("keyword", keyword);
+
+            List<User> reviewerList = enterpriseService.getEnterpriseUserList(paramMap);
+            responseEntity = new ResponseEntity<>(reviewerList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseEntity = new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
 
 }

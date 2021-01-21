@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * 启动类
+ * check version
  *
  * @author zhou
  */

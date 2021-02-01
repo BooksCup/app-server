@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.FabricQcWarehouseMapper">
+
+
+    <insert id="insertQcWarehouse" parameterType="fabricQcWarehouse">
+
+        insert into t_fabric_qc_warehouse
+        (
+        id,
+        product_name,
+        product_id,
+        supplier_name,
+        supplier_id,
+        cylinder_number,
+        odd_number,
+        odd_time,
+        width,
+        width_unit,
+        gram_weight,
+        total_length,
+        total_weight,
+        colour,
+        qc_number,
+        length_unit,
+        weight_unit,
+        create_time,
+        remark
+
+        )
+        values
+        (
+        #{id},
+        #{productName},
+        #{productId},
+        #{supplierName},
+        #{supplierId},
+        #{cylinderNumber},
+        #{oddNumber},
+        #{oddTime},
+        #{width},
+        #{widthUnit},
+        #{gramWeight},
+        #{totalLength},
+        #{totalWeight},
+        #{colour},
+        #{qcNumber},
+        #{lengthUnit},
+        #{weightUnit},
+        now(),
+        #{remark}
+        )
+
+    </insert>
+    <update id="update" parameterType="fabricQcWarehouse">
+        UPDATE  t_fabric_qc_warehouse
+        set  is_delete='1'
+        WHERE id={id}
+    </update>
+
+    <select id="getPage" resultType="com.bc.app.server.entity.FabricQcWarehouse">
+        SELECT
+         id,
+        product_name as productName ,
+        product_id as productId ,
+        supplier_name AS supplierName,
+        supplier_id as supplierId,
+        cylinder_number as cylinderNumber,
+        odd_number as oddNumber,
+        odd_time as oddTime ,
+        width,
+        width_unit as widthUnit ,
+        gram_weight as gramWeight ,
+        total_length as totalLength,
+        total_weight as totalWeight,
+        colour ,
+        qc_number as qcNumber,
+        length_unit as  lengthUnit ,
+        weight_unit as  weightUnit,
+        create_time as createTime,
+        remark
+         FROM t_fabric_qc_warehouse
+          WHERE is_delete=0
+          ORDER by create_time DESC
+    </select>
+    <select id="getAppPage" parameterType="map" resultType="com.bc.app.server.entity.FabricQcWarehouse">
+
+        SELECT
+        id,
+        product_name as productName ,
+        product_id as productId ,
+        supplier_name AS supplierName,
+        supplier_id as supplierId,
+        cylinder_number as cylinderNumber,
+        odd_number as oddNumber,
+        odd_time as oddTime ,
+        width,
+        width_unit as widthUnit ,
+        gram_weight as gramWeight ,
+        total_length as totalLength,
+        total_weight as totalWeight,
+        colour ,
+        qc_number as qcNumber,
+        length_unit as lengthUnit ,
+        weight_unit as weightUnit,
+        create_time as createTime,
+        remark
+        FROM t_fabric_qc_warehouse
+        WHERE is_delete=0
+
+        <if test="cylinderNumber != null and cylinderNumber != ''">
+            and cylinder_number = #{cylinderNumber}
+        </if>
+        <if test="oddNumber != null and oddNumber != ''">
+            and odd_number = #{oddNumber}
+        </if>
+        <if test="supplierId != null and supplierId != ''">
+            and supplier_id = #{supplierId}
+        </if>
+        <if test="productId != null and productId != ''">
+            and product_id = #{productId}
+        </if>
+        ORDER by create_time DESC
+
+    </select>
+    <!-- <select id="getAppPage" parameterType="map" resultType="com.bc.app.server.entity.FabricQcWarehouse">
+
+         SELECT
+         id,
+         product_name as productName ,
+         product_id as productId ,
+         supplier_name AS supplierName,
+         supplier_id as supplierId,
+         cylinder_number as cylinderNumber,
+         odd_number as oddNumber,
+         odd_time as oddTime ,
+         width,
+         width_unit as widthUnit ,
+         gram_weight as gramWeight ,
+         total_length as totalLength,
+         total_weight as totalWeight,
+         colour ,
+         qc_number as qcNumber,
+         length_unit as lengthUnit ,
+         weight_unit as weightUnit,
+         create_time as createTime,
+         remark
+         FROM t_fabric_qc_warehouse
+         WHERE is_delete=0
+
+         <if test="cylinderNumber != null and cylinderNumber != ''">
+             and cylinder_number = #{cylinderNumber}
+         </if>
+         <if test="oddNumber != null and oddNumber != ''">
+             and odd_number = #{oddNumber}
+         </if>
+         <if test="supplierId != null and supplierId != ''">
+             and supplier_id = #{supplierId}
+         </if>
+         <if test="productId != null and productId != ''">
+             and product_id = #{productId}
+         </if>
+         ORDER by create_time DESC
+
+     </select>-->
+
+    <select id="getListGroupProductId"
+            parameterType="map" resultType="com.bc.app.server.vo.fabricqcwarehousecontrollervo.FabricQcWarehouseVo">
+        SELECT DISTINCT
+        product_id as productId ,
+        product_name as productName,
+        goods_image as goodsImage,
+        width as width,
+        gram_weight as gramWeight,
+        goods_no as goodsNo
+        FROM
+        `t_fabric_qc_warehouse`
+        WHERE
+        is_delete=0
+        <if test="supplierName != null and supplierName != ''">
+            and supplier_name LIKE concat('%', #{supplierName},'%')
+        </if>
+        <if test="productName != null and productName != ''">
+            and product_name LIKE concat('%', #{productName},'%')
+        </if>
+        <if test="cylinderNumber != null and cylinderNumber != ''">
+            and cylinder_number = #{cylinderNumber}
+        </if>
+        <if test="oddNumber != null and oddNumber != ''">
+            and odd_number = #{oddNumber}
+        </if>
+    </select>
+
+
+    <!--<select id="getListGroupProductId"
+            parameterType="list" resultType="com.bc.app.server.vo.fabricqcwarehousecontrollervo.FabricQcWarehouseVo">
+        SELECT DISTINCT
+        product_id as productId ,
+        product_name as productName
+        FROM
+        `t_fabric_qc_warehouse`
+        WHERE
+        is_delete=0
+        <if test="list!=null and list.size()!=0">
+            <foreach collection="list" item="item">
+                and (product_name LIKE concat('%', #{item},'%') or cylinder_number = #{item} or supplier_name LIKE
+                concat('%', #{item},'%') or odd_number = #{item})
+            </foreach>
+        </if>
+
+    </select>-->
+
+    <!--<select id="getListGroupSupplierId"
+            parameterType="map" resultType="com.bc.app.server.vo.fabricqcwarehousecontrollervo.QcWarehouseSupplierIdVo">
+
+        SELECT
+        supplier_id as supplierId ,
+        supplier_name as supplierName
+        FROM
+        t_fabric_qc_warehouse
+        WHERE is_delete=0
+
+        <if test="list!=null and list.size()!=0">
+            <foreach collection="list" item="item">
+                and ( cylinder_number = #{item} or product_id=#{item}
+                supplier_name LIKE concat('%', #{item},'%') or odd_number = #{item})
+            </foreach>
+        </if>
+        GROUP BY
+        supplier_id
+    </select>-->
+
+    <select id="getListGroupSupplierId"
+            parameterType="map" resultType="com.bc.app.server.vo.fabricqcwarehousecontrollervo.QcWarehouseSupplierIdVo">
+
+        SELECT
+        supplier_id as supplierId ,
+        supplier_name as supplierName
+        FROM
+        t_fabric_qc_warehouse
+        WHERE is_delete=0
+        <if test="supplierName != null and supplierName != ''">
+            and supplier_name LIKE concat('%', #{supplierName},'%')
+        </if>
+        <!--<if test="productName != null and productName != ''">-->
+        <!--and product_name = concat('%', #{productName},'%')-->
+        <!--</if>-->
+        <if test="cylinderNumber != null and cylinderNumber != ''">
+            and cylinder_number = #{cylinderNumber}
+        </if>
+        <if test="oddNumber != null and oddNumber != ''">
+            and odd_number = #{oddNumber}
+        </if>
+        <if test="productId != null and productId != ''">
+            and product_id = #{productId}
+        </if>
+        GROUP BY
+        supplier_id
+    </select>
+</mapper>

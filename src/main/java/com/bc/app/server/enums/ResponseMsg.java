@@ -23,6 +23,19 @@ public enum ResponseMsg {
 
     UPDATE_ENTERPRISE_SUCCESS("UPDATE_ENTERPRISE_SUCCESS", "修改企业成功"),
     UPDATE_ENTERPRISE_ERROR("UPDATE_ENTERPRISE_ERROR", "修改企业失败"),
+    ADD_SUCCESS("ADD_SUCCESS", "新增成功"),
+    ADD_ERROR("ADD_ERROR", "新增失败"),
+    ADD_REPEAT("ADD_REPEAT", "重复新增"),
+
+
+    UPDATE_SUCCESS("UPDATE_SUCCESS", "修改成功"),
+    UPDATE_ERROR("UPDATE_ERROR", "修改失败/没传信息"),
+
+    DELETE_SUCCESS("DETELE_SUCCESS", "修改成功"),
+    DELETE_ERROR("DETELE_ERROR", "修改失败"),
+
+    IMPORT_SUCCESS("IMPORT_SUCCESS", "导入成功"),
+    IMPORT_ERROR("IMPORT_ERROR", "导入失败"),
     ;
 
     ResponseMsg(String responseCode, String responseMessage) {

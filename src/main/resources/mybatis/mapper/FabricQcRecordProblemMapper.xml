@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.FabricQcRecordProblemMapper">
+
+
+    <insert id="addFabricQcRecordProblem" parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
+        insert into t_fabric_qc_record_problem
+        (
+        id,
+        record_id,
+        tag,
+        tag_a_times,
+        tag_b_times,
+        tag_c_times,
+        tag_d_times,
+        remark,
+        image,
+        create_time,
+        is_delete
+        )
+        values
+        (
+        #{id},
+        #{recordId},
+        #{tag},
+        #{tagATimes},
+        #{tagBTimes},
+        #{tagCTimes},
+        #{tagDTimes},
+        #{remark},
+        #{image},
+         now(),
+        #{isDelete}
+        )
+    </insert>
+
+    <select id="getFabricQcRecordProblemByRecordId" resultType="com.bc.app.server.entity.FabricQcRecordProblem"
+            parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
+        select * from t_fabric_qc_record_problem
+        where
+        is_delete=0
+        <if test="recordId != null and recordId != ''">
+            and record_id = #{recordId}
+        </if>
+        <if test="tag != null and tag != ''">
+            and tag = #{tag}
+        </if>
+        order by create_time desc
+    </select>
+
+    <delete id="delete" parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
+        UPDATE  t_fabric_qc_record_problem
+        SET
+               is_delete = '0'
+        WHERE record_id=#{recordId}
+    </delete>
+
+    <update id="updateById" parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
+        update
+        t_fabric_qc_record_problem
+        <trim prefix="SET" suffixOverrides=",">
+            <if test='tag != null and tag != "" '>
+                tag = #{tag},
+            </if>
+            <if test='tagATimes != null and tagATimes != "" '>
+                tag_a_times = #{tagATimes},
+            </if>
+            <if test='tagBTimes != null and tagBTimes != "" '>
+                tag_b_times = #{tagBTimes},
+            </if>
+            <if test='tagCTimes != null and tagCTimes != "" '>
+                tag_c_times=#{tagCTimes},
+            </if>
+
+            <if test='tagDTimes != null and tagDTimes != "" '>
+                tag_d_times = #{tagDTimes},
+            </if>
+            <if test='remark != null and remark != "" '>
+                remark = #{remark},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.bc.app.server.entity.FabricQcRecordProblem">
+        select * from t_fabric_qc_record_problem
+        where
+        is_delete=0
+        and   id = #{id}
+    </select>
+
+    <select id="getCountData" resultType="fabricQcRecordProblem"
+            parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
+     SELECT
+	tag,
+	SUM( tag_a_times ) AS tagATimes,
+	SUM( tag_b_times ) AS tagBTimes,
+	SUM( tag_c_times ) AS tagCTimes,
+	SUM( tag_d_times ) AS tagDTimes,
+	GROUP_CONCAT( image ) AS image
+    FROM
+        `t_fabric_qc_record_problem`
+    WHERE
+        record_id = #{recordId}
+    GROUP BY
+	tag
+    </select>
+
+</mapper>

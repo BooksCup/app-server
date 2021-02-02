@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.UserAppMapper">
+
+    <resultMap id="app" type="com.bc.app.server.entity.App">
+        <id column="app_id" property="appId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="batchAddUserApp" parameterType="com.bc.app.server.entity.UserApp">
+        insert into t_user_app
+        (
+        id,
+        user_id,
+        app_id,
+        create_time
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.userId},
+            #{item.appId},
+            now()
+            )
+        </foreach>
+
+    </insert>
+
+    <select id="getDefaultInstallAppList" resultMap="app">
+        select * from t_app
+        where default_install = '1'
+    </select>
+
+    <delete id="deleteAppByUserId" parameterType="String">
+        delete from t_user_app
+        where user_id = #{userId}
+    </delete>
+
+</mapper>

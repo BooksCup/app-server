@@ -47,6 +47,7 @@ public class SupplierController {
      * @return
      * @throws IOException
      */
+    @CrossOrigin
     @ApiOperation(value = "获取供应商列表", notes = "获取供应商列表")
     @GetMapping("list")
     public Map<String, Object> getSupplierList() throws IOException {
@@ -69,6 +70,7 @@ public class SupplierController {
      * @return
      * @throws IOException
      */
+    @CrossOrigin
     @ApiOperation(value = "获取物品列表", notes = "获取物品列表")
     @GetMapping("getMaterialLst")
     public Map<String, Object> materialList() throws IOException {

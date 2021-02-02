@@ -39,10 +39,10 @@ public class FabricQcWarehouseController {
      * 布料数据导入到数据库
      *
      * @param
-     * @param productName
-     * @param productId
-     * @param supplierName
-     * @param supplierId
+     * @param productName  产品名称
+     * @param productId    产品id
+     * @param supplierName 供应商名称
+     * @param supplierId   供应商id
      * @return
      */
     @ApiOperation(value = "布料数据导入到数据库", notes = "布料数据导入到数据库")
@@ -54,7 +54,7 @@ public class FabricQcWarehouseController {
             @RequestParam("supplierId") String supplierId,@RequestParam("goodsNo") String goodsNo,
             @RequestParam("twoCodeUrl") String twoCodeUrl) throws IOException {
         Map<String, Object> map = new HashMap<>();
-        boolean b = fabricQcWarehouseService.importExcel(file, productName, productId, supplierName, supplierId,goodsNo,twoCodeUrl);
+        boolean b = fabricQcWarehouseService.importExcel(file, productName, productId, supplierName, supplierId);
         if (b) {
             map.put("code", 200);
             map.put("message", "导入成功");
@@ -68,10 +68,11 @@ public class FabricQcWarehouseController {
     /**
      * pc分页查询
      *
-     * @param pageSize
-     * @param pageNum
+     * @param pageSize 每页显示个数
+     * @param pageNum  当前页
      * @return
      */
+    @CrossOrigin
     @ApiOperation(value = "pc分页查询", notes = "pc分页查询")
     @GetMapping("/page")
     public PageResult<List<FabricQcWarehouse>> getPage(
@@ -84,9 +85,12 @@ public class FabricQcWarehouseController {
 
     /**
      * app盘点分页查询列表
-     *
-     * @param pageSize
-     * @param pageNum
+     * @param pageSize 每页显示个数
+     * @param pageNum  当前页
+     * @param oddNumber 订单号
+     * @param cylinderNumber 缸号
+     * @param supplierName  供应商名称
+     * @param productName  产品名称
      * @return
      */
     @ApiOperation(value = "app盘点分页查询列表", notes = "app盘点分页查询列表")
@@ -108,12 +112,10 @@ public class FabricQcWarehouseController {
 
     /**
      * 通过ID 删除数据
-     *
-     * @param id
+     * @param id 布料总数据表id
      * @return
-     * @Author Mars
-     * @Date 1月28号
      */
+    @CrossOrigin
     @ApiOperation(value = "删除", notes = "删除")
     @GetMapping("/{id}")
     public Map<Object, Object> delete(@PathVariable String id) {

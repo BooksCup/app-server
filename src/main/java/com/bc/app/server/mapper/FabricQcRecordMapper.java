@@ -3,6 +3,7 @@ package com.bc.app.server.mapper;
 import com.bc.app.server.entity.FabricQcRecord;
 import com.bc.app.server.entity.FabricQcWarehouse;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
+import com.bc.app.server.vo.fabricqcwarehousecontrollervo.UpdateByIdVo;
 
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,8 @@ public interface FabricQcRecordMapper {
     Integer insertList(List<FabricQcRecord> fabricQcRecords);
 
     Integer updateByid(Map<String, String> map);
+
+    Integer updateListById(List<UpdateByIdVo> list);
 
     GetByWarehouseIdVo getCountData(FabricQcRecord fabricQcRecord);
 

@@ -55,7 +55,7 @@
     <update id="update" parameterType="fabricQcWarehouse">
         UPDATE  t_fabric_qc_warehouse
         set  is_delete='1'
-        WHERE id={id}
+        WHERE id=#{id}
     </update>
 
     <select id="getPage" resultType="com.bc.app.server.entity.FabricQcWarehouse">
@@ -168,11 +168,7 @@
             parameterType="map" resultType="com.bc.app.server.vo.fabricqcwarehousecontrollervo.FabricQcWarehouseVo">
         SELECT DISTINCT
         product_id as productId ,
-        product_name as productName,
-        goods_image as goodsImage,
-        width as width,
-        gram_weight as gramWeight,
-        goods_no as goodsNo
+        product_name as productName
         FROM
         `t_fabric_qc_warehouse`
         WHERE
@@ -256,5 +252,16 @@
         </if>
         GROUP BY
         supplier_id
+    </select>
+    <select id="getGoods" resultType="com.bc.app.server.entity.Goods">
+        select
+        id ,
+        goods_name as  goodsName,
+        goods_photos as goodsPhotos ,
+        goods_no as goodsNo,
+        attr_list as attrList
+        FROM  t_goods
+        WHERE  id =  #{goodsId}
+
     </select>
 </mapper>

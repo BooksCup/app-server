@@ -5,12 +5,10 @@ import com.bc.app.server.mapper.FabricQcRecordMapper;
 import com.bc.app.server.service.FabricQcRecordService;
 import com.bc.app.server.vo.fabricqcwarehousecontrollervo.UpdateByIdVo;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,19 +54,7 @@ public class FabricQcRecordServiceImpl implements FabricQcRecordService {
     @Transactional
     @Override
     public Integer updateListById(List<UpdateByIdVo> list) {
-        Integer flag = 0;
-        if (CollectionUtils.isNotEmpty(list)) {
-            for (UpdateByIdVo updateByIdVo : list) {
-                Map<String, String> map = new HashMap<>();
-                map.put("remark", updateByIdVo.getRemark());
-                map.put("weightAfter", updateByIdVo.getWeightAfter());
-                map.put("lengthAfter", updateByIdVo.getLengthAfter());
-                map.put("id", updateByIdVo.getId());
-                Integer integer = fabricQcRecordMapper.updateByid(map);
-                flag += integer;
-            }
-        }
-        return flag;
+        return fabricQcRecordMapper.updateListById(list);
     }
 
     @Override

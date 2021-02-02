@@ -2,6 +2,7 @@ package com.bc.app.server.mapper;
 
 
 import com.bc.app.server.entity.FabricQcWarehouse;
+import com.bc.app.server.entity.Goods;
 import com.bc.app.server.vo.fabricqcwarehousecontrollervo.FabricQcWarehouseVo;
 import com.bc.app.server.vo.fabricqcwarehousecontrollervo.QcWarehouseSupplierIdVo;
 import com.github.pagehelper.Page;
@@ -27,4 +28,5 @@ public interface FabricQcWarehouseMapper {
 
     List<QcWarehouseSupplierIdVo> getListGroupSupplierId(Map<String, String> map);
 
+    Goods getGoods(Map<String, String> goodMap);
 }

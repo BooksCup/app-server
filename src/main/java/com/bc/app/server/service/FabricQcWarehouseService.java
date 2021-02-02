@@ -23,8 +23,7 @@ public interface FabricQcWarehouseService {
      */
     boolean importExcel(MultipartFile file, String productName,
                         String productId, String supplierName,
-                        String supplierId, String goodsNo,
-                        String twoCodeUrl) throws IOException;
+                        String supplierId) throws IOException;
 
     /**
      * 分页查询

@@ -2,6 +2,7 @@ package com.bc.app.server.service.impl;
 
 import com.bc.app.server.entity.FabricQcRecord;
 import com.bc.app.server.entity.FabricQcWarehouse;
+import com.bc.app.server.entity.Goods;
 import com.bc.app.server.mapper.FabricQcRecordMapper;
 import com.bc.app.server.mapper.FabricQcWarehouseMapper;
 import com.bc.app.server.service.FabricQcWarehouseService;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,8 +46,7 @@ public class FabricQcWarehouseServiceImpl implements FabricQcWarehouseService {
     @Override
     public boolean importExcel(MultipartFile file, String productName,
                                String productId, String supplierName,
-                               String supplierId, String goodsNo,
-                               String twoCodeUrl) throws IOException {
+                               String supplierId) throws IOException {
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(file.getInputStream());
         int lastRowNum = xssfWorkbook.getSheetAt(0).getLastRowNum();//获取第一列的总行数
         FabricQcWarehouse fabricQcWarehouse = new FabricQcWarehouse();
@@ -55,8 +56,6 @@ public class FabricQcWarehouseServiceImpl implements FabricQcWarehouseService {
         fabricQcWarehouse.setProductName(productName);
         fabricQcWarehouse.setSupplierName(supplierName);
         fabricQcWarehouse.setSupplierId(supplierId);
-        fabricQcWarehouse.setGoodsNo(goodsNo);
-        fabricQcWarehouse.setGoodsImage(twoCodeUrl);
         List<FabricQcRecord> fabricQcRecordList = new ArrayList<>();
         String cylinderNumber = "";
         for (int i = 0; i < lastRowNum; i++) {
@@ -187,6 +186,11 @@ public class FabricQcWarehouseServiceImpl implements FabricQcWarehouseService {
             result = fabricQcWarehouseVoPage.getResult();
             if (CollectionUtils.isNotEmpty(result)) {
                 for (FabricQcWarehouseVo fabricQcWarehouseVo : result) {
+                    String goodsId= fabricQcWarehouseVo.getProductId();
+                    Map<String,String> goodMap=new HashMap<>();
+                    goodMap.put("goodsId",goodsId);
+                    Goods goods= fabricQcWarehouseMapper.getGoods(goodMap);
+                    fabricQcWarehouseVo.setGoods(goods);
                     map.put("productId", fabricQcWarehouseVo.getProductId());
                     List<QcWarehouseSupplierIdVo> qcWarehouseSupplierIdVoList = fabricQcWarehouseMapper.getListGroupSupplierId(map);
                     //查询最里面一层

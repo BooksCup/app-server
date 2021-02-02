@@ -6,7 +6,6 @@ import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.SmsConfigService;
 import com.bc.app.server.service.UserApplyService;
 import com.bc.app.server.service.VerifyCodeService;
-import com.bc.app.server.utils.CommonUtil;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

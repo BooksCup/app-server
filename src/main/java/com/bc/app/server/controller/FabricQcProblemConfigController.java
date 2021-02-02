@@ -35,13 +35,13 @@ public class FabricQcProblemConfigController {
     private FabricQcProblemConfigService fabricQcProblemConfigService;
 
     /**
-     * 新增问题配置
+     * 新增问题配置信息
      *
-     * @param enterpriseId
+     * @param enterpriseId 企业id
      * @param tag
      * @return
      */
-    @ApiOperation(value = "新增问题配置", notes = "新增问题配置")
+    @ApiOperation(value = "新增问题配置信息", notes = "新增问题配置信息")
     @PostMapping(value = "")
     public ResponseEntity<String> addFabricQcProblemConfig(
             @RequestParam String enterpriseId,
@@ -72,7 +72,7 @@ public class FabricQcProblemConfigController {
     /**
      * 通过企业id查询问题配置
      *
-     * @param enterpriseId
+     * @param enterpriseId 企业id
      * @return
      */
     @ApiOperation(value = "通过企业id查询问题配置列表", notes = "通过企业id查询问题配置列表")

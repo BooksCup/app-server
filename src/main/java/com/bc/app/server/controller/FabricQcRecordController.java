@@ -1,6 +1,7 @@
 package com.bc.app.server.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.bc.app.server.entity.FabricQcRecord;
 import com.bc.app.server.entity.FabricQcRecordProblem;
 import com.bc.app.server.enums.ResponseMsg;
@@ -9,7 +10,7 @@ import com.bc.app.server.service.FabricQcRecordService;
 import com.bc.app.server.service.FabricQcWarehouseService;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.SelectByIdVo;
-import com.bc.app.server.vo.fabricqcrecordcontrollervo.UpdateByIdsVo;
+import com.bc.app.server.vo.fabricqcwarehousecontrollervo.UpdateByIdVo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -88,18 +89,19 @@ public class FabricQcRecordController {
 
 
     /**
-     * 通过id更新数据
+     * 通过id更新数据集合
      *
-     * @param
+     * @param string  json字符串
      * @return
      */
-    @ApiOperation(value = "通过id添加检查前后记录数据", notes = "通过id添加检查前后记录数据")
+    @ApiOperation(value = "通过id更新数据集合", notes = "通过id更新数据集合")
     @PostMapping(value = "/updateByIds")
     public ResponseEntity<String> updateByIds(
-            @RequestParam UpdateByIdsVo updateByIdsVo) {
+            @RequestParam String string) {
+        List<UpdateByIdVo> list = JSON.parseObject(string, List.class);
         Integer integer = 0;
-        if (null != updateByIdsVo) {
-            integer = fabricQcRecordService.updateListById(updateByIdsVo.getList());
+        if (CollectionUtils.isNotEmpty(list)) {
+            integer = fabricQcRecordService.updateListById(list);
         }
         if (integer > 0) {
             return new ResponseEntity<>(ResponseMsg.
@@ -112,8 +114,10 @@ public class FabricQcRecordController {
 
     /**
      * 通过id更新数据
-     *
-     * @param
+     * @param id id
+     * @param lengthAfter  检查之后长度
+     * @param weightAfter  检查之后重量
+     * @param remark       备注信息
      * @return
      */
     @ApiOperation(value = "通过id更新数据", notes = "通过id更新数据")
@@ -141,7 +145,7 @@ public class FabricQcRecordController {
     /**
      * 通过总记录表id查询记录本数据
      *
-     * @param
+     * @param  warehouseId 面料入库总记录表id
      * @return
      */
     @ApiOperation(value = "通过总记录表id查询数据记录列表", notes = "通过总记录表id查询数据记录列表")

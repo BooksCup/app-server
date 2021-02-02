@@ -19,6 +19,25 @@
         where id = #{id}
 
     </update>
+    <update id="updateListById" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update t_fabric_qc_record
+            <set >
+                <if test='item.lengthAfter != null and item.lengthAfter != "" '>
+                    length_after = #{item.lengthAfter},
+                </if>
+                <if test='item.weightAfter != null and item.weightAfter != "" '>
+                    weight_after = #{item.weightAfter},
+                </if>
+                <if test='item.remark != null and item.remark != "" '>
+                    remark=#{item.remark},
+                </if>
+                modify_time = now()
+            </set>
+            where id = #{item.id,jdbcType=BIGINT}
+        </foreach>
+
+    </update>
 
     <select id="selectById" resultType="fabricQcRecord" parameterType="com.bc.app.server.entity.FabricQcRecord">
         SELECT

@@ -35,7 +35,14 @@ public class FabricQcRecordProblemController {
 
     /**
      * 新增问题记录
-     *
+     * @param recordId  记录信息表id
+     * @param tag       问题标记
+     * @param tagATimes A问题等级
+     * @param tagBTimes B问题等级
+     * @param tagCTimes C问题等级
+     * @param tagDTimes D问题等级
+     * @param remark    备注
+     * @param image     问题照片
      * @return
      */
     @ApiOperation(value = "新增问题记录", notes = "新增问题记录")
@@ -65,8 +72,8 @@ public class FabricQcRecordProblemController {
 
     /**
      * 通过验货表id查询问题集合
-     *
-     * @param recordId
+     * @param recordId  记录信息表id
+     * @param tag       问题记录
      * @return
      */
     @ApiOperation(value = "通过验货表id查询问题集合", notes = "通过验货表id查询问题集合")
@@ -92,7 +99,7 @@ public class FabricQcRecordProblemController {
     /**
      * 通过记录表id进行删除数据
      *
-     * @param id
+     * @param id  问题记录表id
      * @return
      */
     @ApiOperation(value = "通过记录表id进行删除数据", notes = "通过记录表id进行删除数据")
@@ -121,7 +128,14 @@ public class FabricQcRecordProblemController {
     /**
      * 通过id更新数据
      *
-     * @param
+     * @param recordId  记录信息表id
+     * @param tag       问题标记
+     * @param tagATimes A问题等级
+     * @param tagBTimes B问题等级
+     * @param tagCTimes C问题等级
+     * @param tagDTimes D问题等级
+     * @param remark    备注
+     * @param image     问题照片
      * @return
      */
     @ApiOperation(value = "通过id更新数据", notes = "通过id更新数据")
@@ -152,7 +166,7 @@ public class FabricQcRecordProblemController {
     /**
      * 通过id查询数据
      *
-     * @param id
+     * @param id 问题记录表id
      * @return
      */
     @ApiOperation(value = "通过id查询数据", notes = "通过id查询数据")
@@ -177,7 +191,7 @@ public class FabricQcRecordProblemController {
     /**
      * 通过验货表id查询统计列表
      *
-     * @param recordId
+     * @param recordId  布料记录表id
      * @return
      */
     @ApiOperation(value = "通过验货表id查询统计列表", notes = "通过验货表id查询统计列表")

@@ -56,6 +56,7 @@ public class FabricQcWarehouseServiceImpl implements FabricQcWarehouseService {
         fabricQcWarehouse.setProductName(productName);
         fabricQcWarehouse.setSupplierName(supplierName);
         fabricQcWarehouse.setSupplierId(supplierId);
+        fabricQcWarehouse.setEnterpriseId("1");
         List<FabricQcRecord> fabricQcRecordList = new ArrayList<>();
         String cylinderNumber = "";
         for (int i = 0; i < lastRowNum; i++) {

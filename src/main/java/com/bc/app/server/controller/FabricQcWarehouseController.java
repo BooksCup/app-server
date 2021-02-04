@@ -45,6 +45,7 @@ public class FabricQcWarehouseController {
      * @param supplierId   供应商id
      * @return
      */
+    @CrossOrigin
     @ApiOperation(value = "布料数据导入到数据库", notes = "布料数据导入到数据库")
     @PostMapping(value = "/importExcel")
     @MultipartForm
@@ -94,17 +95,20 @@ public class FabricQcWarehouseController {
      * @return
      */
     @ApiOperation(value = "app盘点分页查询列表", notes = "app盘点分页查询列表")
-    @GetMapping("/getAppPage")
+        @GetMapping("/getAppPage")
     public PageResult<List<FabricQcWarehouseVo>> getAppPage(
             @RequestParam("pageSize") Integer pageSize,
             @RequestParam("pageNum") Integer pageNum,
             @RequestParam(required = false, value = "oddNumber") String oddNumber, @RequestParam(required = false, value = "cylinderNumber") String cylinderNumber,
-            @RequestParam(required = false, value = "supplierName") String supplierName, @RequestParam(required = false, value = "productName") String productName) {
+            @RequestParam(required = false, value = "supplierName") String supplierName,
+            @RequestParam(required = false, value = "productName") String productName,
+            @RequestParam( value = "enterpriseId") String enterpriseId) {
         Map<String, String> map = new HashMap<>();
         map.put("oddNumber", oddNumber);
         map.put("cylinderNumber", cylinderNumber);
         map.put("supplierName", supplierName);
         map.put("productName", productName);
+        map.put("enterpriseId", enterpriseId);
         PageResult<List<FabricQcWarehouseVo>> appPage = fabricQcWarehouseService.getAppPage(pageNum, pageSize, map);
         return appPage;
     }

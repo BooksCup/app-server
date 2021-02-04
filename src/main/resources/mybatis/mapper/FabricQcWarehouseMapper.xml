@@ -24,6 +24,7 @@
         qc_number,
         length_unit,
         weight_unit,
+        enterprise_id,
         create_time,
         remark
 
@@ -47,6 +48,7 @@
         #{qcNumber},
         #{lengthUnit},
         #{weightUnit},
+        #{enterpriseId},
         now(),
         #{remark}
         )
@@ -107,7 +109,7 @@
         remark
         FROM t_fabric_qc_warehouse
         WHERE is_delete=0
-
+        and enterprise_id =#{enterpriseId}
         <if test="cylinderNumber != null and cylinderNumber != ''">
             and cylinder_number = #{cylinderNumber}
         </if>
@@ -173,6 +175,7 @@
         `t_fabric_qc_warehouse`
         WHERE
         is_delete=0
+        and enterprise_id =#{enterpriseId}
         <if test="supplierName != null and supplierName != ''">
             and supplier_name LIKE concat('%', #{supplierName},'%')
         </if>
@@ -235,6 +238,7 @@
         FROM
         t_fabric_qc_warehouse
         WHERE is_delete=0
+         and enterprise_id =#{enterpriseId}
         <if test="supplierName != null and supplierName != ''">
             and supplier_name LIKE concat('%', #{supplierName},'%')
         </if>

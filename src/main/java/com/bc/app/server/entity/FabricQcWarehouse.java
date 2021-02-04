@@ -30,4 +30,5 @@ public class FabricQcWarehouse implements Serializable{
     private String oddTime;
     private String goodsImage;
     private String goodsNo;
+    private String enterpriseId;
 }

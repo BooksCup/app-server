@@ -19,7 +19,7 @@ public class Goods implements Serializable {
     /**
      * 产品照片
      */
-    private String goodsNhotos;
+    private String goodsPhotos;
     /**
      * 货号
      */
@@ -28,5 +28,9 @@ public class Goods implements Serializable {
      * 物品属性集合LIST的JSON格式
      */
     private String attrList;
+    private String goodsTypeId;
+    private String goodsTypeName;
+    private String stockNum;
+    private String goodsUnit;
 
 }

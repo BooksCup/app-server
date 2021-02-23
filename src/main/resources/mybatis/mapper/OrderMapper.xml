@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.OrderMapper">
+
+    <insert id="saveOrder">
+        insert into
+        t_order
+        (
+        id,
+        goods_id,
+        no,
+        goods_photos,
+        goods_name,
+        goods_type_id,
+        goods_type_name,
+        goods_no,
+        theme_id,
+        from_user_id,
+        type,
+        apply_count,
+        order_photos,
+        remarks,
+        create_time
+        )
+        values(
+        #{orderId},
+        #{goodsId},
+        #{no},
+        #{goodsPhotos},
+        #{goodsName},
+        #{goodsTypeId},
+        #{goodsTypeName},
+        #{goodsNo},
+        #{themeId},
+        #{userId},
+        #{type},
+        #{applyCount},
+        #{orderPhotos},
+        #{remarks},
+        now()
+        )
+    </insert>
+
+    <select id="getOrderList" parameterType="map" resultType="com.bc.app.server.entity.Order">
+        select
+        g.id as goodsId,
+        g.goods_name as goodsName,
+        g.goods_no as goodsNo,
+        g.goods_photos as goodsPhotos,
+        ee.id as relatedCompanyId,
+        ee.name as relatedCompanyName,
+        ee.short_name as relatedCompanyShortName,
+        oe.delivery_time_json as deliveryDates,
+        o.id as orderId,
+        o.no as orderNo,
+        o.theme_id as themeId,
+        t.theme_title as orderTheme
+        from
+        t_order o
+        left join t_goods g on o.goods_id = g.id
+        left join t_order_ext oe on oe.master_id = o.id
+        left join t_exchange_enterprise ee on ee.id = o.to_enterprise_id
+        left join t_theme t on t.id = o.theme_id
+        where
+        o.delete_status = '0'
+        and o.from_enterprise_id = #{fromEnterpriseId}
+        <if test="keyword !=null and keyword != ''">
+            and ( o.no LIKE concat('%', #{keyword},'%') or t.theme_title LIKE concat('%', #{keyword},'%')
+            or ee.name LIKE concat('%', #{keyword},'%') or ee.short_name LIKE concat('%', #{keyword},'%') or
+            g.goods_name LIKE concat('%', #{keyword},'%')
+            or g.goods_no LIKE concat('%', #{keyword},'%'))
+        </if>
+    </select>
+
+
+</mapper>

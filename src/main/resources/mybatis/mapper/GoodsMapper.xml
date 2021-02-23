@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.GoodsMapper">
+
+    <select id="getGoodsList" parameterType="map" resultType="com.bc.app.server.entity.Goods">
+        select
+        g.id,
+        g.goods_name as goodsName,
+        g.goods_photos as goodsPhotos,
+        g.goods_no as goodsNo,
+        g.attr_list as attrList,
+        g.goods_unit as goodsUnit,
+        g.residual_number as stockNum
+        from
+        t_goods g
+        where
+        g.delete_status = '0'
+        and g.enterprise_id = #{enterpriseId}
+        <if test="keyword !=null and keyword != ''">
+            and (
+            g.goods_name like concat('%', #{keyword},'%')
+            or g.goods_no like concat('%', #{keyword},'%')
+            )
+        </if>
+        order by create_time desc
+    </select>
+    <select id="selectById" parameterType="string" resultType="com.bc.app.server.entity.Goods">
+        select
+        g.id,
+        g.goods_name as goodsName,
+        g.goods_photos as goodsPhotos,
+        g.goods_no as goodsNo,
+        g.attr_list as attrList,
+        goods_type_id as goodsTypeId,
+        goods_type_name as goodsTypeName
+        from
+        t_goods g
+        where g.id=#{id}
+    </select>
+
+
+</mapper>

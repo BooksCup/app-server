@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.RelatedCompanyMapper">
+
+    <select id="getRelatedCompanyPageInfo" resultType="com.bc.app.server.entity.RelatedCompany" parameterType="string">
+        select
+        e.id ,
+        e.name,
+        e.short_name as shortName,
+        e.address,
+        e.manager as legalPersonName,
+        e.logo,
+        e.build_time as estiblishTime
+        from
+        t_exchange_enterprise e
+        where e.is_delete = '0' and e.audit_status = '2' and e.current_enterprise_id = #{enterpriseId}
+        <if test="keyword != null and keyword != ''">
+            and (e.name like concat ('%',#{keyword},'%') or e.short_name like concat ('%',#{keyword},'%')
+            or e.manager like concat ('%',#{keyword},'%'))
+        </if>
+        order by e.create_time desc
+    </select>
+
+</mapper>

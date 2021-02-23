@@ -52,8 +52,7 @@ public class FabricQcWarehouseController {
     public Map<String, Object> importExcel(
             @RequestParam("file") MultipartFile file, @RequestParam("productName") String productName,
             @RequestParam("productId") String productId, @RequestParam("supplierName") String supplierName,
-            @RequestParam("supplierId") String supplierId,@RequestParam("goodsNo") String goodsNo,
-            @RequestParam("twoCodeUrl") String twoCodeUrl) throws IOException {
+            @RequestParam("supplierId") String supplierId) throws IOException {
         Map<String, Object> map = new HashMap<>();
         boolean b = fabricQcWarehouseService.importExcel(file, productName, productId, supplierName, supplierId);
         if (b) {

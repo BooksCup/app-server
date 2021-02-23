@@ -1,9 +1,9 @@
 package com.bc.app.server.service.impl;
 
-import com.bc.app.server.entity.FabricQcRecord;
+import com.bc.app.server.entity.FabricCheckRecord;
 import com.bc.app.server.entity.FabricQcWarehouse;
 import com.bc.app.server.entity.Goods;
-import com.bc.app.server.mapper.FabricQcRecordMapper;
+import com.bc.app.server.mapper.FabricCheckRecordMapper;
 import com.bc.app.server.mapper.FabricQcWarehouseMapper;
 import com.bc.app.server.service.FabricQcWarehouseService;
 import com.bc.app.server.utils.CommonUtil;
@@ -40,7 +40,7 @@ public class FabricQcWarehouseServiceImpl implements FabricQcWarehouseService {
     private FabricQcWarehouseMapper fabricQcWarehouseMapper;
 
     @Autowired
-    private FabricQcRecordMapper fabricQcRecordMapper;
+    private FabricCheckRecordMapper fabricCheckRecordMapper;
 
     @Transactional
     @Override
@@ -57,7 +57,7 @@ public class FabricQcWarehouseServiceImpl implements FabricQcWarehouseService {
         fabricQcWarehouse.setSupplierName(supplierName);
         fabricQcWarehouse.setSupplierId(supplierId);
         fabricQcWarehouse.setEnterpriseId("1");
-        List<FabricQcRecord> fabricQcRecordList = new ArrayList<>();
+        List<FabricCheckRecord> fabricCheckRecordList = new ArrayList<>();
         String cylinderNumber = "";
         for (int i = 0; i < lastRowNum; i++) {
             XSSFRow row = xssfWorkbook.getSheetAt(0).getRow(i);
@@ -122,17 +122,15 @@ public class FabricQcWarehouseServiceImpl implements FabricQcWarehouseService {
                 String title2 = getString(xssfWorkbook.getSheetAt(0).getRow(i).getCell(1)).trim();
                 String title3 = getString(xssfWorkbook.getSheetAt(0).getRow(i).getCell(2)).trim();
                 for (int j = i + 1; j < lastRowNum; j++) {
-                    FabricQcRecord fabricQcRecord = new FabricQcRecord();
-                    fabricQcRecord.setId(CommonUtil.generateId());
-                    fabricQcRecord.setWarehouseId(warehouseId);
-                    fabricQcRecord.setCylinderNumber(cylinderNumber);
+                    FabricCheckRecord fabricCheckRecord = new FabricCheckRecord();
+                    fabricCheckRecord.setId(CommonUtil.generateId());
                     String sno = getString(xssfWorkbook.getSheetAt(0).getRow(j).getCell(0)).trim();
                     String weightBefore = getString(xssfWorkbook.getSheetAt(0).getRow(j).getCell(1)).trim();
                     String lengthBefore = getString(xssfWorkbook.getSheetAt(0).getRow(j).getCell(2)).trim();
-                    fabricQcRecord.setSno((sno.replace(".", ";").split(";"))[0]);
-                    fabricQcRecord.setWeightBefore(weightBefore);
-                    fabricQcRecord.setLengthBefore(lengthBefore);
-                    fabricQcRecordList.add(fabricQcRecord);
+                    fabricCheckRecord.setSno((sno.replace(".", ";").split(";"))[0]);
+                    fabricCheckRecord.setWeightBefore(weightBefore);
+                    fabricCheckRecord.setLengthBefore(lengthBefore);
+                    fabricCheckRecordList.add(fabricCheckRecord);
                     i = j;
                 }
                 continue;
@@ -141,7 +139,7 @@ public class FabricQcWarehouseServiceImpl implements FabricQcWarehouseService {
         //保存总数据
         Integer integer = fabricQcWarehouseMapper.insertQcWarehouse(fabricQcWarehouse);
         //保存记录表信息
-        Integer integer2 = fabricQcRecordMapper.insertList(fabricQcRecordList);
+        Integer integer2 = fabricCheckRecordMapper.insertFabricQcRecords(fabricCheckRecordList);
         if (integer > 0 && integer2 > 0) {
             return true;
         } else {
@@ -216,7 +214,7 @@ public class FabricQcWarehouseServiceImpl implements FabricQcWarehouseService {
     @Override
     @Transactional
     public Integer delete(FabricQcWarehouse fabricQcWarehouse) {
-        Integer integer = fabricQcRecordMapper.deleteByWarehouseId(fabricQcWarehouse.getId());
+        Integer integer = fabricCheckRecordMapper.deleteByWarehouseId(fabricQcWarehouse.getId());
         Integer delete = fabricQcWarehouseMapper.update(fabricQcWarehouse);
         return delete;
     }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bc.app.server.mapper.FabricQcRecordProblemMapper">
+<mapper namespace="com.bc.app.server.mapper.FabricCheckRecordProblemMapper">
 
 
-    <insert id="addFabricQcRecordProblem" parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
-        insert into t_fabric_qc_record_problem
+    <insert id="addFabricQcRecordProblem" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
+        insert into t_fabric_check_record_problem
         (
         id,
         record_id,
@@ -34,9 +34,9 @@
         )
     </insert>
 
-    <select id="getFabricQcRecordProblemByRecordId" resultType="com.bc.app.server.entity.FabricQcRecordProblem"
-            parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
-        select * from t_fabric_qc_record_problem
+    <select id="getFabricQcRecordProblemByRecordId" resultType="com.bc.app.server.entity.FabricCheckRecordProblem"
+            parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
+        select * from t_fabric_check_record_problem
         where
         is_delete=0
         <if test="recordId != null and recordId != ''">
@@ -48,16 +48,16 @@
         order by create_time desc
     </select>
 
-    <delete id="delete" parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
-        UPDATE  t_fabric_qc_record_problem
+    <delete id="delete" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
+        UPDATE  t_fabric_check_record_problem
         SET
                is_delete = '0'
         WHERE record_id=#{recordId}
     </delete>
 
-    <update id="updateById" parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
+    <update id="updateById" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
         update
-        t_fabric_qc_record_problem
+        t_fabric_check_record_problem
         <trim prefix="SET" suffixOverrides=",">
             <if test='tag != null and tag != "" '>
                 tag = #{tag},
@@ -82,28 +82,24 @@
         where id = #{id}
     </update>
 
-    <select id="selectById" resultType="com.bc.app.server.entity.FabricQcRecordProblem">
-        select * from t_fabric_qc_record_problem
+    <select id="selectById" resultType="com.bc.app.server.entity.FabricCheckRecordProblem">
+        select * from t_fabric_check_record_problem
         where
         is_delete=0
         and   id = #{id}
     </select>
 
-    <select id="getCountData" resultType="fabricQcRecordProblem"
-            parameterType="com.bc.app.server.entity.FabricQcRecordProblem">
+    <select id="getCountData" resultType="fabricCheckRecordProblem"
+            parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
      SELECT
-	tag,
 	SUM( tag_a_times ) AS tagATimes,
 	SUM( tag_b_times ) AS tagBTimes,
 	SUM( tag_c_times ) AS tagCTimes,
-	SUM( tag_d_times ) AS tagDTimes,
-	GROUP_CONCAT( image ) AS image
+	SUM( tag_d_times ) AS tagDTimes
     FROM
-        `t_fabric_qc_record_problem`
+        `t_fabric_check_record_problem`
     WHERE
         record_id = #{recordId}
-    GROUP BY
-	tag
     </select>
 
 </mapper>

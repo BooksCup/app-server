@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.FabricCheckTaskMapper">
+
+
+    <select id="addFabricCheckTask" parameterType="com.bc.app.server.entity.FabricCheckTask">
+         insert into t_fabric_check_task
+        (
+        id,
+        goods_name,
+        goods_no,
+        goods_photos,
+        goods_id,
+        related_company_name,
+        related_company_short_name,
+        related_company_id,
+        order_no,
+        order_theme,
+        order_id,
+        enterprise_id,
+        create_time
+        )
+        values
+        (
+        #{id},
+        #{goodsName},
+        #{goodsNo},
+        #{goodsPhotos},
+        #{goodsId},
+        #{relatedCompanyName},
+        #{relatedCompanyShortName},
+        #{relatedCompanyId},
+        #{orderNo},
+        #{orderTheme},
+        #{orderId},
+        #{enterpriseId},
+        now()
+        )
+    </select>
+
+
+    <resultMap id="fabricCheckTaskPageInfos" type="com.bc.app.server.entity.FabricCheckTask">
+        <id column="id" property="id"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="goods_no" property="goodsNo"/>
+        <result column="goods_photos" property="goodsPhotos"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="related_company_name" property="relatedCompanyName"/>
+        <result column="related_company_short_name" property="relatedCompanyShortName"/>
+        <result column="related_company_id" property="relatedCompanyId"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="order_theme" property="orderTheme"/>
+        <result column="order_id" property="orderId"/>
+        <result column="enterprise_id" property="enterpriseId"/>
+
+        <collection property="fabricCheckLotInfoList" ofType="com.bc.app.server.entity.FabricCheckLotInfo">
+            <id column="b_id" property="id"/>
+            <result column="fabric_check_task_id" property="fabricCheckTaskId"/>
+            <result column="lot_no" property="lotNo"/>
+            <result column="num" property="num"/>
+            <result column="length" property="length"/>
+            <result column="weight" property="weight"/>
+        </collection>
+    </resultMap>
+
+    <select id="getFabricCheckTaskPageInfo" resultType="com.bc.app.server.entity.FabricCheckTask">
+        select
+        id,
+        goods_name as goodsName,
+        goods_no as goodsNo,
+        goods_photos as goodsPhotos,
+        goods_id as goodsId,
+        related_company_name as relatedCompanyName,
+        related_company_short_name as relatedCompanyShortName,
+        related_company_id as relatedCompanyId,
+        order_no as orderNo,
+        order_theme as orderTheme,
+        order_id as orderId,
+        enterprise_id as enterpriseId
+        from t_fabric_check_task
+        where is_delete = '0' and enterprise_id = #{enterpriseId}
+        <if test="keyword != null and keyword != ''">
+            and ( goods_name like concat('%', #{keyword},'%')
+            or goods_no like concat('%', #{keyword},'%')
+            or related_company_name like concat('%', #{keyword},'%')
+            or related_company_short_name like concat('%',#{keyword},'%')
+            or order_no like concat('%', #{keyword},'%'))
+        </if>
+        order by create_time desc
+    </select>
+
+</mapper>

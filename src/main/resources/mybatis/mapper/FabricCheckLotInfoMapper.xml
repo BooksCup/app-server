@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.FabricCheckLotInfoMapper">
+
+    <update id="updateById">
+        update t_fabric_check_lot_info
+        set is_delete=#{isDelete}
+        where id=#{id}
+    </update>
+
+    <select id="addFabricCheckLotInfo" parameterType="com.bc.app.server.entity.FabricCheckLotInfo">
+         insert into t_fabric_check_lot_info
+        (
+        id,
+        fabric_check_task_id ,
+        lot_no ,
+        num,
+        length,
+        weight,
+        weight_unit ,
+        is_delete,
+        create_date
+        )
+        values
+        (
+        #{id},
+        #{fabricCheckTaskId},
+        #{lotNo},
+        #{num},
+        #{length},
+        #{weight},
+        #{weightUnit},
+        0,
+        now()
+        )
+    </select>
+
+
+    <select id="selectListByCheckTaskId" resultType="com.bc.app.server.entity.FabricCheckLotInfo" parameterType="map">
+        select
+        id,
+        fabric_check_task_id as fabricCheckTaskId,
+        lot_no as lotNo,
+        num ,
+        length,
+        weight,
+        weight_unit as weightUnit
+        from
+        t_fabric_check_lot_info
+        where is_delete='0' and  fabric_check_task_id=#{checkTaskId}
+    </select>
+
+</mapper>

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 记录问题表
  */
 @Data
-public class FabricQcRecordProblem implements Serializable {
+public class FabricCheckRecordProblem implements Serializable {
 
     private  String id;
     private  String recordId;
@@ -23,7 +23,7 @@ public class FabricQcRecordProblem implements Serializable {
     private  String createTime;
     private  String isDelete;
 
-    public FabricQcRecordProblem(String id, String tag, String tagATimes, String tagBTimes, String tagCTimes, String tagDTimes, String remark, String image) {
+    public FabricCheckRecordProblem(String id, String tag, String tagATimes, String tagBTimes, String tagCTimes, String tagDTimes, String remark, String image) {
         this.id = id;
         this.tag = tag;
         this.tagATimes = tagATimes;
@@ -34,9 +34,9 @@ public class FabricQcRecordProblem implements Serializable {
         this.image = image;
     }
 
-    public FabricQcRecordProblem() {
+    public FabricCheckRecordProblem() {
     }
-    public FabricQcRecordProblem(String id,String recordId, String tag, String tagATimes, String tagBTimes, String tagCTimes, String tagDTimes, String remark, String image) {
+    public FabricCheckRecordProblem(String id, String recordId, String tag, String tagATimes, String tagBTimes, String tagCTimes, String tagDTimes, String remark, String image) {
         this.id = CommonUtil.generateId();
         this.recordId =recordId;
         this.tag = tag;
@@ -48,7 +48,7 @@ public class FabricQcRecordProblem implements Serializable {
         this.image = image;
     }
 
-    public FabricQcRecordProblem(String id, String recordId, String tag, String tagATimes, String tagBTimes, String tagCTimes, String tagDTimes, String remark, String image, String createTime, String isDelete) {
+    public FabricCheckRecordProblem(String id, String recordId, String tag, String tagATimes, String tagBTimes, String tagCTimes, String tagDTimes, String remark, String image, String createTime, String isDelete) {
         this.id = id;
         this.recordId = recordId;
         this.tag = tag;

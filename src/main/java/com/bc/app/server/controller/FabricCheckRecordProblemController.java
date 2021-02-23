@@ -1,9 +1,9 @@
 package com.bc.app.server.controller;
 
 
-import com.bc.app.server.entity.FabricQcRecordProblem;
+import com.bc.app.server.entity.FabricCheckRecordProblem;
 import com.bc.app.server.enums.ResponseMsg;
-import com.bc.app.server.service.FabricQcRecordProblemService;
+import com.bc.app.server.service.FabricCheckRecordProblemService;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/fabricQcRecordProblem")
-public class FabricQcRecordProblemController {
+public class FabricCheckRecordProblemController {
 
 
     /**
@@ -31,10 +31,11 @@ public class FabricQcRecordProblemController {
 
 
     @Autowired
-    private FabricQcRecordProblemService fabricQcRecordProblemService;
+    private FabricCheckRecordProblemService fabricCheckRecordProblemService;
 
     /**
      * 新增问题记录
+     *
      * @param recordId  记录信息表id
      * @param tag       问题标记
      * @param tagATimes A问题等级
@@ -58,8 +59,8 @@ public class FabricQcRecordProblemController {
             @RequestParam(required = false, value = "image") String image) {
         ResponseEntity<String> responseEntity;
         try {
-            FabricQcRecordProblem fabricQcRecordProblem = new FabricQcRecordProblem("", recordId, tag, tagATimes, tagBTimes, tagCTimes, tagDTimes, remark, image);
-            fabricQcRecordProblemService.addFabricQcRecordProblem(fabricQcRecordProblem);
+            FabricCheckRecordProblem fabricCheckRecordProblem = new FabricCheckRecordProblem("", recordId, tag, tagATimes, tagBTimes, tagCTimes, tagDTimes, remark, image);
+            fabricCheckRecordProblemService.addFabricQcRecordProblem(fabricCheckRecordProblem);
             responseEntity = new ResponseEntity<>(ResponseMsg.ADD_SUCCESS.getResponseMessage(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,20 +73,22 @@ public class FabricQcRecordProblemController {
 
     /**
      * 通过验货表id查询问题集合
-     * @param recordId  记录信息表id
-     * @param tag       问题记录
+     *
+     * @param recordId 记录信息表id
+     * @param tag      问题记录
      * @return
      */
     @ApiOperation(value = "通过验货表id查询问题集合", notes = "通过验货表id查询问题集合")
     @GetMapping(value = "")
-    public ResponseEntity<List<FabricQcRecordProblem>> getFabricQcRecordProblemByRecordId(
-            @RequestParam String recordId, @RequestParam(required = false, value = "tag") String tag) {
-        ResponseEntity<List<FabricQcRecordProblem>> responseEntity;
+    public ResponseEntity<List<FabricCheckRecordProblem>> getFabricQcRecordProblemByRecordId(
+            @RequestParam String recordId,
+            @RequestParam(required = false, value = "tag") String tag) {
+        ResponseEntity<List<FabricCheckRecordProblem>> responseEntity;
         try {
-            FabricQcRecordProblem fabricQcRecordProblem = new FabricQcRecordProblem();
-            fabricQcRecordProblem.setRecordId(recordId);
-            fabricQcRecordProblem.setTag(tag);
-            List<FabricQcRecordProblem> list = fabricQcRecordProblemService.getFabricQcRecordProblemByRecordId(fabricQcRecordProblem);
+            FabricCheckRecordProblem fabricCheckRecordProblem = new FabricCheckRecordProblem();
+            fabricCheckRecordProblem.setRecordId(recordId);
+            fabricCheckRecordProblem.setTag(tag);
+            List<FabricCheckRecordProblem> list = fabricCheckRecordProblemService.getFabricQcRecordProblemByRecordId(fabricCheckRecordProblem);
 
             responseEntity = new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
@@ -99,7 +102,7 @@ public class FabricQcRecordProblemController {
     /**
      * 通过记录表id进行删除数据
      *
-     * @param id  问题记录表id
+     * @param id 问题记录表id
      * @return
      */
     @ApiOperation(value = "通过记录表id进行删除数据", notes = "通过记录表id进行删除数据")
@@ -108,9 +111,9 @@ public class FabricQcRecordProblemController {
             @PathVariable String id) {
         ResponseEntity<String> responseEntity;
         try {
-            FabricQcRecordProblem fabricQcRecordProblem = new FabricQcRecordProblem();
-            fabricQcRecordProblem.setId(id);
-            Integer delete = fabricQcRecordProblemService.delete(fabricQcRecordProblem);
+            FabricCheckRecordProblem fabricCheckRecordProblem = new FabricCheckRecordProblem();
+            fabricCheckRecordProblem.setId(id);
+            Integer delete = fabricCheckRecordProblemService.delete(fabricCheckRecordProblem);
             if (delete > 0) {
                 responseEntity = new ResponseEntity<>(ResponseMsg.DELETE_SUCCESS.getResponseMessage(), HttpStatus.OK);
             } else {
@@ -151,8 +154,8 @@ public class FabricQcRecordProblemController {
             @RequestParam(required = false, value = "image") String image) {
         ResponseEntity<String> responseEntity;
         try {
-            FabricQcRecordProblem fabricQcRecordProblem = new FabricQcRecordProblem(id, tag, tagATimes, tagBTimes, tagCTimes, tagDTimes, remark, image);
-            fabricQcRecordProblemService.updateById(fabricQcRecordProblem);
+            FabricCheckRecordProblem fabricCheckRecordProblem = new FabricCheckRecordProblem(id, tag, tagATimes, tagBTimes, tagCTimes, tagDTimes, remark, image);
+            fabricCheckRecordProblemService.updateById(fabricCheckRecordProblem);
             responseEntity = new ResponseEntity<>(ResponseMsg.UPDATE_SUCCESS.getResponseMessage(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,18 +174,18 @@ public class FabricQcRecordProblemController {
      */
     @ApiOperation(value = "通过id查询数据", notes = "通过id查询数据")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<FabricQcRecordProblem> selectById(
+    public ResponseEntity<FabricCheckRecordProblem> selectById(
             @PathVariable String id) {
-        ResponseEntity<FabricQcRecordProblem> responseEntity;
+        ResponseEntity<FabricCheckRecordProblem> responseEntity;
         try {
-            FabricQcRecordProblem fabricQcRecordProblem = new FabricQcRecordProblem();
-            fabricQcRecordProblem.setId(id);
-            fabricQcRecordProblem = fabricQcRecordProblemService.selectById(fabricQcRecordProblem);
-            responseEntity = new ResponseEntity<>(fabricQcRecordProblem, HttpStatus.OK);
+            FabricCheckRecordProblem fabricCheckRecordProblem = new FabricCheckRecordProblem();
+            fabricCheckRecordProblem.setId(id);
+            fabricCheckRecordProblem = fabricCheckRecordProblemService.selectById(fabricCheckRecordProblem);
+            responseEntity = new ResponseEntity<>(fabricCheckRecordProblem, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("[selectById] error: " + e.getMessage());
-            responseEntity = new ResponseEntity<>(new FabricQcRecordProblem(), HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>(new FabricCheckRecordProblem(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }
@@ -191,18 +194,18 @@ public class FabricQcRecordProblemController {
     /**
      * 通过验货表id查询统计列表
      *
-     * @param recordId  布料记录表id
+     * @param recordId 布料记录表id
      * @return
      */
     @ApiOperation(value = "通过验货表id查询统计列表", notes = "通过验货表id查询统计列表")
     @GetMapping(value = "getCountData")
-    public ResponseEntity<List<FabricQcRecordProblem>> getCountData(
+    public ResponseEntity<List<FabricCheckRecordProblem>> getCountData(
             @RequestParam String recordId) {
-        ResponseEntity<List<FabricQcRecordProblem>> responseEntity;
+        ResponseEntity<List<FabricCheckRecordProblem>> responseEntity;
         try {
-            FabricQcRecordProblem fabricQcRecordProblem = new FabricQcRecordProblem();
-            fabricQcRecordProblem.setRecordId(recordId);
-            List<FabricQcRecordProblem> list = fabricQcRecordProblemService.getCountData(fabricQcRecordProblem);
+            FabricCheckRecordProblem fabricCheckRecordProblem = new FabricCheckRecordProblem();
+            fabricCheckRecordProblem.setRecordId(recordId);
+            List<FabricCheckRecordProblem> list = fabricCheckRecordProblemService.getCountData(fabricCheckRecordProblem);
             responseEntity = new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

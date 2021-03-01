@@ -22,6 +22,7 @@ public class FabricCheckRecordProblem implements Serializable {
     private  String image;
     private  String createTime;
     private  String isDelete;
+    private  String problemPosition;
 
     public FabricCheckRecordProblem(String id, String tag, String tagATimes, String tagBTimes, String tagCTimes, String tagDTimes, String remark, String image) {
         this.id = id;

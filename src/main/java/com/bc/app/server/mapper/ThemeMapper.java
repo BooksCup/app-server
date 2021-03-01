@@ -1,7 +1,8 @@
 package com.bc.app.server.mapper;
 
 
-import java.util.Map;
+import com.bc.app.server.entity.Theme;
+
 
 /**
  * 主题程序
@@ -13,8 +14,8 @@ public interface ThemeMapper {
     /**
      * 保存主题信息
      *
-     * @param map
+     * @param theme 主题信息
      */
-    void saveTheme(Map<String, String> map);
+    void saveTheme(Theme theme);
 
 }

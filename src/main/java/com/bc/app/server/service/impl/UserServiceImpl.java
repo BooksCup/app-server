@@ -4,6 +4,9 @@ import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.User;
 import com.bc.app.server.mapper.UserMapper;
 import com.bc.app.server.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,12 +33,16 @@ public class UserServiceImpl implements UserService {
      * @return 用户列表
      */
     @Override
-    public List<User> getUserByLogin(String phone, String password) {
+    public User getUserByLogin(String phone, String password) {
         // 手机号密码登录
         Map<String, String> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         paramMap.put("phone", phone);
         paramMap.put("password", password);
-        return userMapper.getUserByPhoneAndPassword(paramMap);
+        List<User> userList = userMapper.getUserByPhoneAndPassword(paramMap);
+        if (CollectionUtils.isNotEmpty(userList)) {
+            return userList.get(0);
+        }
+        return null;
     }
 
     /**
@@ -48,5 +55,20 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserById(String userId) {
         // 手机号密码登录
         return userMapper.getUserById(userId);
+    }
+
+    /**
+     * 查询用户分页信息
+     *
+     * @param map      入参信息
+     * @param pageNum  当前页
+     * @param pageSize 每页实现个数
+     * @return 用户分页信息
+     */
+    @Override
+    public PageInfo<User> getUserPageInfo(Map<String, String> map, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> userPageInfo = userMapper.getUserList(map);
+        return new PageInfo<>(userPageInfo);
     }
 }

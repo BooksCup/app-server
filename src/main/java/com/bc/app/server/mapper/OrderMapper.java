@@ -1,7 +1,7 @@
 package com.bc.app.server.mapper;
 
 import com.bc.app.server.entity.Order;
-import com.github.pagehelper.Page;
+import com.bc.app.server.entity.Theme;
 
 import java.util.List;
 import java.util.Map;
@@ -21,5 +21,5 @@ public interface OrderMapper {
      */
     List<Order> getOrderList(Map<String, String> map);
 
-    void saveOrder(Map<String, String> map);
+    void saveOrder(Order order);
 }

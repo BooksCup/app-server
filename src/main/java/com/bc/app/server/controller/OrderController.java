@@ -3,6 +3,7 @@ package com.bc.app.server.controller;
 
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.Order;
+import com.bc.app.server.entity.Theme;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.OrderService;
 import com.bc.app.server.utils.CommonUtil;
@@ -60,46 +61,51 @@ public class OrderController {
     /**
      * 保存订单信息
      *
-     * @param relatedCompanyId 往来单位id
-     * @param relatedCompanyName 往来单位名称
-     * @param goodsId  商品id
-     * @param goodsName 品名
-     * @param deliveryTime 交货日期
-     * @param num 数量
-     * @return
+     * @param goodsId          商品id
+     * @param userId           登录用户id
+     * @param enterpriseId     企业id
+     * @param relatedCompanyId 往来企业id
+     * @param themeTitle       主题
+     * @param deliveryTime     交货日期
+     * @param type             类型
+     * @param remarks          备注
+     * @param orderPhotos      订单照片
+     * @param num              交易数量
+     * @return 返回值
      */
     @ApiOperation(value = "保存订单信息", notes = "保存订单信息")
     @PostMapping(value = "")
     public ResponseEntity<String> addOrder(
-            @RequestParam String relatedCompanyId,
-            @RequestParam String relatedCompanyName,
             @RequestParam String goodsId,
-            @RequestParam String goodsName,
-            @RequestParam String themeTitle,
-            @RequestParam String deliveryTime,
             @RequestParam String userId,
             @RequestParam String enterpriseId,
-            @RequestParam String type,
-            @RequestParam String remarks,
-            @RequestParam String orderPhotos,
-            @RequestParam String num) {
+            @RequestParam String relatedCompanyId,
+            @RequestParam(required = false) String themeTitle,
+            @RequestParam(required = false) String deliveryTime,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String remarks,
+            @RequestParam(required = false) String orderPhotos,
+            @RequestParam(required = false) String num) {
         ResponseEntity<String> responseEntity;
         Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         try {
-            map.put("orderId",CommonUtil.generateId());
-            map.put("relatedCompanyId",relatedCompanyId);
-            map.put("relatedCompanyName",relatedCompanyName);
-            map.put("goodsId",goodsId);
-            map.put("goodsName",goodsName);
-            map.put("deliveryTime",deliveryTime);
-            map.put("applyCount",num);
-            map.put("themeTitle",themeTitle);
-            map.put("userId",userId);
-            map.put("enterpriseId",enterpriseId);
-            map.put("type", type);
-            map.put("remarks", remarks);
-            map.put("orderPhotos", orderPhotos);
-            orderService.addOrder(map);
+            Order order = new Order();
+            order.setOrderId(CommonUtil.generateId());
+            order.setRelatedCompanyId(relatedCompanyId);
+            order.setGoodsId(goodsId);
+            map.put("deliveryTime", deliveryTime);
+            order.setApplyCount(num);
+            order.setFromUserId(userId);
+            order.setFromEnterpriseId(enterpriseId);
+            order.setType(type);
+            order.setRemarks(remarks);
+            order.setOrderPhotos(orderPhotos);
+
+            Theme theme = new Theme();
+            theme.setThemeTitle(themeTitle);
+            theme.setUserId(userId);
+            theme.setEnterpriseId(enterpriseId);
+            orderService.addOrder(order, theme);
             responseEntity = new ResponseEntity<>(ResponseMsg.ADD_SUCCESS.getResponseMessage(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

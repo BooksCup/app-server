@@ -2,6 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bc.app.server.mapper.FabricCheckRecordProblemMapper">
 
+    <delete id="deleteByRecordId">
+        delete from t_fabric_check_record_problem where record_id = #{recordId} and problem_position=#{problemPosition}
+    </delete>
 
     <insert id="addFabricQcRecordProblem" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
         insert into t_fabric_check_record_problem
@@ -16,22 +19,27 @@
         remark,
         image,
         create_time,
-        is_delete
+        is_delete,
+        problem_position
         )
         values
-        (
-        #{id},
-        #{recordId},
-        #{tag},
-        #{tagATimes},
-        #{tagBTimes},
-        #{tagCTimes},
-        #{tagDTimes},
-        #{remark},
-        #{image},
-         now(),
-        #{isDelete}
-        )
+        <foreach collection="list" item="fabricCheckRecordProblem" separator=",">
+            (
+            #{fabricCheckRecordProblem.id},
+            #{fabricCheckRecordProblem.recordId},
+            #{fabricCheckRecordProblem.tag},
+            #{fabricCheckRecordProblem.tagATimes},
+            #{fabricCheckRecordProblem.tagBTimes},
+            #{fabricCheckRecordProblem.tagCTimes},
+            #{fabricCheckRecordProblem.tagDTimes},
+            #{fabricCheckRecordProblem.remark},
+            #{fabricCheckRecordProblem.image},
+            now(),
+            0,
+            #{fabricCheckRecordProblem.problemPosition}
+            )
+        </foreach>
+
     </insert>
 
     <select id="getFabricQcRecordProblemByRecordId" resultType="com.bc.app.server.entity.FabricCheckRecordProblem"
@@ -48,12 +56,13 @@
         order by create_time desc
     </select>
 
-    <delete id="delete" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
-        UPDATE  t_fabric_check_record_problem
-        SET
-               is_delete = '0'
-        WHERE record_id=#{recordId}
-    </delete>
+    <update id="updateByIds" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update t_fabric_check_record_problem
+            set is_delete = '1'
+            where id = #{item.id}
+        </foreach>
+    </update>
 
     <update id="updateById" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
         update
@@ -101,5 +110,29 @@
     WHERE
         record_id = #{recordId}
     </select>
+    <select id="getEntiryGroupByProblemPosition"
+            resultType="com.bc.app.server.vo.fabriccheckrecordproblemcontrollervo.FabricCheckRecordProblemVo">
+        select
+        problem_position as problemPosition
+       from t_fabric_check_record_problem
+       where is_delete=0 and  record_id=#{recordId}
+       group  by problem_position
+       order by cast(problemPosition as UNSIGNED)
+    </select>
+    <select id="getEntiryByRecordRdAndPosition" resultType="com.bc.app.server.entity.FabricCheckRecordProblem">
+        select * from t_fabric_check_record_problem
+        where
+        is_delete=0
+        and   record_id = #{recordId} and problem_position=#{problemPosition}
+
+    </select>
+
+
+    <update id="updateByRecordId" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
+        update
+        t_fabric_check_record_problem
+        set is_delete=1
+        where record_id = #{recordId}
+    </update>
 
 </mapper>

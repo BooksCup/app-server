@@ -28,4 +28,12 @@ public interface UserMapper {
      */
     List<User> getUserById(String userId);
 
+
+    /**
+     * 获取用户列表信息
+     *
+     * @param map 入参
+     * @return 用户列表信息
+     */
+    List<User> getUserList(Map<String, String> map);
 }

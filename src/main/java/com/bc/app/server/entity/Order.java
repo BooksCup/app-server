@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Data
 public class Order implements Serializable {
     private String goodsName;
+    private String modifyTime;
     private String goodsNo;
     private String goodsPhotos;
     private String relatedCompanyName;
@@ -24,4 +25,12 @@ public class Order implements Serializable {
     private String relatedCompanyId;
     private String goodsId;
     private String num;
+    private String applyCount;
+    private String fromUserId;
+    private String fromEnterpriseId;
+    private String type;
+    private String remarks;
+    private String orderPhotos;
+    private String goodsTypeId;
+    private String goodsTypeName;
 }

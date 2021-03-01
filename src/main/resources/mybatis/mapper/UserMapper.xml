@@ -9,18 +9,24 @@
         <result column="enterprise_address" property="enterpriseAddress" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="im_password" property="imPassword" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
         <result column="job_name" property="jobName" jdbcType="VARCHAR"/>
+        <result column="is_super_admin" property="isSuperAdmin" jdbcType="VARCHAR"/>
+        <result column="role" property="fabricCheckRole" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getUserByPhoneAndPassword" resultMap="user">
         select
         u.*,
         e.name as enterprise_name,
-        e.address as enterprise_address
+        e.address as enterprise_address,
+        crc.role as role
         from t_user u
         left join t_enterprise e on u.enterprise_id = e.id
+         left join t_fabric_check_role_config crc on crc.user_id = u.id and crc.is_delete = '0'
         where u.phone = #{phone}
         and u.password = #{password}
     </select>
@@ -33,6 +39,20 @@
         from t_user u
         left join t_enterprise e on u.enterprise_id = e.id
         where u.id = #{userId}
+    </select>
+
+
+    <select id="getUserList" resultType="com.bc.app.server.entity.User" parameterType="map">
+        select
+        u.id,
+        u.name,
+        u.avatar,
+        d.name as  departmentName,
+        e.name as enterpriseName
+        from t_user  u
+        left join t_department d on d.id = u.department_id and d.delete_status = '0'
+        left join t_enterprise e on e.id = u.enterprise_id and e.delete_status = '0'
+        where u.enterprise_id = #{enterpriseId}
     </select>
 
 </mapper>

@@ -1,8 +1,12 @@
 package com.bc.app.server.service.impl;
 
+import com.bc.app.server.entity.FabricCheckRecord;
 import com.bc.app.server.entity.FabricCheckRecordProblem;
 import com.bc.app.server.mapper.FabricCheckRecordProblemMapper;
 import com.bc.app.server.service.FabricCheckRecordProblemService;
+import com.bc.app.server.utils.CommonUtil;
+import com.bc.app.server.vo.fabriccheckrecordproblemcontrollervo.FabricCheckRecordProblemVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,33 +27,45 @@ public class FabricCheckRecordProblemServiceImpl implements FabricCheckRecordPro
     /**
      * 新增问题配置
      *
-     * @param fabricCheckRecordProblem
+     * @param fabricCheckRecordProblemList 入参
      */
     @Transactional
     @Override
-    public void addFabricQcRecordProblem(FabricCheckRecordProblem fabricCheckRecordProblem) {
-        fabricCheckRecordProblemMapper.addFabricQcRecordProblem(fabricCheckRecordProblem);
+    public void addFabricQcRecordProblem(List<FabricCheckRecordProblem> fabricCheckRecordProblemList) {
+        if (CollectionUtils.isNotEmpty(fabricCheckRecordProblemList)){
+            FabricCheckRecordProblem fabricCheckRecordProblem = fabricCheckRecordProblemList.get(0);
+            fabricCheckRecordProblemMapper.deleteByRecordId(fabricCheckRecordProblem);
+        }
+        fabricCheckRecordProblemMapper.addFabricQcRecordProblem(fabricCheckRecordProblemList);
     }
 
     /**
      * 通过验货表id查询问题集合
      *
-     * @param fabricCheckRecordProblem
+     * @param fabricCheckRecordProblem 入参
      */
     @Transactional
     @Override
-    public List<FabricCheckRecordProblem> getFabricQcRecordProblemByRecordId(FabricCheckRecordProblem fabricCheckRecordProblem) {
-        return fabricCheckRecordProblemMapper.getFabricQcRecordProblemByRecordId(fabricCheckRecordProblem);
+    public List<FabricCheckRecordProblemVo> getFabricQcRecordProblemByRecordId(FabricCheckRecordProblem fabricCheckRecordProblem) {
+        List<FabricCheckRecordProblemVo> fabricCheckRecordProblemVos = fabricCheckRecordProblemMapper.getEntiryGroupByProblemPosition(fabricCheckRecordProblem);
+        if (CollectionUtils.isNotEmpty(fabricCheckRecordProblemVos)){
+            for (FabricCheckRecordProblemVo fabricCheckRecordProblemVo:fabricCheckRecordProblemVos){
+                fabricCheckRecordProblem.setProblemPosition(fabricCheckRecordProblemVo.getProblemPosition());
+                FabricCheckRecordProblem fabricCheckRecord = fabricCheckRecordProblemMapper.getEntiryByRecordRdAndPosition(fabricCheckRecordProblem);
+                fabricCheckRecordProblemVo.setFabricCheckRecordProblem(fabricCheckRecord);
+            }
+        }
+        return fabricCheckRecordProblemVos;
     }
 
     /**
      * 删除数据
      *
-     * @param fabricCheckRecordProblem
+     * @param idList id集合
      */
     @Override
-    public Integer delete(FabricCheckRecordProblem fabricCheckRecordProblem) {
-        return fabricCheckRecordProblemMapper.delete(fabricCheckRecordProblem);
+    public Integer updateByIds(List<FabricCheckRecordProblem> idList) {
+        return fabricCheckRecordProblemMapper.updateByIds(idList);
     }
 
     /**

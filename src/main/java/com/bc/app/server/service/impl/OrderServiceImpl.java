@@ -2,9 +2,10 @@ package com.bc.app.server.service.impl;
 
 import com.bc.app.server.entity.Goods;
 import com.bc.app.server.entity.Order;
+import com.bc.app.server.entity.Theme;
 import com.bc.app.server.mapper.GoodsMapper;
 import com.bc.app.server.mapper.OrderMapper;
-//import com.bc.app.server.mapper.ThemeMapper;
+import com.bc.app.server.mapper.ThemeMapper;
 import com.bc.app.server.service.OrderService;
 import com.bc.app.server.utils.CommonUtil;
 import com.github.pagehelper.PageHelper;
@@ -27,8 +28,8 @@ public class OrderServiceImpl implements OrderService {
     OrderMapper orderMapper;
     @Autowired
     GoodsMapper goodsMapper;
-//    @Autowired
-//    ThemeMapper themeMapper;
+    @Autowired
+    ThemeMapper themeMapper;
 
     /**
      * 获取订单分页信息
@@ -48,22 +49,24 @@ public class OrderServiceImpl implements OrderService {
     /**
      * 保存订单
      *
-     * @param map 入参
+     * @param order 订单信息
+     * @param theme 主题信息
      */
     @Override
-    public void addOrder(Map<String, String> map) {
-        Goods goods = goodsMapper.selectById(map.get("goodsId"));
-        map.put("goodsPhotos",goods.getGoodsPhotos());
-        map.put("goodsName",goods.getGoodsName());
-        map.put("goodsNo",goods.getGoodsNo());
-        map.put("goodsTypeId",goods.getGoodsTypeId());
-        map.put("goodsTypeName",goods.getGoodsTypeName());
-        map.put("no", CommonUtil.getOrderNo());
-        map.put("themeId", CommonUtil.generateId());
+    public void addOrder(Order order, Theme theme) {
+        Goods goods = goodsMapper.selectById(order.getGoodsId());
+        order.setGoodsPhotos(goods.getGoodsPhotos());
+        order.setGoodsName(goods.getGoodsName());
+        order.setGoodsNo(goods.getGoodsNo());
+        order.setGoodsTypeId(goods.getGoodsTypeId());
+        order.setGoodsTypeName(goods.getGoodsTypeName());
+        order.setOrderNo(CommonUtil.getOrderNo());
+        theme.setId(CommonUtil.generateId());
+        order.setThemeId(theme.getId());
         //保存订单相关信息
-        orderMapper.saveOrder(map);
+        orderMapper.saveOrder(order);
         //保存主题
-//        themeMapper.saveTheme(map);
+        themeMapper.saveTheme(theme);
     }
 
 }

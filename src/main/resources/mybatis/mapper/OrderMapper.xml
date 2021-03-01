@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bc.app.server.mapper.OrderMapper">
 
-    <insert id="saveOrder">
+    <insert id="saveOrder" parameterType="order">
         insert into
         t_order
         (
@@ -20,24 +20,32 @@
         apply_count,
         order_photos,
         remarks,
-        create_time
+        create_time,
+        modify_time,
+        from_enterprise_id,
+        to_enterprise_id,
+        create_user_id
         )
         values(
         #{orderId},
         #{goodsId},
-        #{no},
+        #{orderNo},
         #{goodsPhotos},
         #{goodsName},
         #{goodsTypeId},
         #{goodsTypeName},
         #{goodsNo},
         #{themeId},
-        #{userId},
+        #{fromUserId},
         #{type},
         #{applyCount},
         #{orderPhotos},
         #{remarks},
-        now()
+        now(),
+        now(),
+        #{fromEnterpriseId},
+        #{relatedCompanyId},
+        #{fromUserId}
         )
     </insert>
 
@@ -54,6 +62,7 @@
         o.id as orderId,
         o.no as orderNo,
         o.theme_id as themeId,
+        o.modify_time as modifyTime,
         t.theme_title as orderTheme
         from
         t_order o
@@ -70,6 +79,7 @@
             g.goods_name LIKE concat('%', #{keyword},'%')
             or g.goods_no LIKE concat('%', #{keyword},'%'))
         </if>
+        order by o.modify_time desc
     </select>
 
 

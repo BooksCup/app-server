@@ -3,7 +3,7 @@
 <mapper namespace="com.bc.app.server.mapper.ThemeMapper">
 
 
-    <insert id="saveTheme" parameterType="map">
+    <insert id="saveTheme" parameterType="com.bc.app.server.entity.Theme">
         insert into t_theme
         (
         id,
@@ -13,7 +13,7 @@
         create_time
         )
         values (
-        #{themeId},
+        #{id},
         #{userId},
         #{enterpriseId},
         #{themeTitle},

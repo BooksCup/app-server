@@ -10,6 +10,7 @@
         g.goods_no as goodsNo,
         g.attr_list as attrList,
         g.goods_unit as goodsUnit,
+        g.goods_type_id as goodsTypeId,
         g.residual_number as stockNum
         from
         t_goods g
@@ -22,7 +23,7 @@
             or g.goods_no like concat('%', #{keyword},'%')
             )
         </if>
-        order by create_time desc
+        order by g.create_time desc
     </select>
     <select id="selectById" parameterType="string" resultType="com.bc.app.server.entity.Goods">
         select
@@ -31,10 +32,11 @@
         g.goods_photos as goodsPhotos,
         g.goods_no as goodsNo,
         g.attr_list as attrList,
-        goods_type_id as goodsTypeId,
-        goods_type_name as goodsTypeName
+        gt.id as goodsTypeId,
+        gt.name as goodsTypeName
         from
         t_goods g
+        left join t_goods_type gt on  gt.id = g.goods_type_id
         where g.id=#{id}
     </select>
 

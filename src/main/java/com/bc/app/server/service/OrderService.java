@@ -1,6 +1,7 @@
 package com.bc.app.server.service;
 
 import com.bc.app.server.entity.Order;
+import com.bc.app.server.entity.Theme;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Map;
@@ -25,7 +26,9 @@ public interface OrderService {
     /**
      * 保存订单
      *
-     * @param map 入参
+     * @param order 订单信息
+     * @param theme 主题信息
+     *
      */
-    void addOrder(Map<String, String> map);
+    void addOrder(Order order, Theme theme);
 }

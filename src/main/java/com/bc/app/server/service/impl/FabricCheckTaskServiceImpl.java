@@ -68,4 +68,14 @@ public class FabricCheckTaskServiceImpl implements FabricCheckTaskService {
         return new PageInfo<>(fabricCheckTaskList);
     }
 
+    /**
+     * 通过id更新数据
+     *
+     * @param fabricCheckTask 任务数据
+     */
+    @Override
+    public void batchUpdateFabricCheckTaskById(FabricCheckTask fabricCheckTask) {
+        fabricCheckTaskMapper.batchUpdateFabricCheckTaskById(fabricCheckTask);
+    }
+
 }

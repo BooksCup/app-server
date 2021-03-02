@@ -3,6 +3,7 @@ package com.bc.app.server.entity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 商品表
@@ -33,4 +34,18 @@ public class Goods implements Serializable {
     private String stockNum;
     private String goodsUnit;
 
+    /**
+     * 规格x
+     */
+    private String x;
+
+    /**
+     * 规格y
+     */
+    private String y;
+
+    /**
+     * 规格列表
+     */
+    private List<GoodsSpec> goodsSpecList;
 }

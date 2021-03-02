@@ -43,7 +43,7 @@ public interface FabricCheckRecordMapper {
 
     Integer updateByid(Map<String, String> map);
 
-    Integer updateListById(List<UpdateByIdVo> list);
+    Integer batchUpdateFabricCheckRecordByIds(List<FabricCheckRecord> list);
 
     GetByWarehouseIdVo getCountData(FabricCheckRecord fabricCheckRecord);
 

@@ -59,8 +59,8 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
 
     @Transactional
     @Override
-    public Integer updateListById(List<UpdateByIdVo> list) {
-        return fabricCheckRecordMapper.updateListById(list);
+    public Integer batchUpdateFabricCheckRecordByIds(List<FabricCheckRecord> list) {
+        return fabricCheckRecordMapper.batchUpdateFabricCheckRecordByIds(list);
     }
 
     @Override
@@ -81,10 +81,10 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
      */
     @Override
     public void insertFabricQcRecords(List<FabricCheckRecord> list) {
-        if (CollectionUtils.isNotEmpty(list)){
+        if (CollectionUtils.isNotEmpty(list)) {
             String checkLotInfoId = list.get(0).getCheckLotInfoId();
             fabricCheckRecordMapper.deleteByCheckLotInfoId(checkLotInfoId);
-            for (FabricCheckRecord fabricCheckRecord:list){
+            for (FabricCheckRecord fabricCheckRecord : list) {
                 fabricCheckRecord.setId(CommonUtil.generateId());
             }
         }

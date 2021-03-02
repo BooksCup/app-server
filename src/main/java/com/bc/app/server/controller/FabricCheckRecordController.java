@@ -95,24 +95,22 @@ public class FabricCheckRecordController {
     /**
      * 通过id更新数据集合
      *
-     * @param string json字符串
+     * @param fabricCheckRecords json字符串
      * @return
      */
     @ApiOperation(value = "通过id更新数据集合", notes = "通过id更新数据集合")
-    @PostMapping(value = "/updateByIds")
-    public ResponseEntity<String> updateByIds(
-            @RequestParam String string) {
-        List<UpdateByIdVo> list = JSON.parseObject(string, List.class);
-        Integer integer = 0;
-        if (CollectionUtils.isNotEmpty(list)) {
-            integer = fabricCheckRecordService.updateListById(list);
-        }
-        if (integer > 0) {
+    @PutMapping(value = "")
+    public ResponseEntity<String> batchUpdateFabricCheckRecordByIds(
+            @RequestParam String fabricCheckRecords) {
+        try {
+            List<FabricCheckRecord> list = JSON.parseArray(fabricCheckRecords, FabricCheckRecord.class);
+            fabricCheckRecordService.batchUpdateFabricCheckRecordByIds(list);
             return new ResponseEntity<>(ResponseMsg.
                     UPDATE_SUCCESS.getResponseCode(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseMsg.
+                    UPDATE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(ResponseMsg.
-                UPDATE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
@@ -156,7 +154,7 @@ public class FabricCheckRecordController {
 
         ResponseEntity<String> responseEntity;
         try {
-            List<FabricCheckRecord> list = JSON.parseArray(fabricCheckRecords,FabricCheckRecord.class);
+            List<FabricCheckRecord> list = JSON.parseArray(fabricCheckRecords, FabricCheckRecord.class);
             fabricCheckRecordService.insertFabricQcRecords(list);
             responseEntity = new ResponseEntity<>(ResponseMsg.
                     ADD_SUCCESS.getResponseCode(), HttpStatus.OK);

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bc.app.server.mapper.FabricCheckTaskMapper">
+    <update id="batchUpdateFabricCheckTaskById" parameterType="com.bc.app.server.entity.FabricCheckTask">
+        update t_fabric_check_task
+        set status = '1'
+        where id = #{id}
+    </update>
 
 
     <select id="addFabricCheckTask" parameterType="com.bc.app.server.entity.FabricCheckTask">
@@ -76,7 +81,8 @@
         order_no as orderNo,
         order_theme as orderTheme,
         order_id as orderId,
-        enterprise_id as enterpriseId
+        enterprise_id as enterpriseId,
+        status
         from t_fabric_check_task
         where is_delete = '0' and enterprise_id = #{enterpriseId}
         <if test="keyword != null and keyword != ''">

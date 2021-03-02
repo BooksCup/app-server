@@ -27,4 +27,10 @@ public interface FabricCheckTaskMapper {
      */
     List<FabricCheckTask> getFabricCheckTaskPageInfo(Map<String, String> paramMap);
 
+    /**
+     * 通过id跟新数据
+     *
+     * @param fabricCheckTask 任务数据
+     */
+    void batchUpdateFabricCheckTaskById(FabricCheckTask fabricCheckTask);
 }

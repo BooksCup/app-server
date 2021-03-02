@@ -2,7 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bc.app.server.mapper.GoodsMapper">
 
-    <select id="getGoodsList" parameterType="map" resultType="com.bc.app.server.entity.Goods">
+    <resultMap id="GoodsMap" type="com.bc.app.server.entity.Goods">
+        <result property="id" column="id" />
+        <result property="goodsName" column="goodsName" />
+        <result property="goodsPhotos" column="goodsPhotos" />
+        <result property="attrList" column="attrList" />
+        <result property="goodsUnit" column="goodsUnit" />
+        <result property="goodsTypeId" column="goodsTypeId" />
+        <result property="goodsTypeId" column="goodsTypeId" />
+        <result property="stockNum" column="stockNum" />
+        <result property="x" column="x" />
+        <result property="y" column="y" />
+        <collection property="goodsSpecList" column="id" javaType="List" ofType="goodsSpec" select="getGoodsSpecList"></collection>
+    </resultMap>
+
+    <select id="getGoodsList" parameterType="map" resultMap="GoodsMap">
         select
         g.id,
         g.goods_name as goodsName,
@@ -11,7 +25,9 @@
         g.attr_list as attrList,
         g.goods_unit as goodsUnit,
         g.goods_type_id as goodsTypeId,
-        g.residual_number as stockNum
+        g.residual_number as stockNum,
+        g.x,
+        g.y
         from
         t_goods g
         where
@@ -25,6 +41,11 @@
         </if>
         order by g.create_time desc
     </select>
+
+    <select id="getGoodsSpecList" resultType="goodsSpec" parameterType="string">
+        select * from t_goods_spec where goods_id = #{goodsId}
+    </select>
+
     <select id="selectById" parameterType="string" resultType="com.bc.app.server.entity.Goods">
         select
         g.id,

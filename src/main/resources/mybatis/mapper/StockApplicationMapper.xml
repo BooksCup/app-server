@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.StockApplicationMapper">
+
+    <insert id="insert" parameterType="stockApplication">
+       INSERT INTO t_stock_application
+        (
+          id,stock_goods_id,stock_number,stock_type,biz_type,
+          enterprise_id,contact_enterprise_id,receiver_name,receive_address,remark,
+          create_user_id,create_time,material_number,po,
+          distribution_order,trade_enterprise_id,receiver_id,goods_unit,
+          stock_number_list,total_amount,
+          real_order_count,adjust_amount,adjust_amount_remark,
+          tax,cost_price,currency,apply_number,
+          audit_user_id,copy_user_id,stock_img
+        )
+        VALUES
+        (
+          #{id},#{stockGoodsId},#{stockNumber},#{stockType},#{bizType},
+          #{enterpriseId},#{contactEnterpriseId},#{receiverName},#{receiveAddress},#{remark},
+          #{createUserId},now(),#{materialNumber},#{po},
+          #{distributionOrder},#{tradeEnterpriseId},#{receiverId},#{goodsUnit},
+          #{stockNumberList}, #{totalAmount},
+          #{realOrderCount},#{adjustAmount},#{adjustAmountRemark},
+          #{tax},#{costPrice},#{currency},#{applyNumber},
+           #{auditUserId},#{copyUserId},#{stockImg}
+        )
+    </insert>
+
+    <select id="getStockApplicationList" parameterType="map" resultType="stockApplicationVo">
+        SELECT
+            g.goods_name,
+            g.goods_photos,
+            g.goods_no,
+            u.name as create_user_name,
+            ex.name as exchange_enterprise_name,
+            p.biz_type,
+            p.status,
+            p.create_time
+        FROM t_stock_application p
+        LEFT JOIN t_goods g on g.id = p.stock_goods_id
+        LEFT JOIN t_exchange_enterprise ex ON ex.id = p.contact_enterprise_id
+        LEFT JOIN t_user u ON p.create_user_id = u.id
+        WHERE 1=1
+        AND p.enterprise_id = #{enterpriseId} and p.is_delete = '0'
+    </select>
+
+    <select id="findById" parameterType="string" resultType="stockApplication">
+        SELECT * FROM t_stock_application WHERE id = #{id}
+    </select>
+
+</mapper>

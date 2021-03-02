@@ -22,7 +22,7 @@
         where id = #{id}
 
     </update>
-    <update id="updateListById" parameterType="list">
+    <update id="batchUpdateFabricCheckRecordByIds" parameterType="list">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update t_fabric_check_record
             <set>
@@ -34,7 +34,7 @@
                 </if>
                 modify_time = now()
             </set>
-            where id = #{item.id,jdbcType=BIGINT}
+            where id = #{item.id}
         </foreach>
 
     </update>

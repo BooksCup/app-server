@@ -28,4 +28,10 @@ public interface FabricCheckTaskService {
      */
     PageInfo<FabricCheckTask> getFabricCheckTaskPageInfo(String enterpriseId, String keyword, Integer pageNum, Integer pageSize);
 
+    /**
+     * 通过id来更新数据
+     *
+     * @param fabricCheckTask 任务数据
+     */
+    void batchUpdateFabricCheckTaskById(FabricCheckTask fabricCheckTask);
 }

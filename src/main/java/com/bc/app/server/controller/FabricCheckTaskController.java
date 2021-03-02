@@ -1,5 +1,6 @@
 package com.bc.app.server.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.bc.app.server.entity.FabricCheckTask;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.FabricCheckTaskService;
@@ -94,6 +95,28 @@ public class FabricCheckTaskController {
                     ADD_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
+    }
+
+
+    /**
+     * 通过id更新数据任务数据
+     *
+     * @param fabricCheckTaskStr json字符串
+     * @return
+     */
+    @ApiOperation(value = "通过id更新数据", notes = "通过id更新数据")
+    @PutMapping(value = "")
+    public ResponseEntity<String> batchUpdateFabricCheckTaskById(
+            @RequestParam String fabricCheckTaskStr) {
+        try {
+            FabricCheckTask fabricCheckTask = JSON.parseObject(fabricCheckTaskStr, FabricCheckTask.class);
+            fabricCheckTaskService.batchUpdateFabricCheckTaskById(fabricCheckTask);
+            return new ResponseEntity<>(ResponseMsg.
+                    UPDATE_SUCCESS.getResponseCode(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(ResponseMsg.
+                    UPDATE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }

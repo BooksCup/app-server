@@ -26,7 +26,10 @@ public class FabricCheckTask {
     private String orderNo;
     private String orderTheme;
     private List<FabricCheckLotInfo> fabricCheckLotInfoList;
-
+    /**
+     * 0盘点中; 1已完成
+     */
+    private String status;
 
     private String isDelete;
     private String createDate;

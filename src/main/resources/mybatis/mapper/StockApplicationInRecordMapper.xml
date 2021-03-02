@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.StockApplicationInRecordMapper">
+
+    <insert id="insertList" parameterType="list">
+        INSERT INTO t_stock_application_in_record
+        (
+            id, ware_house_id, goods_id,goods_spec_id, count,apply_number,stock_application_id,
+            residual_number, price,create_user_id,create_time,box_num,box_id,enterprise_id,sort,
+            currency
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.wareHouseId},#{item.goodsId},#{item.goodsSpecId},#{item.count},#{item.applyNumber},#{item.stockApplicationId},
+            #{item.residualNumber},#{item.price},#{item.createUserId},now(),#{item.boxId},#{item.enterpriseId},#{item.sort},
+            #{item.currency})
+        </foreach>
+    </insert>
+
+    <select id="findByStockApplicationId" parameterType="string" resultType="stockApplicationInRecord">
+         SELECT * FROM t_stock_application_in_record WHERE stock_application_id = #{stockApplicationId} order by sort asc
+    </select>
+</mapper>

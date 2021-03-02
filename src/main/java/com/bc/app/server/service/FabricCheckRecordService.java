@@ -36,7 +36,7 @@ public interface FabricCheckRecordService {
     void addListRecord(FabricCheckRecord fabricCheckRecord);
 
 
-    Integer updateListById(List<UpdateByIdVo> list);
+    Integer batchUpdateFabricCheckRecordByIds(List<FabricCheckRecord> list);
 
     Integer updateById(Map<String, String> map);
 

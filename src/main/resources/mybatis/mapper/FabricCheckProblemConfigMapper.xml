@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bc.app.server.mapper.FabricQcProblemConfigMapper">
+<mapper namespace="com.bc.app.server.mapper.FabricCheckProblemConfigMapper">
 
 
-    <insert id="addFabricQcProblemConfig" parameterType="com.bc.app.server.entity.FabricQcProblemConfig">
-        insert into t_fabric_qc_problem_config
+    <insert id="addFabricQcProblemConfig" parameterType="com.bc.app.server.entity.FabricCheckProblemConfig">
+        insert into t_fabric_check_problem_config
         (
         id,
         enterprise_id,
@@ -20,14 +20,14 @@
         )
     </insert>
 
-    <select id="getAlllByEnterpriseId" resultType="com.bc.app.server.entity.FabricQcProblemConfig"
-            parameterType="com.bc.app.server.entity.FabricQcProblemConfig">
+    <select id="getAlllByEnterpriseId" resultType="com.bc.app.server.entity.FabricCheckProblemConfig"
+            parameterType="com.bc.app.server.entity.FabricCheckProblemConfig">
         select
         id ,
         enterprise_id as enterpriseId,
         tag,
         create_time as createTime
-        from t_fabric_qc_problem_config
+        from t_fabric_check_problem_config
         where 1=1
         <if test="enterpriseId != null and enterpriseId != ''">
             and enterprise_id = #{enterpriseId}

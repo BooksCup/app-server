@@ -3,50 +3,147 @@
 <mapper namespace="com.bc.app.server.mapper.StockApplicationMapper">
 
     <insert id="insert" parameterType="stockApplication">
-       INSERT INTO t_stock_application
+        INSERT INTO t_stock_application
         (
-          id,stock_goods_id,stock_number,stock_type,biz_type,
-          enterprise_id,contact_enterprise_id,receiver_name,receive_address,remark,
-          create_user_id,create_time,material_number,po,
-          distribution_order,trade_enterprise_id,receiver_id,goods_unit,
-          stock_number_list,total_amount,
-          real_order_count,adjust_amount,adjust_amount_remark,
-          tax,cost_price,currency,apply_number,
-          audit_user_id,copy_user_id,stock_img
+        id,stock_goods_id,stock_number,stock_type,biz_type,
+        enterprise_id,contact_enterprise_id,receiver_name,receive_address,remark,
+        create_user_id,create_time,material_number,po,
+        trade_enterprise_id,receiver_id,
+        total_amount,
+        tax,cost_price,currency,apply_number,
+        audit_user_id,copy_user_id,stock_img,order_id,apply_status
         )
         VALUES
         (
-          #{id},#{stockGoodsId},#{stockNumber},#{stockType},#{bizType},
-          #{enterpriseId},#{contactEnterpriseId},#{receiverName},#{receiveAddress},#{remark},
-          #{createUserId},now(),#{materialNumber},#{po},
-          #{distributionOrder},#{tradeEnterpriseId},#{receiverId},#{goodsUnit},
-          #{stockNumberList}, #{totalAmount},
-          #{realOrderCount},#{adjustAmount},#{adjustAmountRemark},
-          #{tax},#{costPrice},#{currency},#{applyNumber},
-           #{auditUserId},#{copyUserId},#{stockImg}
+        #{id},#{stockGoodsId},#{stockNumber},#{stockType},#{bizType},
+        #{enterpriseId},#{contactEnterpriseId},#{receiverName},#{receiveAddress},#{remark},
+        #{createUserId},now(),#{materialNumber},#{po},
+        #{tradeEnterpriseId},#{receiverId},
+        #{totalAmount},
+        #{tax},#{costPrice},#{currency},#{applyNumber},
+        #{auditUserId},#{copyUserId},#{stockImg},#{orderId},#{applyStatus}
         )
     </insert>
 
     <select id="getStockApplicationList" parameterType="map" resultType="stockApplicationVo">
         SELECT
-            g.goods_name,
-            g.goods_photos,
-            g.goods_no,
-            u.name as create_user_name,
-            ex.name as exchange_enterprise_name,
-            p.biz_type,
-            p.status,
-            p.create_time
+        p.id,
+        p.apply_status as applyStatus,
+        g.goods_name as goodsName,
+        g.goods_photos as goodsPhotos,
+        g.goods_no as goodsNo,
+        u.name as createUserName,
+        ex.name as exchangeEnterpriseName,
+        p.biz_type as bizType,
+        p.stock_type as stockType,
+        p.status as status,
+        p.create_time as createTime
         FROM t_stock_application p
         LEFT JOIN t_goods g on g.id = p.stock_goods_id
         LEFT JOIN t_exchange_enterprise ex ON ex.id = p.contact_enterprise_id
         LEFT JOIN t_user u ON p.create_user_id = u.id
         WHERE 1=1
-        AND p.enterprise_id = #{enterpriseId} and p.is_delete = '0'
+        AND p.enterprise_id = #{enterpriseId}
+        AND p.is_delete = '0'
+        AND p.stock_type = #{stockType}
+        ORDER BY p.create_time desc
     </select>
 
-    <select id="findById" parameterType="string" resultType="stockApplication">
-        SELECT * FROM t_stock_application WHERE id = #{id}
+    <select id="findById" parameterType="string" resultType="stockApplicationVo">
+        SELECT
+        t.id,
+        t.stock_goods_id as stockGoodsId,
+        t.stock_img as stockImg,
+        t.order_id as orderId,
+        t.stock_number as stockNumber,
+        t.stock_type as stockType,
+        t.biz_type as bizType,
+        t.contact_enterprise_id as contactEnterpriseId,
+        t.remark,
+        t.create_user_id as createUserId,
+        t.create_time as createTime,
+        t.apply_status as applyStatus,
+        g.goods_name as goodsName,
+        g.goods_photos as goodsPhotos,
+        g.goods_no as goodsNo,
+        ex.name as exchangeEnterpriseName,
+        t.audit_user_id as auditUserId,
+        pu.name as auditUserName,
+        t.copy_user_id as copyUserId,
+        au.name as copyUserName
+        FROM t_stock_application t
+        LEFT JOIN t_exchange_enterprise ex ON ex.id = t.contact_enterprise_id
+        LEFT JOIN t_user pu on pu.id = t.copy_user_id
+        LEFT JOIN t_user au on au.id = t.audit_user_id
+        LEFT JOIN t_goods g on t.stock_goods_id = g.id
+        WHERE t.id = #{id}
     </select>
 
+    <select id="getOrderExtInfo" parameterType="string" resultType="map">
+        SELECT currency,pricing_type as pricingType,goods_price as goodsPrice,material_number as
+        materialNumber,theme_title as po
+        FROM t_order_ext et
+        LEFT JOIN t_order r on et.master_id = r.id
+        LEFT JOIN t_theme t on t.id = r.theme_id
+        WHERE et.master_id = #{orderId}
+    </select>
+
+    <insert id="insertStockPackageCategory" parameterType="stockApplicationPackageCategory">
+        insert into t_stock_application_package_category
+        (
+        id, name,stock_application_id,
+        box_num,box_count,weight_unit,gross_weight,
+        net_weight,total_gross_weight,total_net_weight,
+        length_unit,x,y,z,volume,
+        remark,create_time,create_user_id,sort,
+        gang,enterprise_id
+        )
+        VALUES
+        (
+        #{id},#{name},#{stockApplicationId},
+        #{boxNum},#{boxCount},#{weightUnit},#{grossWeight},
+        #{netWeight},#{totalGrossWeight},#{totalNetWeight},
+        #{lengthUnit},#{x},#{y},#{z},#{volume},
+        #{remark},now(),#{createUserId},#{sort},
+        #{gang},#{enterpriseId}
+        )
+    </insert>
+
+    <insert id="insertStockApplicationPackage" parameterType="stockApplicationPackage">
+        insert into t_stock_application_package
+        (
+        id, name,gang,stock_application_id,
+        box_num,box_count,weight_unit,gross_weight,
+        net_weight,total_gross_weight,total_net_weight,
+        length_unit,x,y,z,volume,
+        remark,create_time,create_user_id,sort,category_id,
+        enterprise_id
+        )
+        VALUES
+        (
+        #{id},#{name},#{gang},#{stockApplicationId},
+        #{boxNum},#{boxCount},#{weightUnit},#{grossWeight},
+        #{netWeight},#{totalGrossWeight},#{totalNetWeight},
+        #{lengthUnit},#{x},#{y},#{z},#{volume},
+        #{remark},now(),#{createUserId},#{sort},#{categoryId},
+        #{enterpriseId}
+        )
+    </insert>
+
+    <insert id="insertStockApplicationPackageRecordList" parameterType="list">
+        insert into t_stock_application_package_record
+        (
+        id,box_id,sort,goods_id,goods_spec_id,
+        count,apply_number,stock_application_id,price,currency,
+        create_user_id,create_time,enterprise_id
+        )
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (
+            #{item.id},#{item.boxId},#{item.sort},#{item.goodsId},#{item.goodsSpecId},
+            #{item.count},#{item.applyNumber}, #{item.stockApplicationId},#{item.price},#{item.currency},
+            #{item.createUserId},now(),#{item.enterpriseId}
+            )
+        </foreach>
+    </insert>
 </mapper>

@@ -5,6 +5,9 @@
     <delete id="deleteByRecordId">
         delete from t_fabric_check_record_problem where record_id = #{recordId} and problem_position=#{problemPosition}
     </delete>
+    <delete id="deleteByProblemPositionId" parameterType="string">
+        delete from t_fabric_check_record_problem where problem_position_id = #{problemPositionId}
+    </delete>
 
     <insert id="addFabricQcRecordProblem" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
         insert into t_fabric_check_record_problem
@@ -20,7 +23,8 @@
         image,
         create_time,
         is_delete,
-        problem_position
+        problem_position,
+        problem_position_id
         )
         values
         <foreach collection="list" item="fabricCheckRecordProblem" separator=",">
@@ -36,7 +40,8 @@
             #{fabricCheckRecordProblem.image},
             now(),
             0,
-            #{fabricCheckRecordProblem.problemPosition}
+            #{fabricCheckRecordProblem.problemPosition},
+            #{fabricCheckRecordProblem.problemPositionId}
             )
         </foreach>
 
@@ -64,31 +69,37 @@
         </foreach>
     </update>
 
-    <update id="updateById" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">
-        update
-        t_fabric_check_record_problem
-        <trim prefix="SET" suffixOverrides=",">
-            <if test='tag != null and tag != "" '>
-                tag = #{tag},
-            </if>
-            <if test='tagATimes != null and tagATimes != "" '>
-                tag_a_times = #{tagATimes},
-            </if>
-            <if test='tagBTimes != null and tagBTimes != "" '>
-                tag_b_times = #{tagBTimes},
-            </if>
-            <if test='tagCTimes != null and tagCTimes != "" '>
-                tag_c_times=#{tagCTimes},
-            </if>
+    <update id="updateRecordProblemById" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update
+            t_fabric_check_record_problem
+            <trim prefix="SET" suffixOverrides=",">
+                <if test='item.tag != null and item.tag != "" '>
+                    tag = #{item.tag},
+                </if>
+                <if test='item.tagATimes != null and item.tagATimes != "" '>
+                    tag_a_times = #{item.tagATimes},
+                </if>
+                <if test='item.tagBTimes != null and item.tagBTimes != "" '>
+                    tag_b_times = #{item.tagBTimes},
+                </if>
+                <if test='item.tagCTimes != null and item.tagCTimes != "" '>
+                    tag_c_times=#{item.tagCTimes},
+                </if>
 
-            <if test='tagDTimes != null and tagDTimes != "" '>
-                tag_d_times = #{tagDTimes},
-            </if>
-            <if test='remark != null and remark != "" '>
-                remark = #{remark},
-            </if>
-        </trim>
-        where id = #{id}
+                <if test='item.tagDTimes != null and item.tagDTimes != "" '>
+                    tag_d_times = #{item.tagDTimes},
+                </if>
+                <if test='item.image != null and item.image != "" '>
+                    remark = #{item.image},
+                </if>
+                <if test='item.remark != null and item.remark != "" '>
+                    remark = #{item.remark},
+                </if>
+            </trim>
+            where id = #{item.id}
+        </foreach>
+
     </update>
 
     <select id="selectById" resultType="com.bc.app.server.entity.FabricCheckRecordProblem">
@@ -110,20 +121,33 @@
     WHERE
         record_id = #{recordId}
     </select>
-    <select id="getEntiryGroupByProblemPosition"
-            resultType="com.bc.app.server.vo.fabriccheckrecordproblemcontrollervo.FabricCheckRecordProblemVo">
-        select
-        problem_position as problemPosition
-       from t_fabric_check_record_problem
-       where is_delete=0 and  record_id=#{recordId}
-       group  by problem_position
-       order by cast(problemPosition as UNSIGNED)
-    </select>
+    <!--<select id="getEntiryGroupByProblemPosition"-->
+            <!--resultType="com.bc.app.server.vo.fabriccheckrecordproblemcontrollervo.FabricCheckRecordProblemVo">-->
+        <!--select-->
+        <!--problem_position as problemPosition-->
+       <!--from t_fabric_check_record_problem-->
+       <!--where is_delete=0-->
+       <!--and  record_id=#{recordId}-->
+       <!--group  by problem_position-->
+       <!--order by cast(problemPosition as UNSIGNED)-->
+    <!--</select>-->
     <select id="getEntiryByRecordRdAndPosition" resultType="com.bc.app.server.entity.FabricCheckRecordProblem">
-        select * from t_fabric_check_record_problem
+        select
+        id,
+        record_id as recordId,
+        tag,
+        tag_a_times as tagATimes,
+        tag_b_times as tagBTimes,
+        tag_c_times as tagCTimes,
+        tag_d_times as tagDTimes,
+        remark,
+        image,
+        problem_position as problemPosition,
+        problem_position_id as problemPositionId
+         from t_fabric_check_record_problem
         where
         is_delete=0
-        and   record_id = #{recordId} and problem_position=#{problemPosition}
+        and   record_id = #{recordId} and problem_position_id=#{problemPositionId}
 
     </select>
 
@@ -134,5 +158,6 @@
         set is_delete=1
         where record_id = #{recordId}
     </update>
+
 
 </mapper>

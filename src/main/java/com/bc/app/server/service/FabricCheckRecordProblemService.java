@@ -1,7 +1,7 @@
 package com.bc.app.server.service;
 
 import com.bc.app.server.entity.FabricCheckRecordProblem;
-import com.bc.app.server.vo.fabriccheckrecordproblemcontrollervo.FabricCheckRecordProblemVo;
+import com.bc.app.server.entity.FabricCheckRecordProblemPosition;
 
 import java.util.List;
 
@@ -14,16 +14,16 @@ public interface FabricCheckRecordProblemService {
     /**
      * 新增问题记录
      *
-     * @param fabricCheckRecordProblemList
+     * @param fabricCheckRecordProblemPosition 入参
      */
-    void addFabricQcRecordProblem(List<FabricCheckRecordProblem> fabricCheckRecordProblemList);
+    void addFabricQcRecordProblem(FabricCheckRecordProblemPosition fabricCheckRecordProblemPosition);
 
     /**
      * 通过验货表id查询问题集合
      *
      * @param fabricCheckRecordProblem
      */
-    List<FabricCheckRecordProblemVo> getFabricQcRecordProblemByRecordId(FabricCheckRecordProblem fabricCheckRecordProblem);
+    List<FabricCheckRecordProblemPosition> getFabricQcRecordProblemByRecordId(FabricCheckRecordProblem fabricCheckRecordProblem);
 
     /**
      * 删除数据
@@ -35,9 +35,9 @@ public interface FabricCheckRecordProblemService {
     /**
      * 通过id更新数据
      *
-     * @param fabricCheckRecordProblem
+     * @param fabricCheckRecordProblemList
      */
-    void updateById(FabricCheckRecordProblem fabricCheckRecordProblem);
+    void updateRecordProblemById(List<FabricCheckRecordProblem> fabricCheckRecordProblemList);
 
     /**
      * 通过id查询数据

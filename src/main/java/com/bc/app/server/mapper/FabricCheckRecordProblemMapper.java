@@ -1,7 +1,6 @@
 package com.bc.app.server.mapper;
 
 import com.bc.app.server.entity.FabricCheckRecordProblem;
-import com.bc.app.server.vo.fabriccheckrecordproblemcontrollervo.FabricCheckRecordProblemVo;
 
 import java.util.List;
 
@@ -37,9 +36,9 @@ public interface FabricCheckRecordProblemMapper {
     /**
      * 通过id更新数据
      *
-     * @param fabricCheckRecordProblem
+     * @param fabricCheckRecordProblemList
      */
-    void updateById(FabricCheckRecordProblem fabricCheckRecordProblem);
+    void updateRecordProblemById(List<FabricCheckRecordProblem> fabricCheckRecordProblemList);
 
     /**
      * 通过id查询数据
@@ -51,11 +50,17 @@ public interface FabricCheckRecordProblemMapper {
 
     List<FabricCheckRecordProblem> getCountData(FabricCheckRecordProblem fabricCheckRecordProblem);
 
-    List<FabricCheckRecordProblemVo> getEntiryGroupByProblemPosition(FabricCheckRecordProblem fabricCheckRecordProblem);
+//    List<FabricCheckRecordProblemVo> getEntiryGroupByProblemPosition(FabricCheckRecordProblem fabricCheckRecordProblem);
 
-    FabricCheckRecordProblem getEntiryByRecordRdAndPosition(FabricCheckRecordProblem fabricCheckRecordProblem);
+    List<FabricCheckRecordProblem> getEntiryByRecordRdAndPosition(FabricCheckRecordProblem fabricCheckRecordProblem);
 
     void updateByRecordId(FabricCheckRecordProblem fabricCheckRecordProblem);
 
     void deleteByRecordId(FabricCheckRecordProblem fabricCheckRecordProblem);
+
+    /**
+     * 通过问题位置id删除数据
+     * @param problemPositionId
+     */
+    void deleteByProblemPositionId(String problemPositionId);
 }

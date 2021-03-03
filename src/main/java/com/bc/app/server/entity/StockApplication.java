@@ -1,7 +1,6 @@
 package com.bc.app.server.entity;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.List;
@@ -153,6 +152,21 @@ public class StockApplication implements Serializable {
      * 出入库图片
      */
     private String stockImg;
+
+    /**
+     * 订单ID
+     */
+    private String orderId;
+
+    /**
+     * 确认状态 0 草稿 1未确认 2已确认
+     */
+    private String applyStatus;
+
+    /**
+     * 币种
+     */
+    private String currency;
 
     /**
      * 出入库详细

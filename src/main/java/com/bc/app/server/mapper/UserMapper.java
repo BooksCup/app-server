@@ -1,5 +1,6 @@
 package com.bc.app.server.mapper;
 
+import com.bc.app.server.entity.App;
 import com.bc.app.server.entity.User;
 
 import java.util.List;
@@ -36,4 +37,6 @@ public interface UserMapper {
      * @return 用户列表信息
      */
     List<User> getUserList(Map<String, String> map);
+
+    void addUserAppList(List<App> appList);
 }

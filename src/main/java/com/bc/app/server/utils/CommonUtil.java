@@ -1,8 +1,5 @@
 package com.bc.app.server.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -60,10 +57,9 @@ public class CommonUtil {
 
     /**
      * 获取时间戳
-     *
      * @return 时间戳
      */
-    public static String getOrderNo() {
+    public static String getOrderNo(){
         SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
         String format = sf.format(new Date());
         return format;

@@ -28,7 +28,7 @@ public class FabricCheckProblemConfigController {
     /**
      * 日志
      */
-    private static final Logger logger = LoggerFactory.getLogger(VerifyCodeController.class);
+    private static final Logger logger = LoggerFactory.getLogger(FabricCheckProblemConfigController.class);
 
 
     @Autowired

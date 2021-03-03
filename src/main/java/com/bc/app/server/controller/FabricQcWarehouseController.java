@@ -30,7 +30,7 @@ public class FabricQcWarehouseController {
     /**
      * 日志
      */
-    private static final Logger logger = LoggerFactory.getLogger(VerifyCodeController.class);
+    private static final Logger logger = LoggerFactory.getLogger(FabricQcWarehouseController.class);
 
     @Autowired
     FabricQcWarehouseService fabricQcWarehouseService;

@@ -4,6 +4,7 @@ import com.bc.app.server.entity.App;
 import com.bc.app.server.entity.UserApp;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 应用程序
@@ -36,9 +37,24 @@ public interface UserAppMapper {
     /**
      * 获取应用列表
      *
-     * @param userId 用户ID
+     * @param map 入参
      * @return 应用列表
      */
-    List<App> getAppList(String userId);
+    List<App> getAppList(Map<String, String> map);
 
+    /**
+     * 获取个人应用市场已经安装模块，不含快捷键应用
+     *
+     * @param map 入参
+     * @return 个人应用市场已经安装模块，不含快捷键应用
+     */
+    List<App> getAppListByUserId(Map<String, String> map);
+
+    /**
+     * 获取个人应用市场已经安装快捷键应用
+     *
+     * @param map 入参
+     * @return 个人应用市场已经安装快捷键应用
+     */
+    List<App> getFastAppListByUserId(Map<String, String> map);
 }

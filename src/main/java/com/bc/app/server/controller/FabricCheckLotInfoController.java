@@ -39,13 +39,13 @@ public class FabricCheckLotInfoController {
      */
     @ApiOperation(value = "添加面料盘点-缸信息", notes = "添加面料盘点-缸信息")
     @PostMapping(value = "/addFabricCheckLotInfo")
-    public ResponseEntity<String> addFabricCheckLotInfo(
+    public ResponseEntity<FabricCheckLotInfo> addFabricCheckLotInfo(
             @RequestParam String fabricCheckTaskId,
             @RequestParam(required = false) String lotNo,
             @RequestParam(required = false) String num,
             @RequestParam(required = false) String length,
             @RequestParam(required = false) String weight) {
-        ResponseEntity<String> responseEntity;
+        ResponseEntity<FabricCheckLotInfo> responseEntity;
         try {
             FabricCheckLotInfo fabricCheckLotInfo = new FabricCheckLotInfo();
             fabricCheckLotInfo.setId(CommonUtil.generateId());
@@ -55,12 +55,10 @@ public class FabricCheckLotInfoController {
             fabricCheckLotInfo.setFabricCheckTaskId(fabricCheckTaskId);
             fabricCheckLotInfo.setWeight(weight);
             fabricCheckLotInfoService.addFabricCheckLotInfo(fabricCheckLotInfo);
-            responseEntity = new ResponseEntity<>(ResponseMsg.
-                    ADD_SUCCESS.getResponseCode(), HttpStatus.OK);
+            responseEntity = new ResponseEntity<>(fabricCheckLotInfo, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            responseEntity = new ResponseEntity<>(ResponseMsg.
-                    ADD_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>(new FabricCheckLotInfo(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

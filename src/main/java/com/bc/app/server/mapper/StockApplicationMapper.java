@@ -2,6 +2,10 @@ package com.bc.app.server.mapper;
 
 
 import com.bc.app.server.entity.StockApplication;
+import com.bc.app.server.entity.StockApplicationPackage;
+import com.bc.app.server.entity.StockApplicationPackageCategory;
+import com.bc.app.server.entity.StockApplicationPackageRecord;
+import com.bc.app.server.entity.vo.StockApplicationVo;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +36,36 @@ public interface StockApplicationMapper {
      * @param id
      * @return
      */
-    StockApplication findById(String id);
+    StockApplicationVo findById(String id);
+
+    /**
+     * 获取订单价格信息
+     *
+     * @param orderId
+     * @return
+     */
+    Map getOrderExtInfo(String orderId);
+
+
+    /**
+     * 装箱单分类
+     *
+     * @param stockApplicationPackageCategory
+     */
+    void insertStockPackageCategory(StockApplicationPackageCategory stockApplicationPackageCategory);
+
+    /**
+     * 装箱单
+     *
+     * @param stockApplicationPackage
+     */
+    void insertStockApplicationPackage(StockApplicationPackage stockApplicationPackage);
+
+    /**
+     * 批量添加装箱单记录
+     *
+     * @param stockApplicationPackageRecordList
+     */
+    void insertStockApplicationPackageRecordList(List<StockApplicationPackageRecord> stockApplicationPackageRecordList);
 
 }

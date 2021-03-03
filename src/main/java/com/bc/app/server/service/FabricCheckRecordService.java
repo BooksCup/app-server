@@ -48,7 +48,7 @@ public interface FabricCheckRecordService {
      * @param list 检查记录信息集合
      * @return
      */
-    void insertFabricQcRecords(List<FabricCheckRecord> list);
+    List<FabricCheckRecord> insertFabricQcRecords(List<FabricCheckRecord> list);
 
     /**
      * 通过面料盘点-缸信息表id获取检查记录表信息

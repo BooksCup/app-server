@@ -22,4 +22,8 @@ public class StockApplicationVo extends StockApplication implements Serializable
     private String goodsUnit;
 
     private String goodsPhotos;
+
+    private String auditUserName;
+
+    private String copyUserName;
 }

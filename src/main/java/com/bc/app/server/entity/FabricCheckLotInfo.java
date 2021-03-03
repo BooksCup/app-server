@@ -15,7 +15,7 @@ public class FabricCheckLotInfo {
     /**
      * 缸号
      */
-    private String lotNo;
+        private String lotNo;
 
     /**
      * 卷数

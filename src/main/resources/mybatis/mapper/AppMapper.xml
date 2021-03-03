@@ -7,13 +7,32 @@
         <id column="name" property="name" jdbcType="VARCHAR"/>
         <id column="icon" property="icon" jdbcType="VARCHAR"/>
         <id column="route" property="route" jdbcType="VARCHAR"/>
-        <id column="describe" property="describe" jdbcType="VARCHAR"/>
+        <id column="describe" property="describes" jdbcType="VARCHAR"/>
         <id column="sort" property="sort" jdbcType="INTEGER"/>
     </resultMap>
 
-    <select id="getAppList" resultMap="app">
-        select *
-        from t_app
-    </select>
+    <insert id="batchAddUserApp" parameterType="com.bc.app.server.entity.App">
+        insert into t_user_app
+        (
+        id,
+        user_id,
+        app_id,
+        sort,
+        is_fast,
+        create_time
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.uaId},
+            #{item.userId},
+            #{item.uaAppId},
+            #{item.uaSort},
+            #{item.isFast},
+            now()
+            )
+        </foreach>
+
+    </insert>
 
 </mapper>

@@ -1,6 +1,8 @@
 package com.bc.app.server.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.bc.app.server.entity.App;
+import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.AppService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -8,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,16 +24,27 @@ public class AppController {
     @Resource
     private AppService appService;
 
-    @ApiOperation(value = "获取应用列表", notes = "获取应用列表")
-    @GetMapping(value = "")
-    public ResponseEntity<List<App>> getAppList() {
-        ResponseEntity<List<App>> responseEntity;
+    /**
+     * 重置用户APP
+     *
+     * @param userId 用户ID
+     * @return ResponseEntity
+     */
+    @ApiOperation(value = "重置用户APP", notes = "重置用户APP")
+    @PutMapping(value = "/{userId}/app/reset")
+    public ResponseEntity<String> resetUserApp(
+            @PathVariable String userId,
+            @RequestParam String appStrJson) {
+        ResponseEntity<String> responseEntity;
         try {
-            List<App> appList = appService.getAppList();
-            responseEntity = new ResponseEntity<>(appList, HttpStatus.OK);
+            List<App> appList = JSON.parseArray(appStrJson, App.class);
+            appService.resetUserApp(appList, userId);
+            responseEntity = new ResponseEntity<>(ResponseMsg.
+                    RESET_USER_APP_SUCCESS.getResponseCode(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            responseEntity = new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>(ResponseMsg.
+                    RESET_USER_APP_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

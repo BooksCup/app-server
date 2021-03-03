@@ -7,7 +7,7 @@
         <id column="name" property="name" jdbcType="VARCHAR"/>
         <id column="icon" property="icon" jdbcType="VARCHAR"/>
         <id column="route" property="route" jdbcType="VARCHAR"/>
-        <id column="describe" property="describe" jdbcType="VARCHAR"/>
+        <id column="describe" property="describes" jdbcType="VARCHAR"/>
         <id column="sort" property="sort" jdbcType="INTEGER"/>
     </resultMap>
 
@@ -41,11 +41,57 @@
         where user_id = #{userId}
     </delete>
 
-    <select id="getAppList" resultMap="app">
-        select a.*
-        from t_user_app ua
-        left join t_app a on ua.app_id = a.app_id
-        where ua.user_id = #{userId}
+    <select id="getAppList" resultMap="app" resultType="com.bc.app.server.entity.App">
+        select
+         a.*,
+         b.sort as uaSort,
+         b.app_id as uaAppId,
+         b.is_fast as isFast
+        from t_app  a
+        left join t_user_app b on a.app_id = b.app_id and b.user_id=#{userId}
+        order by sort
+    </select>
+    <select id="getAppListByUserId" resultType="com.bc.app.server.entity.App">
+         select
+            a.app_id as appId,
+            a.name as name,
+            a.icon as icon,
+            a.route as route,
+            a.describe as describes,
+            a.default_install as defaultInstall,
+            a.sort as sort,
+            b.sort as uaSort,
+            b.app_id as uaAppId,
+            b.is_fast as isFast
+        from
+            t_user_app b
+            left join t_app a on a.app_id = b.app_id
+        where
+            b.user_id = #{userId}
+            and b.is_fast = 0
+        order by
+            b.sort
+    </select>
+    <select id="getFastAppListByUserId" resultType="com.bc.app.server.entity.App">
+        select
+        a.app_id as appId,
+        a.name as name,
+        a.icon as icon,
+        a.route as route,
+        a.describe as describes,
+        a.default_install as defaultInstall,
+        a.sort as sort,
+        b.sort as uaSort,
+        b.app_id as uaAppId,
+        b.is_fast as isFast
+        from
+        t_user_app b
+        left join t_app a on a.app_id = b.app_id
+        where
+        b.user_id = #{userId}
+        and b.is_fast = 1
+        order by
+        uaSort
     </select>
 
 </mapper>

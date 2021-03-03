@@ -13,7 +13,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -80,15 +82,28 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
      * @return
      */
     @Override
-    public void insertFabricQcRecords(List<FabricCheckRecord> list) {
+    public List<FabricCheckRecord>  insertFabricQcRecords(List<FabricCheckRecord> list) {
         if (CollectionUtils.isNotEmpty(list)) {
-            String checkLotInfoId = list.get(0).getCheckLotInfoId();
-            fabricCheckRecordMapper.deleteByCheckLotInfoId(checkLotInfoId);
+            List<FabricCheckRecord> noIdList = new ArrayList<>();
+            List<FabricCheckRecord> haveIdList = new ArrayList<>();
             for (FabricCheckRecord fabricCheckRecord : list) {
-                fabricCheckRecord.setId(CommonUtil.generateId());
+                if (StringUtils.isEmpty(fabricCheckRecord.getId())){
+                    fabricCheckRecord.setId(CommonUtil.generateId());
+                    noIdList.add(fabricCheckRecord);
+                }else {
+                    haveIdList.add(fabricCheckRecord);
+                }
+            }
+            //有id的更新，
+            if (CollectionUtils.isNotEmpty(haveIdList)) {
+                fabricCheckRecordMapper.batchUpdateFabricCheckRecordByIds(haveIdList);
+            }
+            //没有id的保存
+            if (CollectionUtils.isNotEmpty(noIdList)) {
+                fabricCheckRecordMapper.insertFabricQcRecords(noIdList);
             }
         }
-        fabricCheckRecordMapper.insertFabricQcRecords(list);
+        return list;
     }
 
 //    /**

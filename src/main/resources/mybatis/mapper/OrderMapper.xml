@@ -73,6 +73,9 @@
         where
         o.delete_status = '0'
         and o.from_enterprise_id = #{fromEnterpriseId}
+        <if test="goodsId !=null and goodsId != ''">
+            and o.goods_id = #{goodsId}
+        </if>
         <if test="keyword !=null and keyword != ''">
             and ( o.no LIKE concat('%', #{keyword},'%') or t.theme_title LIKE concat('%', #{keyword},'%')
             or ee.name LIKE concat('%', #{keyword},'%') or ee.short_name LIKE concat('%', #{keyword},'%') or

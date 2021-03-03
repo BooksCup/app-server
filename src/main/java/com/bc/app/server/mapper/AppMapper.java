@@ -12,10 +12,9 @@ import java.util.List;
 public interface AppMapper {
 
     /**
-     * 获取应用列表
+     * 添加用户安装应用记录
      *
-     * @return 应用列表
+     * @param appList 安装记录
      */
-    List<App> getAppList();
-
+    void batchAddUserApp(List<App> appList);
 }

@@ -17,6 +17,32 @@
         <result column="is_super_admin" property="isSuperAdmin" jdbcType="VARCHAR"/>
         <result column="role" property="fabricCheckRole" jdbcType="VARCHAR"/>
     </resultMap>
+    <insert id="addUserAppList">
+        insert into t_user_app
+        (
+        id,
+        user_id,
+        app_id,
+        sort,
+        is_fast,
+        enterprise_id,
+        create_time
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.uaId},
+            #{item.userId},
+            #{item.uaAppId},
+            #{item.uaSort},
+            #{item.isFast},
+            3,
+            now()
+            )
+        </foreach>
+
+
+    </insert>
 
     <select id="getUserByPhoneAndPassword" resultMap="user">
         select
@@ -47,12 +73,14 @@
         u.id,
         u.name,
         u.avatar,
+        u.job_name as jobName,
         d.name as  departmentName,
         e.name as enterpriseName
         from t_user  u
         left join t_department d on d.id = u.department_id and d.delete_status = '0'
         left join t_enterprise e on e.id = u.enterprise_id and e.delete_status = '0'
-        where u.enterprise_id = #{enterpriseId}
+        where  u.job_status BETWEEN 1 AND 4  and u.enterprise_id = #{enterpriseId}
+        ORDER BY u.create_time DESC
     </select>
 
 </mapper>

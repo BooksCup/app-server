@@ -42,12 +42,14 @@ public class OrderController {
     public ResponseEntity<PageInfo<Order>> getOrderPageInfo(
             @RequestParam String enterpriseId,
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String goodsId,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         ResponseEntity<PageInfo<Order>> responseEntity;
         Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         map.put("fromEnterpriseId", enterpriseId);
         map.put("keyword", keyword);
+        map.put("goodsId", goodsId);
         try {
             PageInfo<Order> pageInfo = orderService.getOrderPageInfo(map, pageNum, pageSize);
             responseEntity = new ResponseEntity<>(pageInfo, HttpStatus.OK);

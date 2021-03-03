@@ -1,6 +1,8 @@
 package com.bc.app.server.controller;
 
+import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.StockApplication;
+import com.bc.app.server.entity.vo.StockApplicationVo;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.StockApplicationService;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +32,7 @@ public class StockApplicationController {
             @RequestBody StockApplication stockApplication) {
         ResponseEntity<String> responseEntity;
         try {
-            stockApplicationService.insert(stockApplication);
+            stockApplicationService.insert(stockApplication,null);
             responseEntity = new ResponseEntity<>(ResponseMsg.ADD_SUCCESS.getResponseCode(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,14 +41,16 @@ public class StockApplicationController {
         return responseEntity;
     }
 
-    @ApiOperation(value = "出入库列表", notes = "新增入库")
+    @ApiOperation(value = "获取出入库列表", notes = "获取出入库列表")
     @GetMapping(value = "")
     public ResponseEntity<List<StockApplication>> getStockApplicationList(
-            @RequestParam String enterpriseId) {
+            @RequestParam String enterpriseId,
+            @RequestParam String stockType) {
         ResponseEntity<List<StockApplication>> responseEntity;
         try {
-            Map<String, Object> paramsMap = new HashMap<>();
+            Map<String, Object> paramsMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
             paramsMap.put("enterpriseId", enterpriseId);
+            paramsMap.put("stockType", stockType);
             List<StockApplication> stockApplicationList = stockApplicationService.getStockApplicationList(paramsMap);
             responseEntity = new ResponseEntity<>(stockApplicationList, HttpStatus.OK);
         } catch (Exception e) {
@@ -57,16 +61,16 @@ public class StockApplicationController {
     }
 
     @ApiOperation(value = "查询入库详情", notes = "查询入库详情")
-    @PostMapping(value = "/{id}")
-    public ResponseEntity<StockApplication> insertStockApplication(
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<StockApplicationVo> insertStockApplication(
             @PathVariable String id) {
-        ResponseEntity<StockApplication> responseEntity;
+        ResponseEntity<StockApplicationVo> responseEntity;
         try {
-            StockApplication stockApplication = stockApplicationService.findById(id);
-            responseEntity = new ResponseEntity<StockApplication>(stockApplication, HttpStatus.OK);
+            StockApplicationVo stockApplication = stockApplicationService.findById(id);
+            responseEntity = new ResponseEntity<StockApplicationVo>(stockApplication, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            responseEntity = new ResponseEntity<StockApplication>(new StockApplication(), HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<StockApplicationVo>(new StockApplicationVo(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

@@ -149,19 +149,17 @@ public class FabricCheckRecordController {
      */
     @ApiOperation(value = "批量保存检查记录信息", notes = "批量保存检查记录信息")
     @PostMapping(value = "")
-    public ResponseEntity<String> insertFabricQcRecords(
+    public ResponseEntity<List<FabricCheckRecord>> insertFabricQcRecords(
             @RequestParam String fabricCheckRecords) {
 
-        ResponseEntity<String> responseEntity;
+        ResponseEntity<List<FabricCheckRecord>> responseEntity;
         try {
             List<FabricCheckRecord> list = JSON.parseArray(fabricCheckRecords, FabricCheckRecord.class);
-            fabricCheckRecordService.insertFabricQcRecords(list);
-            responseEntity = new ResponseEntity<>(ResponseMsg.
-                    ADD_SUCCESS.getResponseCode(), HttpStatus.OK);
+            List<FabricCheckRecord> fabricCheckRecordList = fabricCheckRecordService.insertFabricQcRecords(list);
+            responseEntity = new ResponseEntity<>(fabricCheckRecordList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            responseEntity = new ResponseEntity<>(ResponseMsg.
-                    ADD_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

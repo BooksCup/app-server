@@ -6,8 +6,9 @@ import com.bc.app.server.entity.UserApp;
 import com.bc.app.server.mapper.UserAppMapper;
 import com.bc.app.server.service.UserAppService;
 import com.bc.app.server.vo.appcontrollervo.UserAppVo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,9 +28,6 @@ public class UserAppServiceImpl implements UserAppService {
     @Resource
     private UserAppMapper userAppMapper;
 
-    @Autowired
-    UserAppServiceImpl userAppService;
-
     /**
      * 重置用户应用程序
      *
@@ -48,13 +46,17 @@ public class UserAppServiceImpl implements UserAppService {
     }
 
     /**
-     * 获取应用列表
+     * 获取应用分页信息
      *
-     * @return 应用列表
+     * @param paramMap 参数map
+     * @param pageNum  当前分页数
+     * @param pageSize 分页大小
+     * @return 应用分页信息
      */
     @Override
-    public List<App> getAppList(Map<String, String> map) {
-        List<App> appList = userAppMapper.getAppList(map);
+    public PageInfo<App> getAppList(Map<String, String> paramMap, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<App> appList = userAppMapper.getAppList(paramMap);
         if (CollectionUtils.isNotEmpty(appList)) {
             for (App app : appList) {
                 if (!StringUtils.isEmpty(app.getUaAppId())) {
@@ -64,7 +66,7 @@ public class UserAppServiceImpl implements UserAppService {
                 }
             }
         }
-        return appList;
+        return new PageInfo<>(appList);
     }
 
     /**

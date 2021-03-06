@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
 
+
     /**
      * 通过登录获取用户列表
      *
@@ -66,9 +67,30 @@ public class UserServiceImpl implements UserService {
      * @return 用户分页信息
      */
     @Override
-    public PageInfo<User> getUserPageInfo(Map<String, String> map, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+    public PageInfo<User> getUserPageInfo(Map<String, Object> map, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<User> userPageInfo = userMapper.getUserList(map);
         return new PageInfo<>(userPageInfo);
     }
+
+    /**
+     * 批量添加user信息
+     *
+     * @param userList user列表
+     */
+    @Override
+    public void addUserList(List<User> userList) {
+        userMapper.addUserList(userList);
+    }
+
+    /**
+     * 添加用户信息
+     *
+     * @param user 用户信息
+     */
+    @Override
+    public void addUser(User user) {
+        userMapper.addUser(user);
+    }
+
 }

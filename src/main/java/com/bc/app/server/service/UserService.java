@@ -38,5 +38,19 @@ public interface UserService {
      * @param pageSize 每页实现个数
      * @return 用户分页信息
      */
-    PageInfo<User> getUserPageInfo(Map<String, String> map, Integer pageNum, Integer pageSize);
+    PageInfo<User> getUserPageInfo(Map<String, Object> map, Integer pageNum, Integer pageSize);
+
+    /**
+     * 批量添加用户信息
+     *
+     * @param userList user列表
+     */
+    void addUserList(List<User> userList);
+
+    /**
+     * 添加用户信息
+     *
+     * @param user 用户信息
+     */
+    void addUser(User user);
 }

@@ -36,7 +36,19 @@ public interface UserMapper {
      * @param map 入参
      * @return 用户列表信息
      */
-    List<User> getUserList(Map<String, String> map);
+    List<User> getUserList(Map<String, Object> map);
 
-    void addUserAppList(List<App> appList);
+    /**
+     * 批量添加user信息
+     *
+     * @param userList user列表
+     */
+    void addUserList(List<User> userList);
+
+    /**
+     * 添加用户信息
+     *
+     * @param user 用户信息
+     */
+    void addUser(User user);
 }

@@ -2,12 +2,15 @@ package com.bc.app.server.controller;
 
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.User;
+import com.bc.app.server.entity.UserApply;
 import com.bc.app.server.enums.ResponseMsg;
+import com.bc.app.server.service.UserApplyService;
 import com.bc.app.server.service.UserService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -33,6 +36,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Autowired
+    private UserApplyService userApplyService;
 
     /**
      * 登录
@@ -105,7 +111,7 @@ public class UserController {
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         logger.info("[getUserPageInfo] pageNum: " + pageNum + ", pageSize: " + pageSize);
         ResponseEntity<PageInfo<User>> responseEntity;
-        Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+        Map<String, Object> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         map.put("enterpriseId", enterpriseId);
         try {
             PageInfo<User> pageInfo = userService.getUserPageInfo(map, pageNum, pageSize);

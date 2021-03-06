@@ -184,4 +184,5 @@ public class User implements Serializable {
      * 面料验货权限
      */
     private String isFabricCheckAdmin;
+
 }

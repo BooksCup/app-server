@@ -51,4 +51,15 @@ public class UserApplyServiceImpl implements UserApplyService {
         userApplyMapper.agreeOrRefuseUserApply(paramMap);
     }
 
+    /**
+     * 通过id查询申诉列表信息
+     *
+     * @param paramMap 入参
+     * @return 申诉列表单个信息
+     */
+    @Override
+    public UserApply getUserApplyById(Map<String, Object> paramMap) {
+        return userApplyMapper.getUserApplyById(paramMap);
+    }
+
 }

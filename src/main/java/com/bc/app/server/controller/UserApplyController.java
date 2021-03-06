@@ -1,14 +1,18 @@
 package com.bc.app.server.controller;
 
 import com.bc.app.server.cons.Constant;
+import com.bc.app.server.entity.User;
 import com.bc.app.server.entity.UserApply;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.SmsConfigService;
 import com.bc.app.server.service.UserApplyService;
+import com.bc.app.server.service.UserService;
 import com.bc.app.server.service.VerifyCodeService;
+import com.bc.app.server.utils.CommonUtil;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -42,6 +46,9 @@ public class UserApplyController {
 
     @Resource
     private UserApplyService userApplyService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 提交用户申请
@@ -102,13 +109,24 @@ public class UserApplyController {
         try {
             if (Constant.OPERATE_STATUS_AGREE.equals(operateStatus)) {
                 // 同意
+                Map<String, Object> paramMap = new HashMap<>();
+                paramMap.put("applyId", applyId);
+                UserApply userApply = userApplyService.getUserApplyById(paramMap);
                 // 用户表新增数据
-
+                User user = new User();
+                List<User> userList = new ArrayList<>();
+                user.setId(CommonUtil.generateId());
+                user.setEnterpriseId(userApply.getEnterpriseId());
+                user.setName(userApply.getName());
+                user.setPassword(CommonUtil.stringToMD5("123456"));
+                user.setImPassword(CommonUtil.stringToMD5("123456"));
+                user.setPhone(userApply.getPhone());
+                user.setJobNo(CommonUtil.getJobNo());
+                userList.add(user);
+                userService.addUser(user);
                 // 发送同意短信
-
             } else {
                 // 拒绝
-
                 // 发送拒绝短信
             }
             Map<String, Object> paramMap = new HashMap<>();

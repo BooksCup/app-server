@@ -17,26 +17,62 @@
         <result column="is_super_admin" property="isSuperAdmin" jdbcType="VARCHAR"/>
         <result column="isFabricCheckAdmin" property="isFabricCheckAdmin" jdbcType="VARCHAR"/>
     </resultMap>
-    <insert id="addUserAppList">
-        insert into t_user_app
+
+    <insert id="addUser" parameterType="user">
+        insert into t_user
         (
         id,
-        user_id,
-        app_id,
-        sort,
-        is_fast,
         enterprise_id,
-        create_time
+        name,
+        password,
+        im_password,
+        phone,
+        user_status,
+        job_no,
+        create_time,
+        modify_time
+        )
+        values
+        (
+        #{id},
+        #{enterpriseId},
+        #{name},
+        #{password},
+        #{imPassword},
+        #{phone},
+        1,
+        #{jobNo},
+        now(),
+        now()
+        )
+    </insert>
+
+    <insert id="addUserList">
+        insert into t_user
+        (
+        id,
+        enterprise_id,
+        name,
+        password,
+        im_password,
+        phone,
+        user_status,
+        job_no,
+        create_time,
+        modify_time
         )
         values
         <foreach collection="list" item="item" separator=",">
             (
-            #{item.uaId},
-            #{item.userId},
-            #{item.uaAppId},
-            #{item.uaSort},
-            #{item.isFast},
-            3,
+            #{item.id},
+            #{item.enterpriseId},
+            #{item.name},
+            #{item.password},
+            #{item.imPassword},
+            #{item.phone},
+            1,
+            #{item.jobNo},
+            now(),
             now()
             )
         </foreach>

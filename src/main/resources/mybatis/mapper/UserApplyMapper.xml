@@ -8,6 +8,17 @@
         <id column="phone" property="phone" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="getUserApplyById" resultType="com.bc.app.server.entity.UserApply">
+        select
+        id,
+        enterprise_id as enterpriseId,
+        name,
+        phone,
+        password
+        from t_user_apply
+        where id = #{applyId}
+    </select>
+
     <insert id="addUserApply" parameterType="com.bc.app.server.entity.UserApply">
         insert into t_user_apply
         (

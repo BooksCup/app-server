@@ -34,4 +34,11 @@ public interface UserApplyMapper {
      */
     void agreeOrRefuseUserApply(Map<String, Object> paramMap);
 
+    /**
+     * 通过id查询申诉列表信息
+     *
+     * @param paramMap 入参
+     * @return 申诉列表单个信息
+     */
+    UserApply getUserApplyById(Map<String, Object> paramMap);
 }

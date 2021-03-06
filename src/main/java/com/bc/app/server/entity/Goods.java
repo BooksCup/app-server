@@ -6,7 +6,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 商品表
+ * 物品
+ *
+ * @author zhou
  */
 @Data
 public class Goods implements Serializable {

@@ -3,6 +3,11 @@ package com.bc.app.server.entity.vo;
 import com.bc.app.server.entity.User;
 import com.github.pagehelper.PageInfo;
 
+/**
+ * 人员 VO
+ *
+ * @author zhou
+ */
 public class EmployeeVo {
 
     private Integer applyNum;

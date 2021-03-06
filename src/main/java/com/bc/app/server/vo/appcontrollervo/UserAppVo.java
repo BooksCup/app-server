@@ -6,8 +6,15 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 用户APP VO
+ *
+ * @author zhou
+ */
 @Data
-public class UserAppVo  implements Serializable{
+public class UserAppVo implements Serializable {
+
     private List<App> userFastAppList;
     private List<App> userAppList;
+
 }

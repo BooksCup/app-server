@@ -92,7 +92,6 @@ public class UserController {
             responseEntity = new ResponseEntity<>(user,
                     HttpStatus.OK);
         }
-
         return responseEntity;
     }
 

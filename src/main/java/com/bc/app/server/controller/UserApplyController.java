@@ -1,5 +1,6 @@
 package com.bc.app.server.controller;
 
+import cn.jmessage.api.JMessageClient;
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.User;
 import com.bc.app.server.entity.UserApply;
@@ -9,6 +10,7 @@ import com.bc.app.server.service.UserApplyService;
 import com.bc.app.server.service.UserService;
 import com.bc.app.server.service.VerifyCodeService;
 import com.bc.app.server.utils.CommonUtil;
+import com.bc.app.server.utils.Md5Util;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +51,9 @@ public class UserApplyController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JMessageClient jMessageClient;
 
     /**
      * 提交用户申请
@@ -113,17 +118,27 @@ public class UserApplyController {
                 paramMap.put("applyId", applyId);
                 UserApply userApply = userApplyService.getUserApplyById(paramMap);
                 // 用户表新增数据
+                String userId = CommonUtil.generateId();
+                String imPassword = Md5Util.md5Decode32(Constant.DEFAULT_PASSWORD);
+
                 User user = new User();
-                List<User> userList = new ArrayList<>();
-                user.setId(CommonUtil.generateId());
+                user.setId(userId);
                 user.setEnterpriseId(userApply.getEnterpriseId());
                 user.setName(userApply.getName());
-                user.setPassword(CommonUtil.stringToMD5("123456"));
-                user.setImPassword(CommonUtil.stringToMD5("123456"));
+                user.setPassword(Md5Util.md5Decode32(Constant.DEFAULT_IM_PASSWORD));
+                user.setImPassword(imPassword);
                 user.setPhone(userApply.getPhone());
                 user.setJobNo(CommonUtil.getJobNo());
-                userList.add(user);
                 userService.addUser(user);
+
+                // 注册到极光
+                try {
+                    jMessageClient.registerAdmins(userId, imPassword);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.error("register user error. userId: " + userId);
+                }
+
                 // 发送同意短信
             } else {
                 // 拒绝

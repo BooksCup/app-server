@@ -24,6 +24,16 @@ public class Constant {
     public static final String OPERATE_STATUS_INIT = "0";
 
     /**
+     * 默认密码
+     */
+    public static final String DEFAULT_PASSWORD = "123456";
+
+    /**
+     * 默认IM密码
+     */
+    public static final String DEFAULT_IM_PASSWORD = "123456";
+
+    /**
      * 操作状态-同意
      */
     public static final String OPERATE_STATUS_AGREE = "1";

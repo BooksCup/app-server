@@ -36,4 +36,11 @@ public interface FabricCheckLotInfoMapper {
      */
     List<FabricCheckLotInfo> selectListByCheckTaskId(Map<String, String> map);
 
+    /**
+     * 根据任务表id查询缸号集合
+     *
+     * @param map 入参
+     * @return 缸号集合
+     */
+    List<FabricCheckLotInfo> getLotNoListByCheckTaskId(Map<String, String> map);
 }

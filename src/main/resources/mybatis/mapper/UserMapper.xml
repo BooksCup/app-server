@@ -16,6 +16,7 @@
         <result column="job_name" property="jobName" jdbcType="VARCHAR"/>
         <result column="is_super_admin" property="isSuperAdmin" jdbcType="VARCHAR"/>
         <result column="isFabricCheckAdmin" property="isFabricCheckAdmin" jdbcType="VARCHAR"/>
+        <result column="short_name" property="enterpriseShortName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <insert id="addUser" parameterType="user">
@@ -76,14 +77,13 @@
             now()
             )
         </foreach>
-
-
     </insert>
 
     <select id="getUserByPhoneAndPassword" resultMap="user">
         select
         u.*,
         e.name as enterprise_name,
+        e.short_name as short_name,
         e.address as enterprise_address,
         crc.role as isFabricCheckAdmin
         from t_user u

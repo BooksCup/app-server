@@ -43,55 +43,43 @@
 
     <select id="getAppList" resultMap="app" resultType="com.bc.app.server.entity.App">
         select
-         a.*,
-         b.sort as uaSort,
-         b.app_id as uaAppId,
-         b.is_fast as isFast
-        from t_app  a
-        left join t_user_app b on a.app_id = b.app_id and b.user_id=#{userId}
-        order by sort
+        a.*,
+        ua.id AS userAppId
+        from t_app a
+        left join t_user_app ua on a.app_id = ua.app_id and ua.user_id = #{userId}
+        order by a.sort asc
     </select>
+
     <select id="getAppListByUserId" resultType="com.bc.app.server.entity.App">
-         select
-            a.app_id as appId,
-            a.name as name,
-            a.icon as icon,
-            a.route as route,
-            a.describe as describes,
-            a.default_install as defaultInstall,
-            a.sort as sort,
-            b.sort as uaSort,
-            b.app_id as uaAppId,
-            b.is_fast as isFast
+        select
+        a.app_id as appId,
+        a.name as name,
+        a.icon as icon,
+        a.route as route,
+        a.describe as describes
         from
-            t_user_app b
-            left join t_app a on a.app_id = b.app_id
+        t_user_app ua
+        left join t_app a on ua.app_id = a.app_id
         where
-            b.user_id = #{userId}
-            and b.is_fast = 0
-        order by
-            b.sort
+        ua.user_id = #{userId}
+        and ua.is_fast = 0
+        order by ua.sort asc
     </select>
+
     <select id="getFastAppListByUserId" resultType="com.bc.app.server.entity.App">
         select
         a.app_id as appId,
         a.name as name,
         a.icon as icon,
         a.route as route,
-        a.describe as describes,
-        a.default_install as defaultInstall,
-        a.sort as sort,
-        b.sort as uaSort,
-        b.app_id as uaAppId,
-        b.is_fast as isFast
+        a.describe as describes
         from
-        t_user_app b
-        left join t_app a on a.app_id = b.app_id
+        t_user_app ua
+        left join t_app a on ua.app_id = a.app_id
         where
-        b.user_id = #{userId}
-        and b.is_fast = 1
-        order by
-        uaSort
+        ua.user_id = #{userId}
+        and ua.is_fast = 1
+        order by ua.sort asc
     </select>
 
 </mapper>

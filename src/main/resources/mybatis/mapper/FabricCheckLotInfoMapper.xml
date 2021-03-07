@@ -62,4 +62,12 @@
         order by modify_time desc
     </select>
 
+    <select id="getLotNoListByCheckTaskId" resultType="com.bc.app.server.entity.FabricCheckLotInfo">
+        select
+        lot_no as lotNo
+        from t_fabric_check_lot_info
+        where fabric_check_task_id = #{checkTaskId}
+        order by  create_date desc
+    </select>
+
 </mapper>

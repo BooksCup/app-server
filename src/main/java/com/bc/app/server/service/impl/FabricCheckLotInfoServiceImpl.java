@@ -7,10 +7,13 @@ import com.bc.app.server.entity.FabricCheckTask;
 import com.bc.app.server.mapper.FabricCheckLotInfoMapper;
 import com.bc.app.server.mapper.FabricCheckTaskMapper;
 import com.bc.app.server.service.FabricCheckLotInfoService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +29,7 @@ public class FabricCheckLotInfoServiceImpl implements FabricCheckLotInfoService 
 
     @Autowired
     FabricCheckTaskMapper fabricCheckTaskMapper;
+
     /**
      * 添加面料盘点-缸信息
      *
@@ -34,7 +38,7 @@ public class FabricCheckLotInfoServiceImpl implements FabricCheckLotInfoService 
     @Override
     public void addFabricCheckLotInfo(FabricCheckLotInfo fabricCheckLotInfo) {
         Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
-        map.put("id",fabricCheckLotInfo.getId());
+        map.put("id", fabricCheckLotInfo.getId());
         map.put("modifyTimeApply", "modifyTimeApply");
         fabricCheckTaskMapper.updateById(map);
         fabricCheckLotInfoMapper.addFabricCheckLotInfo(fabricCheckLotInfo);
@@ -48,12 +52,30 @@ public class FabricCheckLotInfoServiceImpl implements FabricCheckLotInfoService 
     @Override
     public void updateById(Map<String, String> map) {
         String fabricCheckTaskId = map.get("fabricCheckTaskId");
-        if (!"".equals(fabricCheckTaskId) && null != fabricCheckTaskId){
+        if (!"".equals(fabricCheckTaskId) && null != fabricCheckTaskId) {
             FabricCheckTask fabricCheckTask = new FabricCheckTask();
             fabricCheckTask.setId(fabricCheckTaskId);
             fabricCheckTaskMapper.batchUpdateFabricCheckTaskById(fabricCheckTask);
         }
         fabricCheckLotInfoMapper.updateById(map);
+    }
+
+    /**
+     * 根据任务表id查询缸号集合
+     *
+     * @param map 入参
+     * @return 缸号集合
+     */
+    @Override
+    public List<String> getLotNoListByCheckTaskId(Map<String, String> map) {
+        List<FabricCheckLotInfo> lotNoListByCheckTaskId = fabricCheckLotInfoMapper.getLotNoListByCheckTaskId(map);
+        List<String> lotNoList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(lotNoListByCheckTaskId)){
+            for (FabricCheckLotInfo fabricCheckLotInfo:lotNoListByCheckTaskId){
+                lotNoList.add(fabricCheckLotInfo.getLotNo());
+            }
+        }
+        return lotNoList;
     }
 
 }

@@ -37,24 +37,24 @@ public interface UserAppMapper {
     /**
      * 获取应用列表
      *
-     * @param map 入参
+     * @param paramMap 参数map
      * @return 应用列表
      */
-    List<App> getAppList(Map<String, String> map);
+    List<App> getAppList(Map<String, String> paramMap);
 
     /**
      * 获取个人应用市场已经安装模块，不含快捷键应用
      *
-     * @param map 入参
+     * @param paramMap 参数map
      * @return 个人应用市场已经安装模块，不含快捷键应用
      */
-    List<App> getAppListByUserId(Map<String, String> map);
+    List<App> getAppListByUserId(Map<String, String> paramMap);
 
     /**
      * 获取个人应用市场已经安装快捷键应用
      *
-     * @param map 入参
+     * @param paramMap 参数map
      * @return 个人应用市场已经安装快捷键应用
      */
-    List<App> getFastAppListByUserId(Map<String, String> map);
+    List<App> getFastAppListByUserId(Map<String, String> paramMap);
 }

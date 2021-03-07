@@ -30,6 +30,11 @@ public class User implements Serializable {
     private String enterpriseName;
 
     /**
+     * 企业简称
+     */
+    private String enterpriseShortName;
+
+    /**
      * 用户关联的部门主键
      * 用户关联的部门主键
      */

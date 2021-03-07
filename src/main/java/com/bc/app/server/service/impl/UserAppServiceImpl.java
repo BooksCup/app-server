@@ -59,7 +59,7 @@ public class UserAppServiceImpl implements UserAppService {
         List<App> appList = userAppMapper.getAppList(paramMap);
         if (CollectionUtils.isNotEmpty(appList)) {
             for (App app : appList) {
-                if (!StringUtils.isEmpty(app.getUaAppId())) {
+                if (!StringUtils.isEmpty(app.getUserAppId())) {
                     app.setIsInstall(Constant.IS_INSTALL);
                 } else {
                     app.setIsInstall(Constant.IS_NOT_INSTALL);
@@ -70,18 +70,17 @@ public class UserAppServiceImpl implements UserAppService {
     }
 
     /**
-     * 获取个人应用市场所有模块列表
+     * 获取个人所有应用
      *
-     * @param map 入参
-     * @return 个人应用市场所有模块列表
+     * @param paramMap 参数map
+     * @return 个人所有应用
      */
     @Override
-    public UserAppVo getAppListByUserId(Map<String, String> map) {
-        List<App> appList = userAppMapper.getAppListByUserId(map);
-        //个人应用市场已经安装快捷键应用
-        List<App> fastAppListByUserId = userAppMapper.getFastAppListByUserId(map);
+    public UserAppVo getAppListByUserId(Map<String, String> paramMap) {
+        List<App> appList = userAppMapper.getAppListByUserId(paramMap);
+        List<App> fastAppList = userAppMapper.getFastAppListByUserId(paramMap);
         UserAppVo userAppVo = new UserAppVo();
-        userAppVo.setUserFastAppList(fastAppListByUserId);
+        userAppVo.setUserFastAppList(fastAppList);
         userAppVo.setUserAppList(appList);
         return userAppVo;
     }

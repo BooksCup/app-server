@@ -60,7 +60,6 @@ public class FabricCheckTaskController {
 
     }
 
-
     /**
      * 添加面料盘点任务信息
      *
@@ -150,5 +149,6 @@ public class FabricCheckTaskController {
         return new ResponseEntity<>(ResponseMsg.
                 UPDATE_SUCCESS.getResponseCode(), HttpStatus.OK);
     }
+
 
 }

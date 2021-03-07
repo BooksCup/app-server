@@ -40,6 +40,15 @@ public class StockApplicationController {
         return responseEntity;
     }
 
+    /**
+     * 获取出入库申请分页信息
+     *
+     * @param enterpriseId 企业ID
+     * @param stockType    出入库类型
+     * @param pageNum      当前分页数
+     * @param pageSize     分页大小
+     * @return 出入库申请分页信息
+     */
     @ApiOperation(value = "获取出入库申请分页信息", notes = "获取出入库申请分页信息")
     @GetMapping(value = "")
     public ResponseEntity<PageInfo<StockApplication>> getStockApplicationList(

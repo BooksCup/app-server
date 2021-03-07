@@ -3,6 +3,7 @@ package com.bc.app.server.service;
 
 import com.bc.app.server.entity.FabricCheckLotInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,4 +28,11 @@ public interface FabricCheckLotInfoService {
      */
     void updateById(Map<String, String> map);
 
+    /**
+     * 根据任务表id查询缸号集合
+     *
+     * @param map 入参
+     * @return 缸号集合
+     */
+    List<String> getLotNoListByCheckTaskId(Map<String, String> map);
 }

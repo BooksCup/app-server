@@ -40,4 +40,5 @@ public interface FabricCheckTaskMapper {
      * @param map 入参信息
      */
     void updateById(Map<String, String> map);
+
 }

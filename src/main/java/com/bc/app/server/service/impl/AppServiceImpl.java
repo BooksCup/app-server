@@ -41,7 +41,7 @@ public class AppServiceImpl implements AppService {
         userAppMapper.deleteAppByUserId(userId);
         if (CollectionUtils.isNotEmpty(appList)) {
             for (App app : appList) {
-                app.setUaId(CommonUtil.generateId());
+                app.setUserAppId(CommonUtil.generateId());
             }
             appMapper.batchAddUserApp(appList);
         }

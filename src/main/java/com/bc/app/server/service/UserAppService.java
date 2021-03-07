@@ -4,7 +4,6 @@ import com.bc.app.server.entity.App;
 import com.bc.app.server.vo.appcontrollervo.UserAppVo;
 import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,10 +31,10 @@ public interface UserAppService {
     PageInfo<App> getAppList(Map<String, String> paramMap, Integer pageNum, Integer pageSize);
 
     /**
-     * 获取个人应用市场所有模块
+     * 获取个人所有应用
      *
-     * @param map 入参
-     * @return 个人应用市场所有模块
+     * @param paramMap 参数map
+     * @return 个人所有应用
      */
-    UserAppVo getAppListByUserId(Map<String, String> map);
+    UserAppVo getAppListByUserId(Map<String, String> paramMap);
 }

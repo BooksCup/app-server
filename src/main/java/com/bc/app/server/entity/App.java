@@ -17,10 +17,8 @@ public class App {
     private String describes;
     private Integer sort;
 
-    private String uaId;
-    private String uaAppId;
+    private String userAppId;
     private String isInstall;
-    private String uaSort;
     private String userId;
     private String isFast;
 

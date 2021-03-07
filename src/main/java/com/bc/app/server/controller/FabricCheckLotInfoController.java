@@ -1,6 +1,7 @@
 package com.bc.app.server.controller;
 
 
+import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.FabricCheckLotInfo;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.FabricCheckLotInfoService;
@@ -11,7 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.PathParam;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,7 +67,6 @@ public class FabricCheckLotInfoController {
         return responseEntity;
     }
 
-
     /**
      * 更新面料盘点缸信息表信息
      *
@@ -94,4 +97,26 @@ public class FabricCheckLotInfoController {
         }
         return responseEntity;
     }
+
+    /**
+     * 根据任务表id查询缸号集合
+     *
+     * @param checkTaskId checkTaskId
+     * @return 缸号集合
+     */
+    @ApiOperation(value = "根据任务表id查询缸号集合", notes = "根据任务表id查询缸号集合")
+    @GetMapping(value = "/getLotNoList/{checkTaskId}")
+    public ResponseEntity<List<String>> getLotNoListByCheckTaskId(
+            @PathVariable(value = "checkTaskId") String checkTaskId) {
+        try {
+            Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+            map.put("checkTaskId", checkTaskId);
+            List<String> lotNoList =  fabricCheckLotInfoService.getLotNoListByCheckTaskId(map);
+            return new ResponseEntity<>(lotNoList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

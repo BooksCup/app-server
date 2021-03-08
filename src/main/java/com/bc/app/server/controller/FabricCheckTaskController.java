@@ -1,6 +1,7 @@
 package com.bc.app.server.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.FabricCheckTask;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.FabricCheckTaskService;
@@ -11,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -39,11 +43,14 @@ public class FabricCheckTaskController {
     public ResponseEntity<PageInfo<FabricCheckTask>> getFabricCheckTaskPageInfo(
             @RequestParam String enterpriseId,
             @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String modifyTimeApply,
+            @RequestParam(required = false) String modifyTimeExamine,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         ResponseEntity<PageInfo<FabricCheckTask>> responseEntity;
         try {
-            PageInfo<FabricCheckTask> pageInfo = fabricCheckTaskService.getFabricCheckTaskPageInfo(enterpriseId, keyword, pageNum, pageSize);
+            PageInfo<FabricCheckTask> pageInfo = fabricCheckTaskService.getFabricCheckTaskPageInfo(enterpriseId, keyword, pageNum, pageSize,
+                    modifyTimeApply, modifyTimeExamine);
             responseEntity = new ResponseEntity<>(pageInfo, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,10 +87,11 @@ public class FabricCheckTaskController {
             @RequestParam(required = false) String goodsPhotos,
             @RequestParam(required = false) String relatedCompanyName,
             @RequestParam(required = false) String relatedCompanyShortName,
+            @RequestParam(required = false) String deliveryDate,
             @RequestParam(required = false) String orderNo,
             @RequestParam(required = false) String orderTheme) {
         FabricCheckTask fabricCheckTask = new FabricCheckTask(goodsName, goodsNo, goodsPhotos, goodsId, relatedCompanyName,
-                relatedCompanyShortName, orderNo, orderTheme, orderId, relatedCompanyId, enterpriseId);
+                relatedCompanyShortName, orderNo, orderTheme, orderId, relatedCompanyId, enterpriseId, deliveryDate);
         ResponseEntity<String> responseEntity;
         try {
             fabricCheckTaskService.addFabricCheckTask(fabricCheckTask);
@@ -117,6 +125,30 @@ public class FabricCheckTaskController {
             return new ResponseEntity<>(ResponseMsg.
                     UPDATE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    /**
+     * 删除数据
+     *
+     * @param id id
+     * @return
+     */
+    @ApiOperation(value = "删除数据", notes = "删除数据")
+    @PutMapping(value = "/updateById")
+    public ResponseEntity<String> updateById(@RequestParam(value = "id") String id) {
+        try {
+            Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+            map.put("is_delete", "0");
+            map.put("id", id);
+            fabricCheckTaskService.updateById(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseMsg.
+                    UPDATE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(ResponseMsg.
+                UPDATE_SUCCESS.getResponseCode(), HttpStatus.OK);
     }
 
 }

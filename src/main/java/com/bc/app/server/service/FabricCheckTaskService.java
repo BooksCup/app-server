@@ -3,6 +3,8 @@ package com.bc.app.server.service;
 import com.bc.app.server.entity.FabricCheckTask;
 import com.github.pagehelper.PageInfo;
 
+import java.util.Map;
+
 /**
  * 面料盘点任务应用软件
  *
@@ -26,7 +28,7 @@ public interface FabricCheckTaskService {
      * @param pageSize     每页显示个数
      * @return 面料盘点任务分页信息
      */
-    PageInfo<FabricCheckTask> getFabricCheckTaskPageInfo(String enterpriseId, String keyword, Integer pageNum, Integer pageSize);
+    PageInfo<FabricCheckTask> getFabricCheckTaskPageInfo(String enterpriseId, String keyword, Integer pageNum, Integer pageSize, String modifyTimeApply, String modifyTimeExamine);
 
     /**
      * 通过id来更新数据
@@ -34,4 +36,11 @@ public interface FabricCheckTaskService {
      * @param fabricCheckTask 任务数据
      */
     void batchUpdateFabricCheckTaskById(FabricCheckTask fabricCheckTask);
+
+    /**
+     * 更新数据
+     *
+     * @param map 入参信息
+     */
+    void updateById(Map<String, String> map);
 }

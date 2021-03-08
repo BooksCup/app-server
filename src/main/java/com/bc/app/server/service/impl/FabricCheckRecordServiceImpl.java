@@ -1,9 +1,11 @@
 package com.bc.app.server.service.impl;
 
+import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.FabricCheckRecord;
 import com.bc.app.server.entity.FabricCheckRecordProblem;
 import com.bc.app.server.mapper.FabricCheckRecordMapper;
 import com.bc.app.server.mapper.FabricCheckRecordProblemMapper;
+import com.bc.app.server.mapper.FabricCheckTaskMapper;
 import com.bc.app.server.service.FabricCheckRecordService;
 import com.bc.app.server.utils.CommonUtil;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.FabricQcRecordAllByCheckLIIdVo;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +32,12 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
 
     @Autowired
     private FabricCheckRecordMapper fabricCheckRecordMapper;
+
     @Autowired
     FabricCheckRecordProblemMapper fabricCheckRecordProblemMapper;
+
+    @Autowired
+    FabricCheckTaskMapper fabricCheckTaskMapper;
 
     /**
      * 通过id查询数据
@@ -82,15 +89,15 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
      * @return
      */
     @Override
-    public List<FabricCheckRecord>  insertFabricQcRecords(List<FabricCheckRecord> list) {
+    public List<FabricCheckRecord> insertFabricQcRecords(List<FabricCheckRecord> list, String modifyTime, String fabricCheckTaskId) {
         if (CollectionUtils.isNotEmpty(list)) {
             List<FabricCheckRecord> noIdList = new ArrayList<>();
             List<FabricCheckRecord> haveIdList = new ArrayList<>();
             for (FabricCheckRecord fabricCheckRecord : list) {
-                if (StringUtils.isEmpty(fabricCheckRecord.getId())){
+                if (StringUtils.isEmpty(fabricCheckRecord.getId())) {
                     fabricCheckRecord.setId(CommonUtil.generateId());
                     noIdList.add(fabricCheckRecord);
-                }else {
+                } else {
                     haveIdList.add(fabricCheckRecord);
                 }
             }
@@ -102,28 +109,18 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
             if (CollectionUtils.isNotEmpty(noIdList)) {
                 fabricCheckRecordMapper.insertFabricQcRecords(noIdList);
             }
+            Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+            map.put("id",fabricCheckTaskId);
+            if ("modifyTimeApply".equals(modifyTime)) {
+                map.put("modifyTimeApply", "modifyTimeApply");
+                fabricCheckTaskMapper.updateById(map);
+            } else if ("modifyTimeExamine".equals(modifyTime)) {
+                map.put("modifyTimeExamine", "modifyTimeExamine");
+                fabricCheckTaskMapper.updateById(map);
+            }
         }
         return list;
     }
-
-//    /**
-//     * 通过面料盘点-缸信息表id获取检查记录表信息
-//     *
-//     * @param map 入参
-//     * @return 检查记录表信息集合
-//     */
-//    @Override
-//    public List<FabricQcRecordAllByCheckLIIdVo> getFabricQcRecordAllByCheckLIId(Map<String, String> map) {
-//        List<FabricQcRecordAllByCheckLIIdVo> list = fabricCheckRecordMapper.getFabricQcRecordGroupDeliveryDates(map);
-//        if (CollectionUtils.isNotEmpty(list)) {
-//            for (FabricQcRecordAllByCheckLIIdVo f : list) {
-//                map.put("deliveryDates", f.getDeliveryDates());
-//                List<FabricCheckRecord> fabricQcRecordList = fabricCheckRecordMapper.getFabricQcRecordAllByCheckLIId(map);
-//                f.setFabricCheckRecords(fabricQcRecordList);
-//            }
-//        }
-//        return list;
-//    }
 
     /**
      * 通过面料盘点-缸信息表id获取检查记录表信息

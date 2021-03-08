@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.NumberSequenceMapper">
+
+    <insert id="insert" parameterType="NumberSequence">
+        INSERT INTO t_number_sequence
+        (
+        id,
+        `type`,
+        user_id,
+        enterprise_id,
+        val
+        )
+        VALUES
+        (
+        #{id},
+        #{type},
+        #{userId},
+        #{enterpriseId},
+        #{val}
+        )
+    </insert>
+
+    <!-- 根据类型获取最新的编号对象 -->
+    <select id="getByType" parameterType="String" resultType="NumberSequence">
+        SELECT
+        *
+        FROM
+        t_number_sequence
+        WHERE `type` = #{type}
+        AND enterprise_id = #{enterpriseId}
+        ORDER BY val DESC
+        limit 0,1
+    </select>
+
+    <!-- 更新最新的值 -->
+    <update id="updateVal" parameterType="String">
+        UPDATE
+        t_number_sequence
+        SET
+        val = val + 1
+        WHERE
+        id = #{id}
+    </update>
+
+
+</mapper>

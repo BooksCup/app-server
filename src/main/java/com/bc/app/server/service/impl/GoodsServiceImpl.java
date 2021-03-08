@@ -13,11 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
- * 商品应用程序
+ * 物品
  *
- * @author qiu
+ * @author zhou
  */
 @Service("goodsService")
 public class GoodsServiceImpl implements GoodsService {
@@ -26,13 +25,13 @@ public class GoodsServiceImpl implements GoodsService {
     GoodsMapper goodsMapper;
 
     /**
-     * 获取商品列表
+     * 获取物品列表
      *
      * @param enterpriseId 企业id
      * @param keyword      搜索关键字
      * @param pageNum      当前页
      * @param pageSize     每页显示个数
-     * @return 商品列表
+     * @return 物品列表
      */
     @Override
     public PageInfo<Goods> getGoodsList(String enterpriseId, String keyword, Integer pageNum, Integer pageSize) {
@@ -42,6 +41,17 @@ public class GoodsServiceImpl implements GoodsService {
         PageHelper.startPage(pageNum, pageSize);
         List<Goods> page = goodsMapper.getGoodsList(map);
         return new PageInfo<>(page);
+    }
+
+    /**
+     * 根据物品ID获取物品
+     *
+     * @param goodsId 物品ID
+     * @return 物品
+     */
+    @Override
+    public Goods getGoodsById(String goodsId) {
+        return goodsMapper.selectById(goodsId);
     }
 
 }

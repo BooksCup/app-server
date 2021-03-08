@@ -22,4 +22,12 @@ public interface GoodsService {
      */
     PageInfo<Goods> getGoodsList(String enterpriseId, String keyword, Integer pageNum, Integer pageSize);
 
+    /**
+     * 根据物品ID获取物品
+     *
+     * @param goodsId 物品ID
+     * @return 物品
+     */
+    Goods getGoodsById(String goodsId);
+
 }

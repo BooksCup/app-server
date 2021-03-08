@@ -1,6 +1,7 @@
 package com.bc.app.server.entity;
 
 import com.bc.app.server.utils.CommonUtil;
+import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
 import lombok.Data;
 
 import java.util.List;
@@ -25,11 +26,9 @@ public class FabricCheckTask {
     private String orderId;
     private String orderNo;
     private String orderTheme;
+    private String deliveryDate;
     private List<FabricCheckLotInfo> fabricCheckLotInfoList;
-    /**
-     * 0盘点中; 1已完成
-     */
-    private String status;
+
 
     private String isDelete;
     private String createDate;
@@ -37,7 +36,7 @@ public class FabricCheckTask {
     public FabricCheckTask(String goodsName, String goodsNo, String goodsPhotos, String goodsId,
                            String relatedCompanyName, String relatedCompanyShortName,
                            String orderNo, String orderTheme, String orderId, String relatedCompanyId,
-                           String enterpriseId) {
+                           String enterpriseId, String deliveryDate) {
         this.id = CommonUtil.generateId();
         this.goodsName = goodsName;
         this.goodsNo = goodsNo;
@@ -50,6 +49,7 @@ public class FabricCheckTask {
         this.orderId = orderId;
         this.relatedCompanyId = relatedCompanyId;
         this.enterpriseId = enterpriseId;
+        this.deliveryDate = deliveryDate;
     }
 
     public FabricCheckTask() {

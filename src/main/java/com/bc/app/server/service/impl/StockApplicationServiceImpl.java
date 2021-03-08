@@ -9,6 +9,8 @@ import com.bc.app.server.mapper.StockApplicationMapper;
 import com.bc.app.server.mapper.StockApplicationOrderMapper;
 import com.bc.app.server.service.StockApplicationService;
 import com.bc.app.server.utils.CommonUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -198,10 +200,19 @@ public class StockApplicationServiceImpl implements StockApplicationService {
         }
     }
 
-
+    /**
+     * 获取出入库申请分页信息
+     *
+     * @param paramMap 参数map
+     * @param pageNum  当前分页数
+     * @param pageSize 每页数量
+     * @return 出入库申请分页信息
+     */
     @Override
-    public List<StockApplication> getStockApplicationList(Map<String, Object> paramsMap) {
-        return stockApplicationMapper.getStockApplicationList(paramsMap);
+    public PageInfo<StockApplication> getStockApplicationList(Map<String, Object> paramMap, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<StockApplication> stockApplicationList = stockApplicationMapper.getStockApplicationList(paramMap);
+        return new PageInfo<>(stockApplicationList);
     }
 
     @Override

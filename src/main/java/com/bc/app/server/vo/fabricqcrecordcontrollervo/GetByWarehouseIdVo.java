@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class GetByWarehouseIdVo implements Serializable {
 
-    private String  cylinderNumber;
+    private String  totalNum;
     private String  lengthBeforeTotal;
     private String lengthAfterTotal;
     private String weightBeforeTotal;

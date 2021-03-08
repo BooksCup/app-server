@@ -46,13 +46,17 @@
         select * from t_goods_spec where goods_id = #{goodsId}
     </select>
 
-    <select id="selectById" parameterType="string" resultType="com.bc.app.server.entity.Goods">
+    <select id="selectById" parameterType="string" resultMap="GoodsMap">
         select
         g.id,
         g.goods_name as goodsName,
         g.goods_photos as goodsPhotos,
         g.goods_no as goodsNo,
         g.attr_list as attrList,
+        g.residual_number as stockNum,
+        g.goods_unit as goodsUnit,
+        g.x,
+        g.y,
         gt.id as goodsTypeId,
         gt.name as goodsTypeName
         from
@@ -60,6 +64,5 @@
         left join t_goods_type gt on  gt.id = g.goods_type_id
         where g.id=#{id}
     </select>
-
 
 </mapper>

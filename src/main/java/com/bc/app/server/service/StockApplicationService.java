@@ -2,8 +2,8 @@ package com.bc.app.server.service;
 
 import com.bc.app.server.entity.StockApplication;
 import com.bc.app.server.entity.vo.StockApplicationVo;
+import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,11 +18,14 @@ public interface StockApplicationService {
     void insert(StockApplication stockApplication, String specNums);
 
     /**
-     * 获取列表
+     * 获取出入库申请分页信息
      *
-     * @return
+     * @param paramMap 参数map
+     * @param pageNum  当前分页数
+     * @param pageSize 每页数量
+     * @return 出入库申请分页信息
      */
-    List<StockApplication> getStockApplicationList(Map<String, Object> paramsMap);
+    PageInfo<StockApplication> getStockApplicationList(Map<String, Object> paramMap, Integer pageNum, Integer pageSize);
 
     /**
      * 根据ID查询

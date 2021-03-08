@@ -103,6 +103,7 @@ public class UserController {
             @RequestParam String enterpriseId,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        logger.info("[getUserPageInfo] pageNum: " + pageNum + ", pageSize: " + pageSize);
         ResponseEntity<PageInfo<User>> responseEntity;
         Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         map.put("enterpriseId", enterpriseId);

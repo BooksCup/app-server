@@ -74,12 +74,16 @@ public class FabricCheckLotInfoController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateById(
             @PathVariable String id,
-            @RequestParam(required = false) String isDelete) {
+            @RequestParam(required = false) String isDelete,
+            @RequestParam(required = false) String fabricCheckTaskId,
+            @RequestParam(required = false) String status) {
         ResponseEntity<String> responseEntity;
         try {
             Map<String, String> map = new HashMap<>();
             map.put("id", id);
             map.put("isDelete", isDelete);
+            map.put("status", status);
+            map.put("fabricCheckTaskId", fabricCheckTaskId);
             fabricCheckLotInfoService.updateById(map);
             responseEntity = new ResponseEntity<>(ResponseMsg.
                     UPDATE_SUCCESS.getResponseCode(), HttpStatus.OK);

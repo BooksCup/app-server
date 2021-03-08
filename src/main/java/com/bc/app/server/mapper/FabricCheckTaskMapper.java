@@ -33,4 +33,11 @@ public interface FabricCheckTaskMapper {
      * @param fabricCheckTask 任务数据
      */
     void batchUpdateFabricCheckTaskById(FabricCheckTask fabricCheckTask);
+
+    /**
+     * 根据id更新数据
+     *
+     * @param map 入参信息
+     */
+    void updateById(Map<String, String> map);
 }

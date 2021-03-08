@@ -2,10 +2,13 @@ package com.bc.app.server.service.impl;
 
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.FabricCheckLotInfo;
+import com.bc.app.server.entity.FabricCheckRecord;
 import com.bc.app.server.entity.FabricCheckTask;
 import com.bc.app.server.mapper.FabricCheckLotInfoMapper;
+import com.bc.app.server.mapper.FabricCheckRecordMapper;
 import com.bc.app.server.mapper.FabricCheckTaskMapper;
 import com.bc.app.server.service.FabricCheckTaskService;
+import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
@@ -31,6 +34,9 @@ public class FabricCheckTaskServiceImpl implements FabricCheckTaskService {
     @Autowired
     FabricCheckLotInfoMapper fabricCheckLotInfoMapper;
 
+    @Autowired
+    FabricCheckRecordMapper fabricCheckRecordMapper;
+
     /**
      * 添加面料盘点任务信息
      *
@@ -51,10 +57,13 @@ public class FabricCheckTaskServiceImpl implements FabricCheckTaskService {
      * @return 面料盘点任务分页信息
      */
     @Override
-    public PageInfo<FabricCheckTask> getFabricCheckTaskPageInfo(String enterpriseId, String keyword, Integer pageNum, Integer pageSize) {
+    public PageInfo<FabricCheckTask> getFabricCheckTaskPageInfo(String enterpriseId, String keyword, Integer pageNum,
+                                                                Integer pageSize, String modifyTimeApply,String modifyTimeExamine) {
         Map<String, String> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         paramMap.put("enterpriseId", enterpriseId);
         paramMap.put("keyword", keyword);
+        paramMap.put("modifyTimeApply", modifyTimeApply);
+        paramMap.put("modifyTimeExamine", modifyTimeExamine);
         PageHelper.startPage(pageNum, pageSize);
         List<FabricCheckTask> fabricCheckTaskList = fabricCheckTaskMapper.getFabricCheckTaskPageInfo(paramMap);
         if (CollectionUtils.isNotEmpty(fabricCheckTaskList)) {
@@ -62,6 +71,14 @@ public class FabricCheckTaskServiceImpl implements FabricCheckTaskService {
                 Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
                 map.put("checkTaskId", fabricCheckTask.getId());
                 List<FabricCheckLotInfo> fabricCheckLotInfoList = fabricCheckLotInfoMapper.selectListByCheckTaskId(map);
+                if (CollectionUtils.isNotEmpty(fabricCheckLotInfoList)) {
+                    for (FabricCheckLotInfo fabricCheckLotInfo : fabricCheckLotInfoList) {
+                        FabricCheckRecord fabricCheckRecord = new FabricCheckRecord();
+                        fabricCheckRecord.setCheckLotInfoId(fabricCheckLotInfo.getId());
+                        GetByWarehouseIdVo countData = fabricCheckRecordMapper.getCountData(fabricCheckRecord);
+                        fabricCheckLotInfo.setGetByWarehouseIdVo(countData);
+                    }
+                }
                 fabricCheckTask.setFabricCheckLotInfoList(fabricCheckLotInfoList);
             }
         }
@@ -76,6 +93,16 @@ public class FabricCheckTaskServiceImpl implements FabricCheckTaskService {
     @Override
     public void batchUpdateFabricCheckTaskById(FabricCheckTask fabricCheckTask) {
         fabricCheckTaskMapper.batchUpdateFabricCheckTaskById(fabricCheckTask);
+    }
+
+    /**
+     * 通过id更新数据
+     *
+     * @param map 入参信息
+     */
+    @Override
+    public void updateById(Map<String, String> map) {
+        fabricCheckTaskMapper.updateById(map);
     }
 
 }

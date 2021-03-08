@@ -4,7 +4,15 @@
 
     <update id="updateById">
         update t_fabric_check_lot_info
-        set is_delete=#{isDelete}
+        <trim prefix="SET" suffixOverrides=",">
+            <if test='isDelete != null and isDelete != "" '>
+                is_delete = #{isDelete},
+            </if>
+            <if test='status != null and status != "" '>
+                status = #{status},
+            </if>
+            modify_time = now()
+        </trim>
         where id=#{id}
     </update>
 
@@ -19,7 +27,8 @@
         weight,
         weight_unit ,
         is_delete,
-        create_date
+        create_date,
+        modify_time
         )
         values
         (
@@ -31,6 +40,7 @@
         #{weight},
         #{weightUnit},
         0,
+        now(),
         now()
         )
     </select>
@@ -41,6 +51,7 @@
         id,
         fabric_check_task_id as fabricCheckTaskId,
         lot_no as lotNo,
+        status,
         num ,
         length,
         weight,
@@ -48,6 +59,7 @@
         from
         t_fabric_check_lot_info
         where is_delete='0' and  fabric_check_task_id=#{checkTaskId}
+        order by modify_time desc
     </select>
 
 </mapper>

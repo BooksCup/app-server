@@ -150,12 +150,14 @@ public class FabricCheckRecordController {
     @ApiOperation(value = "批量保存检查记录信息", notes = "批量保存检查记录信息")
     @PostMapping(value = "")
     public ResponseEntity<List<FabricCheckRecord>> insertFabricQcRecords(
-            @RequestParam String fabricCheckRecords) {
+            @RequestParam String fabricCheckRecords,
+            @RequestParam String modifyTime,
+            @RequestParam String fabricCheckTaskId) {
 
         ResponseEntity<List<FabricCheckRecord>> responseEntity;
         try {
             List<FabricCheckRecord> list = JSON.parseArray(fabricCheckRecords, FabricCheckRecord.class);
-            List<FabricCheckRecord> fabricCheckRecordList = fabricCheckRecordService.insertFabricQcRecords(list);
+            List<FabricCheckRecord> fabricCheckRecordList = fabricCheckRecordService.insertFabricQcRecords(list,modifyTime,fabricCheckTaskId);
             responseEntity = new ResponseEntity<>(fabricCheckRecordList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

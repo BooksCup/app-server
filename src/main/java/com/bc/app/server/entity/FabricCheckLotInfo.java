@@ -1,5 +1,6 @@
 package com.bc.app.server.entity;
 
+import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
 import lombok.Data;
 
 /**
@@ -15,7 +16,7 @@ public class FabricCheckLotInfo {
     /**
      * 缸号
      */
-        private String lotNo;
+    private String lotNo;
 
     /**
      * 卷数
@@ -46,5 +47,12 @@ public class FabricCheckLotInfo {
      * 删除标记
      */
     private String isDelete;
+
+    /**
+     * 0盘点未完成，1盘点完成
+     */
+    private String status;
+
+    private GetByWarehouseIdVo getByWarehouseIdVo;
 
 }

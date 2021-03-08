@@ -5,15 +5,14 @@ import com.bc.app.server.entity.StockApplication;
 import com.bc.app.server.entity.vo.StockApplicationVo;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.StockApplicationService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,7 +31,7 @@ public class StockApplicationController {
             @RequestBody StockApplication stockApplication) {
         ResponseEntity<String> responseEntity;
         try {
-            stockApplicationService.insert(stockApplication,null);
+            stockApplicationService.insert(stockApplication, null);
             responseEntity = new ResponseEntity<>(ResponseMsg.ADD_SUCCESS.getResponseCode(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,21 +40,23 @@ public class StockApplicationController {
         return responseEntity;
     }
 
-    @ApiOperation(value = "获取出入库列表", notes = "获取出入库列表")
+    @ApiOperation(value = "获取出入库申请分页信息", notes = "获取出入库申请分页信息")
     @GetMapping(value = "")
-    public ResponseEntity<List<StockApplication>> getStockApplicationList(
+    public ResponseEntity<PageInfo<StockApplication>> getStockApplicationList(
             @RequestParam String enterpriseId,
-            @RequestParam String stockType) {
-        ResponseEntity<List<StockApplication>> responseEntity;
+            @RequestParam String stockType,
+            @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        ResponseEntity<PageInfo<StockApplication>> responseEntity;
         try {
-            Map<String, Object> paramsMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
-            paramsMap.put("enterpriseId", enterpriseId);
-            paramsMap.put("stockType", stockType);
-            List<StockApplication> stockApplicationList = stockApplicationService.getStockApplicationList(paramsMap);
-            responseEntity = new ResponseEntity<>(stockApplicationList, HttpStatus.OK);
+            Map<String, Object> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+            paramMap.put("enterpriseId", enterpriseId);
+            paramMap.put("stockType", stockType);
+            PageInfo<StockApplication> stockApplicationPageInfo = stockApplicationService.getStockApplicationList(paramMap, pageNum, pageSize);
+            responseEntity = new ResponseEntity<>(stockApplicationPageInfo, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            responseEntity = new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>(new PageInfo<>(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

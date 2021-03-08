@@ -15,7 +15,7 @@
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
         <result column="job_name" property="jobName" jdbcType="VARCHAR"/>
         <result column="is_super_admin" property="isSuperAdmin" jdbcType="VARCHAR"/>
-        <result column="role" property="fabricCheckRole" jdbcType="VARCHAR"/>
+        <result column="isFabricCheckAdmin" property="isFabricCheckAdmin" jdbcType="VARCHAR"/>
     </resultMap>
     <insert id="addUserAppList">
         insert into t_user_app
@@ -49,10 +49,10 @@
         u.*,
         e.name as enterprise_name,
         e.address as enterprise_address,
-        crc.role as role
+        crc.role as isFabricCheckAdmin
         from t_user u
         left join t_enterprise e on u.enterprise_id = e.id
-         left join t_fabric_check_role_config crc on crc.user_id = u.id and crc.is_delete = '0'
+        left join t_fabric_check_role_config crc on crc.user_id = u.id and crc.is_delete = '0'
         where u.phone = #{phone}
         and u.password = #{password}
     </select>
@@ -74,12 +74,12 @@
         u.name,
         u.avatar,
         u.job_name as jobName,
-        d.name as  departmentName,
+        d.name as departmentName,
         e.name as enterpriseName
-        from t_user  u
+        from t_user u
         left join t_department d on d.id = u.department_id and d.delete_status = '0'
         left join t_enterprise e on e.id = u.enterprise_id and e.delete_status = '0'
-        where  u.job_status BETWEEN 1 AND 4  and u.enterprise_id = #{enterpriseId}
+        where u.job_status BETWEEN 1 AND 4 and u.enterprise_id = #{enterpriseId}
         ORDER BY u.create_time DESC
     </select>
 

@@ -25,10 +25,10 @@ public interface StockApplicationMapper {
     /**
      * 获取出入库列表
      *
-     * @param paramsMap
+     * @param paramMap
      * @return
      */
-    List<StockApplication> getStockApplicationList(Map<String, Object> paramsMap);
+    List<StockApplication> getStockApplicationList(Map<String, Object> paramMap);
 
     /**
      * 详情

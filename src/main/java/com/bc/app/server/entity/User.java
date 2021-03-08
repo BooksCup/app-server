@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author zhou
  */
 @Data
-public class User implements Serializable{
+public class User implements Serializable {
 
 //    private static final long serialVersionUID = 7860006739676031050L;
 
@@ -179,4 +179,9 @@ public class User implements Serializable{
     private String accountId;
     private String enterpriseAddress;
     private String fabricCheckRole;
+
+    /**
+     * 面料验货权限
+     */
+    private String isFabricCheckAdmin;
 }

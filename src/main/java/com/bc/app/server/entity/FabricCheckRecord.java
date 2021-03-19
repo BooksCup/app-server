@@ -28,6 +28,9 @@ public class FabricCheckRecord implements Serializable {
     private String createTime;
     private String modifyTime;
     private String isDelete;
+    private  String widthTop;
+    private  String widthMiddle;
+    private  String widthBottom;
 
     private FabricCheckRecordProblem fabricCheckRecordProblem;
 }

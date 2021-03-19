@@ -1,5 +1,6 @@
 package com.bc.app.server.service;
 
+import com.bc.app.server.entity.Goods;
 import com.bc.app.server.entity.StockApplication;
 import com.bc.app.server.entity.vo.StockApplicationVo;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +19,11 @@ public interface StockApplicationService {
     void insert(StockApplication stockApplication, String specNums);
 
     /**
+     * 修改
+     */
+    void update(StockApplication stockApplication, String specNums);
+
+    /**
      * 获取出入库申请分页信息
      *
      * @param paramMap 参数map
@@ -34,4 +40,19 @@ public interface StockApplicationService {
      * @return
      */
     StockApplicationVo findById(String id);
+
+    /**
+     * 通过物品id查询stock信息
+     *
+     * @param goodsId 物品id
+     * @return
+     */
+    Goods getStockByGoodsId(String goodsId);
+
+    /**
+     * 修改出入库详情
+     *
+     * @param stockApplication 详情信息
+     */
+    void updateStockApplication(StockApplication stockApplication);
 }

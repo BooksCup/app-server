@@ -3,6 +3,7 @@ package com.bc.app.server.entity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author whl
@@ -19,6 +20,11 @@ public class StockApplicationInRecord implements Serializable {
      * 仓库ID
      */
     private String wareHouseId;
+
+    /**
+     * 仓库名称
+     */
+    private String wareHouseName;
 
     /**
      * 物品ID
@@ -49,11 +55,13 @@ public class StockApplicationInRecord implements Serializable {
      * 库存数量
      */
     private String residualNumber;
+    private String totalResidualNumber;
 
     /**
      * 物品规格的价格
      */
     private String price;
+    private String totalPrice;
 
     /**
      * 创建者
@@ -84,4 +92,21 @@ public class StockApplicationInRecord implements Serializable {
      * 币种
      */
     private String currency;
+
+    private String x;
+    private String y;
+    private String bizType;
+    private String remark;
+
+
+    private String goodsPhotos;
+    private String goodsName;
+    private String goodsNo;
+    private String goodsTypeName;
+
+
+    /**
+     * 相关订单
+     */
+    private List<StockApplicationOrder> stockApplicationOrderList;
 }

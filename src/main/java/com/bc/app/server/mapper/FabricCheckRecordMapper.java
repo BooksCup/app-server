@@ -31,7 +31,7 @@ public interface FabricCheckRecordMapper {
      * @param fabricCheckRecord
      * @return
      */
-    void addRecord(FabricCheckRecord fabricCheckRecord);
+    void insert(FabricCheckRecord fabricCheckRecord);
 
     /**
      * 批量保存检查记录信息
@@ -41,7 +41,7 @@ public interface FabricCheckRecordMapper {
      */
     Integer insertFabricQcRecords(List<FabricCheckRecord> fabricCheckRecords);
 
-    Integer updateByid(Map<String, String> map);
+    Integer updateByid(FabricCheckRecord fabricCheckRecords);
 
     Integer batchUpdateFabricCheckRecordByIds(List<FabricCheckRecord> list);
 

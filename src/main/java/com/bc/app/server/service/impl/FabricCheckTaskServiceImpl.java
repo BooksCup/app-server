@@ -71,14 +71,6 @@ public class FabricCheckTaskServiceImpl implements FabricCheckTaskService {
                 Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
                 map.put("checkTaskId", fabricCheckTask.getId());
                 List<FabricCheckLotInfo> fabricCheckLotInfoList = fabricCheckLotInfoMapper.selectListByCheckTaskId(map);
-                if (CollectionUtils.isNotEmpty(fabricCheckLotInfoList)) {
-                    for (FabricCheckLotInfo fabricCheckLotInfo : fabricCheckLotInfoList) {
-                        FabricCheckRecord fabricCheckRecord = new FabricCheckRecord();
-                        fabricCheckRecord.setCheckLotInfoId(fabricCheckLotInfo.getId());
-                        GetByWarehouseIdVo countData = fabricCheckRecordMapper.getCountData(fabricCheckRecord);
-                        fabricCheckLotInfo.setGetByWarehouseIdVo(countData);
-                    }
-                }
                 fabricCheckTask.setFabricCheckLotInfoList(fabricCheckLotInfoList);
             }
         }

@@ -43,7 +43,7 @@ public class GoodsSpec implements Serializable {
     /**
      * 排序
      */
-    private int sort;
+    private String sort;
 
     /**
      * 创建时间
@@ -54,4 +54,12 @@ public class GoodsSpec implements Serializable {
      * 企业ID
      */
     private String enterpriseId;
+
+    /**
+     * 库存数量
+     */
+    private String residualNumber;
+    private String xOld;
+    private String yOld;
+    private String isImport;
 }

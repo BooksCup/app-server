@@ -8,10 +8,11 @@ import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.FabricCheckRecordProblemService;
 import com.bc.app.server.service.FabricCheckRecordService;
 import com.bc.app.server.service.FabricQcWarehouseService;
+import com.bc.app.server.utils.CommonUtil;
+import com.bc.app.server.vo.fabricqcrecordcontrollervo.FabricCheckRecordSearchAllVo;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.FabricQcRecordAllByCheckLIIdVo;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.SelectByIdVo;
-import com.bc.app.server.vo.fabricqcwarehousecontrollervo.UpdateByIdVo;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -157,7 +158,7 @@ public class FabricCheckRecordController {
         ResponseEntity<List<FabricCheckRecord>> responseEntity;
         try {
             List<FabricCheckRecord> list = JSON.parseArray(fabricCheckRecords, FabricCheckRecord.class);
-            List<FabricCheckRecord> fabricCheckRecordList = fabricCheckRecordService.insertFabricQcRecords(list,modifyTime,fabricCheckTaskId);
+            List<FabricCheckRecord> fabricCheckRecordList = fabricCheckRecordService.insertFabricQcRecords(list, modifyTime, fabricCheckTaskId);
             responseEntity = new ResponseEntity<>(fabricCheckRecordList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,7 +166,6 @@ public class FabricCheckRecordController {
         }
         return responseEntity;
     }
-
 
     /**
      * 通过面料盘点-缸信息表id获取检查记录表信息
@@ -175,17 +175,17 @@ public class FabricCheckRecordController {
      */
     @ApiOperation(value = "通过面料盘点-缸信息表id获取检查记录表信息", notes = "通过面料盘点-缸信息表id获取检查记录表信息")
     @GetMapping(value = "/searchAll")
-    public ResponseEntity<List<FabricQcRecordAllByCheckLIIdVo>> getFabricQcRecordAllByCheckLIId(
+    public ResponseEntity<FabricCheckRecordSearchAllVo> getFabricQcRecordAllByCheckLIId(
             @RequestParam String checkLotInfoId) {
-        ResponseEntity<List<FabricQcRecordAllByCheckLIIdVo>> responseEntity;
+        ResponseEntity<FabricCheckRecordSearchAllVo> responseEntity;
         Map<String, String> map = new HashMap<>();
         map.put("checkLotInfoId", checkLotInfoId);
         try {
-            List<FabricQcRecordAllByCheckLIIdVo> pageInfo = fabricCheckRecordService.getFabricQcRecordAllByCheckLIId(map);
+            FabricCheckRecordSearchAllVo pageInfo = fabricCheckRecordService.getFabricQcRecordAllByCheckLIId(map);
             responseEntity = new ResponseEntity<>(pageInfo, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            responseEntity = new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>(new FabricCheckRecordSearchAllVo(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }
@@ -200,20 +200,43 @@ public class FabricCheckRecordController {
     @PutMapping(value = "/updateById")
     public ResponseEntity<String> updateById(
             @RequestParam(value = "id") String id) {
-
-        Map<String, String> map = new HashMap<>();
-        map.put("remark", "");
-        map.put("weightAfter", "");
-        map.put("lengthAfter", "");
-        map.put("isDelete", "1");
-        map.put("id", id);
-        Integer integer = fabricCheckRecordService.updateById(map);
+        FabricCheckRecord fabricCheckRecord = new FabricCheckRecord();
+        fabricCheckRecord.setIsDelete("1");
+        fabricCheckRecord.setId(id);
+        Integer integer = fabricCheckRecordService.updateById(fabricCheckRecord);
         if (integer > 0) {
             return new ResponseEntity<>(ResponseMsg.
                     UPDATE_SUCCESS.getResponseCode(), HttpStatus.OK);
         }
         return new ResponseEntity<>(ResponseMsg.
                 UPDATE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    /**
+     * 添加单个保存检查记录信息
+     *
+     * @param fabricCheckRecordJson json字符串
+     * @return
+     */
+    @ApiOperation(value = "添加单个保存检查记录信息", notes = "添加单个保存检查记录信息")
+    @PostMapping(value = "/insert")
+    public ResponseEntity<FabricCheckRecord> insertFabricQcRecord(
+            @RequestParam String fabricCheckRecordJson,
+            @RequestParam String modifyTime,
+            @RequestParam String fabricCheckTaskId) {
+
+        ResponseEntity<FabricCheckRecord> responseEntity;
+        try {
+            FabricCheckRecord fabricCheckRecord = JSON.parseObject(fabricCheckRecordJson, FabricCheckRecord.class);
+            fabricCheckRecord.setId(CommonUtil.generateId());
+            fabricCheckRecordService.insert(fabricCheckRecord, modifyTime, fabricCheckTaskId);
+            responseEntity = new ResponseEntity<>(fabricCheckRecord, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseEntity = new ResponseEntity<>(new FabricCheckRecord(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.bc.app.server.mapper;
 
 import com.bc.app.server.entity.FabricCheckRecordProblem;
+import com.bc.app.server.entity.ProblemImageClassify;
 
 import java.util.List;
 
@@ -63,4 +64,6 @@ public interface FabricCheckRecordProblemMapper {
      * @param problemPositionId
      */
     void deleteByProblemPositionId(String problemPositionId);
+
+    List<ProblemImageClassify> getCountByTag(List<String> recordIdList);
 }

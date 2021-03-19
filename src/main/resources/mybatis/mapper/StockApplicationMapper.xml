@@ -2,6 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bc.app.server.mapper.StockApplicationMapper">
 
+
+    <resultMap id="stockApplicationInRecordDtMap" type="com.bc.app.server.entity.WareHouse">
+        <result column="w_id" property="id"></result>
+        <result column="w_name" property="name"></result>
+        <result column="contact_name" property="contactName"></result>
+        <result column="contact_phone" property="contactPhone"></result>
+        <result column="province" property="province"></result>
+        <result column="city" property="city"></result>
+        <result column="area" property="area"></result>
+        <result column="address" property="address"></result>
+        <result column="remark" property="remark"></result>
+        <collection property="stockApplicationInRecordList" ofType="com.bc.app.server.entity.StockApplicationInRecord">
+            <result column="id" property="id"></result>
+            <result column="ware_house_id" property="wareHouseId"></result>
+            <result column="goods_id" property="goodsId"></result>
+            <result column="goods_spec_id" property="goodsSpecId"></result>
+            <result column="count" property="count"></result>
+            <result column="stock_application_id" property="stockApplicationId"></result>
+            <result column="residual_number" property="residualNumber"></result>
+            <result column="price" property="price"></result>
+            <result column="create_time" property="createTime"></result>
+            <result column="biz_type" property="bizType"></result>
+            <result column="x" property="x"></result>
+            <result column="y" property="y"></result>
+            <result column="s_remark" property="remark"></result>
+
+        </collection>
+    </resultMap>
+
     <insert id="insert" parameterType="stockApplication">
         INSERT INTO t_stock_application
         (
@@ -11,7 +40,7 @@
         trade_enterprise_id,receiver_id,
         total_amount,
         tax,cost_price,currency,apply_number,
-        audit_user_id,copy_user_id,stock_img,order_id,apply_status
+        audit_user_id,copy_user_id,stock_img,order_id,apply_status,modify_time
         )
         VALUES
         (
@@ -21,9 +50,90 @@
         #{tradeEnterpriseId},#{receiverId},
         #{totalAmount},
         #{tax},#{costPrice},#{currency},#{applyNumber},
-        #{auditUserId},#{copyUserId},#{stockImg},#{orderId},#{applyStatus}
+        #{auditUserId},#{copyUserId},#{stockImg},#{orderId},#{applyStatus},now()
         )
     </insert>
+
+    <update id="update" parameterType="stockApplication">
+        update t_stock_application
+        <trim prefix="SET" suffixOverrides=",">
+            <if test='stockGoodsId != null and stockGoodsId != "" '>
+                stock_goods_id = #{stockGoodsId},
+            </if>
+            <if test='createUserId != null and createUserId != "" '>
+                create_user_id =#{createUserId},
+            </if>
+            <if test='enterpriseId != null and enterpriseId != "" '>
+                enterprise_id = #{enterpriseId},
+            </if>
+            <if test='contactEnterpriseId != null and contactEnterpriseId != "" '>
+                contact_enterprise_id # ={contactEnterpriseId},
+            </if>
+            <if test='remark != null and remark != "" '>
+                remark = #{remark},
+            </if>
+            <if test='stockImg != null and stockImg != "" '>
+                stock_img = #{stockImg},
+            </if>
+            <if test='auditUserId != null and auditUserId != "" '>
+                audit_user_id = #{auditUserId},
+            </if>
+            <if test='copyUserId != null and copyUserId != "" '>
+                copy_user_id = #{copyUserId},
+            </if>
+            <if test='orderId != null and orderId != "" '>
+                order_id = #{orderId},
+            </if>
+            <if test='bizType != null and bizType != "" '>
+                biz_type = #{bizType},
+            </if>
+            <if test='stockType != null and stockType != "" '>
+                stock_type = #{stockType},
+            </if>
+            <if test='applyStatus != null and applyStatus != "" '>
+                apply_status =#{applyStatus},
+            </if>
+            <if test='status != null and status != "" '>
+                status =#{status},
+            </if>
+            <if test='stockNumber != null and stockNumber != "" '>
+                stock_number=#{stockNumber},
+            </if>
+            modify_time=now()
+        </trim>
+        where id = #{id}
+    </update>
+    <update id="updateStockApplicationPackageRecordList">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update t_stock_application_package_record
+            <trim prefix="SET" suffixOverrides=",">
+                <if test='item.count != null and item.count != "" '>
+                    count = #{item.count},
+                </if>
+                <if test='item.applyNumber != null and item.applyNumber != "" '>
+                    apply_number = #{item.applyNumber},
+                </if>
+                <if test='item.goodsId != null and item.goodsId != "" '>
+                    goods_id = #{item.goodsId},
+                </if>
+                <if test='item.goodsSpecId != null and item.goodsSpecId != "" '>
+                    goods_spec_id=#{item.goodsSpecId},
+                </if>
+                <if test='item.boxId != null and item.boxId != "" '>
+                    box_id = #{item.boxId},
+                </if>
+                <if test='item.sort != null and item.sort != "" '>
+                    sort = #{item.sort},
+                </if>
+            </trim>
+            where create_user_id = #{item.createUserId} and stock_application_id = #{item.stockApplicationId} and
+            enterprise_id =#{item.enterpriseId}
+        </foreach>
+    </update>
+    <delete id="deleteBatchStockApplicationPackageRecord">
+        DELETE FROM  t_stock_application_package_record
+        where create_user_id = #{createUserId} and  stock_application_id = #{stockApplicationId} and  enterprise_id =#{enterpriseId}
+    </delete>
 
     <select id="getStockApplicationList" parameterType="map" resultType="stockApplicationVo">
         SELECT
@@ -46,7 +156,11 @@
         AND p.enterprise_id = #{enterpriseId}
         AND p.is_delete = '0'
         AND p.stock_type = #{stockType}
-        ORDER BY p.create_time desc
+        <if test="role != null and role != '' and role == 1">
+            AND p.apply_status <![CDATA[ <> ]]> '0'
+            AND p.apply_status <![CDATA[ <> ]]> '3'
+        </if>
+        ORDER BY p.modify_time desc
     </select>
 
     <select id="findById" parameterType="string" resultType="stockApplicationVo">
@@ -56,6 +170,7 @@
         t.stock_img as stockImg,
         t.order_id as orderId,
         t.stock_number as stockNumber,
+        t.apply_number as applyNumber,
         t.stock_type as stockType,
         t.biz_type as bizType,
         t.contact_enterprise_id as contactEnterpriseId,
@@ -66,15 +181,22 @@
         g.goods_name as goodsName,
         g.goods_photos as goodsPhotos,
         g.goods_no as goodsNo,
+        g.goods_unit as goodsUnit,
         ex.name as exchangeEnterpriseName,
         t.audit_user_id as auditUserId,
-        pu.name as auditUserName,
+        au.name as auditUserName,
         t.copy_user_id as copyUserId,
-        au.name as copyUserName
+        pu.name as copyUserName,
+        g.attr_list as attrList,
+        g.x,
+        g.y,
+        cu.name as createUserName,
+        t.audit_time as auditTime
         FROM t_stock_application t
         LEFT JOIN t_exchange_enterprise ex ON ex.id = t.contact_enterprise_id
         LEFT JOIN t_user pu on pu.id = t.copy_user_id
         LEFT JOIN t_user au on au.id = t.audit_user_id
+        LEFT JOIN t_user cu on cu.id = t.create_user_id
         LEFT JOIN t_goods g on t.stock_goods_id = g.id
         WHERE t.id = #{id}
     </select>
@@ -86,6 +208,56 @@
         LEFT JOIN t_order r on et.master_id = r.id
         LEFT JOIN t_theme t on t.id = r.theme_id
         WHERE et.master_id = #{orderId}
+    </select>
+
+    <select id="selectStockPackageCategory" resultType="com.bc.app.server.entity.StockApplicationPackageCategory">
+        SELECT
+        id
+        FROM  t_stock_application_package_category
+        WHERE   stock_application_id =#{stockApplicationId}
+    </select>
+
+    <select id="selectStockApplicationPackage" resultType="com.bc.app.server.entity.StockApplicationPackage">
+        SELECT
+        id
+        FROM t_stock_application_package
+        WHERE   stock_application_id =#{stockApplicationId}
+    </select>
+    <select id="getStockByGoodsId" resultType="com.bc.app.server.entity.StockApplicationInRecord">
+         SELECT sum(r.residual_number) residualNumber  ,
+        r.goods_id as goodsId,
+        r.goods_spec_id as  goodsSpecId,
+        c.x,
+        c.y
+        from t_stock_application_in_record r
+        left JOIN t_stock_application s on r.stock_application_id = s.id
+        left join t_goods_spec c on c.id = r.goods_spec_id and c.goods_id = r.goods_id
+        where r.goods_id = #{goodsId}
+        and s.status = '1'
+        group by goods_spec_id
+    </select>
+    <select id="getStockDetailByGoodsId" parameterType="string" resultMap="stockApplicationInRecordDtMap">
+        SELECT r.*,w.id as w_id,w.name as w_name,w.contact_name,w.contact_phone,
+        w.province,w.city,w.area,w.address,w.remark,
+        s.biz_type,c.x,c.y,
+        outt.goods_id out_goods_id,
+        outt.stock_application_id out_stock_application_id,
+        outt.id as out_id,
+        outt.in_record_id out_in_record_id,
+        outt.count out_count,
+        outt.price out_price,
+        outt.goods_spec_id out_goods_spec_id,
+        ot.create_time as ot_create_time,
+        ot.remark ot_remark,
+        s.remark s_remark
+        from t_stock_application_in_record r
+        LEFT JOIN t_stock_application_out_record outt on outt.in_record_id = r.id and outt.id is not null
+        LEFT JOIN t_stock_application ot on ot.id = outt.stock_application_id
+        left JOIN t_ware_house w on r.ware_house_id = w.id
+        left JOIN t_stock_application s on s.id = r.stock_application_id
+        left join t_goods_spec c on c.id = r.goods_spec_id
+        where r.goods_id = #{goodsId} and s.status = '1'
+        order by r.create_time desc
     </select>
 
     <insert id="insertStockPackageCategory" parameterType="stockApplicationPackageCategory">

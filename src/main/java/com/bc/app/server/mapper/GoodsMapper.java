@@ -28,4 +28,19 @@ public interface GoodsMapper {
      * @return 商品信息
      */
     Goods selectById(@Param("id") String id);
+
+    /**
+     * 根据物品id查询是否使用过
+     *
+     * @param goodsId
+     * @return
+     */
+    Integer getGoodsUsed(String goodsId);
+
+    /**
+     * 入库之后跟新物品总数量
+     *
+     * @param goodsId
+     */
+    void updateResidualNumberByGoodsId(String goodsId);
 }

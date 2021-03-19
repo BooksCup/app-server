@@ -40,7 +40,11 @@ public enum ResponseMsg {
     IMPORT_SUCCESS("IMPORT_SUCCESS", "导入成功"),
     IMPORT_ERROR("IMPORT_ERROR", "导入失败"),
 
-    USER_NOT_EXIST("USER_NOT_EXIST", "用户不存在"),;
+    USER_NOT_EXIST("USER_NOT_EXIST", "用户不存在"),
+
+    PUSH_SUCCESS("PUSH_SUCCESS", "推送成功"),
+    PUSH_ERROR("PUSH_ERROR", "推送失败"),
+    ;
 
     ResponseMsg(String responseCode, String responseMessage) {
         this.responseCode = responseCode;

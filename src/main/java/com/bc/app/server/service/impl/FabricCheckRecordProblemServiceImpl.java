@@ -1,7 +1,9 @@
 package com.bc.app.server.service.impl;
 
+import com.bc.app.server.entity.FabricCheckRecord;
 import com.bc.app.server.entity.FabricCheckRecordProblem;
 import com.bc.app.server.entity.FabricCheckRecordProblemPosition;
+import com.bc.app.server.mapper.FabricCheckRecordMapper;
 import com.bc.app.server.mapper.FabricCheckRecordProblemMapper;
 import com.bc.app.server.mapper.FabricCheckRecordProblemPositionMapper;
 import com.bc.app.server.service.FabricCheckRecordProblemService;
@@ -29,6 +31,9 @@ public class FabricCheckRecordProblemServiceImpl implements FabricCheckRecordPro
     @Autowired
     private FabricCheckRecordProblemPositionMapper fabricCheckRecordProblemPositionMapper;
 
+    @Autowired
+    private FabricCheckRecordMapper fabricCheckRecordMapper;
+
     /**
      * 新增问题配置
      *
@@ -37,6 +42,13 @@ public class FabricCheckRecordProblemServiceImpl implements FabricCheckRecordPro
     @Transactional
     @Override
     public void addFabricQcRecordProblem(FabricCheckRecordProblemPosition fabricCheckRecordProblemPosition) {
+        //更新门幅信息（头，中，尾宽度）
+        FabricCheckRecord fabricCheckRecord = new FabricCheckRecord();
+        fabricCheckRecord.setId(fabricCheckRecordProblemPosition.getRecordId());
+        fabricCheckRecord.setWidthTop(fabricCheckRecordProblemPosition.getWidthTop());
+        fabricCheckRecord.setWidthMiddle(fabricCheckRecordProblemPosition.getWidthMiddle());
+        fabricCheckRecord.setWidthBottom(fabricCheckRecordProblemPosition.getWidthBottom());
+        fabricCheckRecordMapper.updateByid(fabricCheckRecord);
         //新增之前根据位置id删除位置表信息和为题表信息
         if (!StringUtils.isEmpty(fabricCheckRecordProblemPosition.getId())) {
             fabricCheckRecordProblemPositionMapper.deleteById(fabricCheckRecordProblemPosition.getId());

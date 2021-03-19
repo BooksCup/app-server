@@ -24,4 +24,18 @@ public interface StockApplicationOrderMapper {
      * @return
      */
     List<StockApplicationOrder> findByStockApplicationId(String stockApplicationId);
+
+    /**
+     * 批量修改
+     *
+     * @param sOrderList
+     */
+    void updateList(List<StockApplicationOrder> sOrderList);
+
+    /**
+     * 根据条件批量删除StockApplicationOrder数据
+     *
+     * @param sOrder
+     */
+    void deleteBatchStockApplicationOrder(StockApplicationOrder sOrder);
 }

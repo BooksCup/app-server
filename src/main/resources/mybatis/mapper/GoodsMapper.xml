@@ -3,18 +3,35 @@
 <mapper namespace="com.bc.app.server.mapper.GoodsMapper">
 
     <resultMap id="GoodsMap" type="com.bc.app.server.entity.Goods">
-        <result property="id" column="id" />
-        <result property="goodsName" column="goodsName" />
-        <result property="goodsPhotos" column="goodsPhotos" />
-        <result property="attrList" column="attrList" />
-        <result property="goodsUnit" column="goodsUnit" />
-        <result property="goodsTypeId" column="goodsTypeId" />
-        <result property="goodsTypeId" column="goodsTypeId" />
-        <result property="stockNum" column="stockNum" />
-        <result property="x" column="x" />
-        <result property="y" column="y" />
-        <collection property="goodsSpecList" column="id" javaType="List" ofType="goodsSpec" select="getGoodsSpecList"></collection>
+        <result property="id" column="id"/>
+        <result property="goodsName" column="goodsName"/>
+        <result property="goodsPhotos" column="goodsPhotos"/>
+        <result property="attrList" column="attrList"/>
+        <result property="goodsUnit" column="goodsUnit"/>
+        <result property="goodsTypeId" column="goodsTypeId"/>
+        <result property="goodsTypeId" column="goodsTypeId"/>
+        <result property="stockNum" column="stockNum"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <collection property="goodsSpecList" column="id" javaType="List" ofType="goodsSpec" select="getGoodsSpecList">
+
+        </collection>
     </resultMap>
+    <update id="updateResidualNumberByGoodsId" parameterType="string">
+        UPDATE t_goods
+        SET residual_number = (
+            SELECT
+            SUM( r.residual_number )
+            FROM
+            t_stock_application_in_record r
+            LEFT JOIN t_stock_application t ON t.id = r.stock_application_id
+            WHERE
+            t.is_delete = '0'
+            AND t.STATUS = '1'
+            AND t.stock_goods_id = #{goodsid} )
+        WHERE
+	    id = #{goodsid}
+    </update>
 
     <select id="getGoodsList" parameterType="map" resultMap="GoodsMap">
         select
@@ -46,23 +63,124 @@
         select * from t_goods_spec where goods_id = #{goodsId}
     </select>
 
-    <select id="selectById" parameterType="string" resultMap="GoodsMap">
-        select
-        g.id,
-        g.goods_name as goodsName,
-        g.goods_photos as goodsPhotos,
-        g.goods_no as goodsNo,
-        g.attr_list as attrList,
-        g.residual_number as stockNum,
-        g.goods_unit as goodsUnit,
-        g.x,
-        g.y,
-        gt.id as goodsTypeId,
-        gt.name as goodsTypeName
-        from
-        t_goods g
-        left join t_goods_type gt on  gt.id = g.goods_type_id
-        where g.id=#{id}
+
+    <!-- 物品详细 -->
+    <resultMap id="get" type="com.bc.app.server.entity.Goods">
+        <result property="id" column="id"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="goodsPhotos" column="goods_photos"/>
+        <result property="attrList" column="attr_list"/>
+        <result property="goodsUnit" column="goods_unit"/>
+        <result property="goodsTypeId" column="goods_type_id"/>
+        <result property="description" column="description"/>
+        <result property="residualNumber" column="residual_number"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <collection property="goodsSpecList" javaType="List" ofType="com.bc.app.server.entity.GoodsSpec">
+            <result property="id" column="tgs_id"/>
+            <result property="useId" column="tgs_user_id"/>
+            <result property="x" column="tgs_x"/>
+            <result property="y" column="tgs_y"/>
+            <result property="xOld" column="tgs_x_old"/>
+            <result property="yOld" column="tgs_y_old"/>
+            <result property="residualNumber" column="tgs_residual_number"/>
+            <result property="display" column="tgs_display"/>
+            <result property="sort" column="tgs_sort"/>
+            <result property="isImport" column="tgs_is_import"/>
+            <result property="createTime" column="tgs_create_time"/>
+        </collection>
+        <collection property="goodsAttachmentList" ofType="com.bc.app.server.entity.GoodsAttachment">
+            <result property="id" column="tga_id"/>
+            <result property="name" column="tga_name"/>
+            <result property="createTime" column="tga_create_time"/>
+            <result property="updateTime" column="tga_update_time"/>
+            <result property="createUserName" column="tga_create_user_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectById" parameterType="String" resultMap="get">
+        SELECT
+        tg.id,
+        tg.user_id,
+        tg.goods_name,
+        tg.goods_photos,
+        tg.goods_type_id,
+        tg.goods_no,
+        tg.goods_unit,
+        tg.attr_list,
+        tg.x,
+        tg.y,
+        tg.tags,
+        tg.goods_spec_sort,
+        tg.delete_status,
+        tg.description,
+        tg.residual_number,
+        tg.is_import,
+        tg.paragraph_no,
+        tg.be_used,
+        tg.create_time,
+        tg.modify_time,
+        tg.audit_status,
+        tg.two_Code_Url,
+        tg.description ,
+        tgt.name goods_type_name,
+        tgs.id as tgsId,
+        tgs.user_id tgs_user_id,
+        tgs.x tgs_x,
+        tgs.y tgs_y,
+        tgs.x_old as  tgs_x_old,
+        tgs.y_old as  tgs_y_old,
+        tgs.residual_number tgs_residual_number,
+        tgs.display tgs_display,
+        tgs.sort tgs_sort,
+        tgs.is_import tgs_is_import,
+        tgs.create_time tgs_create_time,
+        tu.name user_name,
+        tga.id as tga_id,
+        tga.name as tga_name,
+        tga.create_time tga_create_time,
+        tga.update_time tga_update_time,
+        u.name tga_create_user_name,
+        dgat.id as dgat_id,
+        dgat.name as dgat_name,
+        dgat.path as dgat_path,
+        dgat.create_time as dgat_create_time,
+        dgat.update_time as dgat_update_time,
+        dgatu.name as dgat_update_user_name
+        FROM
+        t_goods tg
+        LEFT JOIN
+        t_goods_spec tgs ON tg.id = tgs.goods_id
+        LEFT JOIN
+        t_goods_type tgt ON tg.goods_type_id = tgt.id
+        LEFT JOIN
+        t_user tu ON tu.id = tg.user_id
+        LEFT JOIN
+        t_order r on r.goods_id = tg.id
+        LEFT JOIN
+        t_goods_attachment tga on tga.goods_id = tg.id and tga.is_delete = '0'
+        LEFT JOIN
+        t_user u on u.id = tga.create_user_id
+        LEFT JOIN
+        t_goods_attachment_detail dgat on dgat.attachment_id = tga.id and dgat.is_delete = '0'
+        LEFT JOIN
+        t_user dgatu ON dgatu.id = dgat.update_user_id
+        WHERE
+        tg.id = #{id}
+        ORDER BY
+        tgs.sort ASC,tga.sort desc
+        LIMIT 10000
+    </select>
+
+    <select id="getGoodsUsed" parameterType="string" resultType="integer">
+        SELECT  IFNULL(SUM(a),0) FROM
+        (
+        SELECT COUNT(*) a FROM t_order WHERE goods_id = #{goodsId} UNION
+        SELECT COUNT(*) a FROM t_quote WHERE goods_id = #{goodsId} UNION
+        SELECT COUNT(*) a FROM t_stock_application WHERE stock_goods_id = #{goodsId} UNION
+        SELECT COUNT(*) a FROM t_requirement WHERE goods_id = #{goodsId} UNION
+        SELECT COUNT(*) a FROM t_offer WHERE goods_id = #{goodsId}
+        ) AS bb
     </select>
 
 </mapper>

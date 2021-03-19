@@ -11,6 +11,10 @@ import java.util.List;
 @Data
 public class FabricCheckRecordProblemPosition implements Serializable {
 
+
+    private  String widthTop;
+    private  String widthMiddle;
+    private  String widthBottom;
     private  String id;
     private  String problemPosition;
     private  String recordId;

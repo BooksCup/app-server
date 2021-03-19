@@ -34,5 +34,5 @@ public interface FabricCheckLotInfoService {
      * @param map 入参
      * @return 缸号集合
      */
-    List<String> getLotNoListByCheckTaskId(Map<String, String> map);
+    List<FabricCheckLotInfo> getLotNoListByCheckTaskId(Map<String, String> map);
 }

@@ -3,7 +3,9 @@ package com.bc.app.server.utils;
 import com.bc.app.server.entity.NumberSequence;
 import com.bc.app.server.mapper.NumberSequenceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -112,6 +114,25 @@ public class CommonUtil {
         SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
         String format = sf.format(new Date()) + ((Math.random() * 9 + 1) * 100);
         return format;
+    }
+
+    /**
+     * 转换"2019-11-05 11:16:46"字符串 ---》转化 "2019-11-05"字符串
+     *
+     * @return
+     */
+    public static String stringDateToResule(String dateStr) {
+        SimpleDateFormat sb = new SimpleDateFormat("yyyy-mm-dd");
+        String strDate = "";
+        try {
+            if (!StringUtils.isEmpty(dateStr)) {
+                Date parse = sb.parse(dateStr);
+                strDate = sb.format(parse);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return strDate;
     }
 
 }

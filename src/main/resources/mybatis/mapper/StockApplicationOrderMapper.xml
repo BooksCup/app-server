@@ -20,6 +20,58 @@
             )
         </foreach>
     </insert>
+    <update id="updateList" parameterType="list">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update t_stock_application_order
+            <trim prefix="SET" suffixOverrides=",">
+                <if test='item.orderId != null and item.orderId != "" '>
+                    order_id = #{item.orderId},
+                </if>
+                <if test='item.specId != null and item.specId != "" '>
+                    spec_id = #{item.specId},
+                </if>
+                <if test='item.specPrice != null and item.specPrice != "" '>
+                    spec_price = #{item.specPrice},
+                </if>
+                <if test='item.goodsId != null and item.goodsId != "" '>
+                    goods_id=#{item.goodsId},
+                </if>
+
+                <if test='item.stockNumber != null and item.stockNumber != "" '>
+                    stock_number = #{item.stockNumber},
+                </if>
+                <if test='item.giveNumber != null and item.giveNumber != "" '>
+                    give_number = #{item.giveNumber},
+                </if>
+                <if test='item.surplusNumber != null and item.surplusNumber != "" '>
+                    surplus_number = #{item.surplusNumber},
+                </if>
+                <if test='item.currency != null and item.currency != "" '>
+                    currency = #{item.currency},
+                </if>
+                <if test='item.wareHouseId != null and item.wareHouseId != "" '>
+                    ware_house_id = #{item.wareHouseId},
+                </if>
+                <if test='item.boxId != null and item.boxId != "" '>
+                    box_id = #{item.boxId},
+                </if>
+                <if test='item.stockType != null and item.stockType != "" '>
+                    stock_type = #{item.stockType},
+                </if>
+                <if test='item.recordId != null and item.recordId != "" '>
+                    record_id = #{item.recordId},
+                </if>
+                <if test='item.sort != null and item.sort != "" '>
+                    sort = #{item.sort},
+                </if>
+            </trim>
+            where create_user_id = #{item.createUserId} and  stock_application_id = #{item.stockApplicationId} and  enterprise_id =#{enterpriseId}
+        </foreach>
+    </update>
+    <delete id="deleteBatchStockApplicationOrder">
+         DELETE FROM  t_stock_application_order
+        where create_user_id = #{createUserId} and  stock_application_id = #{stockApplicationId} and  enterprise_id =#{enterpriseId}
+    </delete>
 
     <select id="findByStockApplicationId" parameterType="string" resultType="stockApplicationOrder">
         SELECT * FROM t_stock_application_order WHERE stock_application_id = #{stockApplicationId} order by sort ascs

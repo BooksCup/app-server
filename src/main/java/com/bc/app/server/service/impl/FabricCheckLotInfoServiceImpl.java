@@ -3,10 +3,13 @@ package com.bc.app.server.service.impl;
 
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.FabricCheckLotInfo;
+import com.bc.app.server.entity.FabricCheckRecord;
 import com.bc.app.server.entity.FabricCheckTask;
 import com.bc.app.server.mapper.FabricCheckLotInfoMapper;
+import com.bc.app.server.mapper.FabricCheckRecordMapper;
 import com.bc.app.server.mapper.FabricCheckTaskMapper;
 import com.bc.app.server.service.FabricCheckLotInfoService;
+import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,9 @@ public class FabricCheckLotInfoServiceImpl implements FabricCheckLotInfoService 
 
     @Autowired
     FabricCheckTaskMapper fabricCheckTaskMapper;
+
+    @Autowired
+    FabricCheckRecordMapper fabricCheckRecordMapper;
 
     /**
      * 添加面料盘点-缸信息
@@ -67,15 +73,17 @@ public class FabricCheckLotInfoServiceImpl implements FabricCheckLotInfoService 
      * @return 缸号集合
      */
     @Override
-    public List<String> getLotNoListByCheckTaskId(Map<String, String> map) {
+    public List<FabricCheckLotInfo> getLotNoListByCheckTaskId(Map<String, String> map) {
         List<FabricCheckLotInfo> lotNoListByCheckTaskId = fabricCheckLotInfoMapper.getLotNoListByCheckTaskId(map);
-        List<String> lotNoList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(lotNoListByCheckTaskId)){
-            for (FabricCheckLotInfo fabricCheckLotInfo:lotNoListByCheckTaskId){
-                lotNoList.add(fabricCheckLotInfo.getLotNo());
+            for(FabricCheckLotInfo fabricCheckLotInfo:lotNoListByCheckTaskId){
+                FabricCheckRecord fabricCheckRecord = new FabricCheckRecord();
+                fabricCheckRecord.setCheckLotInfoId(fabricCheckLotInfo.getId());
+                GetByWarehouseIdVo countDatas = fabricCheckRecordMapper.getCountData(fabricCheckRecord);
+                fabricCheckLotInfo.setGetByWarehouseIdVo(countDatas);
             }
         }
-        return lotNoList;
+        return lotNoListByCheckTaskId;
     }
 
 }

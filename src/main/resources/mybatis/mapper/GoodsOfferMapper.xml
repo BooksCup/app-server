@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.GoodsOfferMapper">
+
+    <resultMap id="BaseMap" type="com.bc.app.server.entity.GoodsOffer">
+        <result column="id" property="goodsOfferId"/>
+        <result column="quote_id" property="quoteId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="goods_no" property="goodsNo"/>
+        <result column="trade_no" property="tradeNo"/>
+        <result column="intercourse_enterprise" property="intercourseEnterprise"/>
+        <result column="unit_no" property="unitNo"/>
+        <result column="offer_type" property="offerType"/>
+        <result column="offer_price" property="offerPrice"/>
+        <result column="offer_time" property="offerTime"/>
+        <result column="offer_agent" property="offerAgent"/>
+        <result column="currency" property="currency"/>
+        <result column="type" property="type"/>
+        <result column="offer_remark" property="offerRemark"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="delete_status" property="deleteStatus"/>
+    </resultMap>
+    <select id="getGoodsOfferPageInfo" resultMap="BaseMap">
+        SELECT * FROM
+        (SELECT
+        NULL AS quote_id,
+        tof.id,
+        tof.goods_id,
+        '' as trade_no,
+        tof.unit_no,
+        tof.offer_type,
+        tof.offer_price,
+        tof.offer_agent,
+        tof.offer_remark,
+        '0' as type,
+        tof.intercourse_enterprise,
+        tof.currency,
+        tof.offer_time,
+        tof.modify_time,
+        tof.delete_status
+        FROM
+        t_offer tof
+        LEFT JOIN t_goods tg ON tg.id = tof.goods_id
+        where 1=1
+        <if test="goodsId !=null and goodsId != ''">
+            AND tof.goods_id = #{goodsId}
+        </if>
+        AND tof.delete_status = 0
+        UNION ALL
+        SELECT
+        tq.id quote_id,
+        tgd.id id,
+        tg.id goods_id,
+        tq.material_no AS trade_no,
+        NULL AS unit_no,
+        '1' AS offer_type,
+        tgd.quoted_price as offer_price,
+        tu.name AS offer_agent,
+        NULL AS offer_remark,
+        '1' AS type,
+        to_enterprise.name AS intercourse_enterprise,
+        '1' as currency,
+        tgd.create_time AS offer_time,
+        tgd.modify_time AS modify_time,
+        '0' as delete_status
+        FROM
+        t_quote tq
+        RIGHT JOIN t_quote_detail tgd ON tq.id = tgd.quote_id
+        LEFT JOIN t_goods tg ON tg.id = tq.goods_id
+        LEFT JOIN t_user tu ON tu.id = tq.user_id
+        LEFT JOIN t_exchange_enterprise to_enterprise ON to_enterprise.id = tq.to_enterprise_id
+        WHERE 1=1
+        <if test="goodsId !=null and goodsId != ''">
+            AND tq.id = #{goodsId}
+        </if>
+        AND tq.delete_status = 0
+        ) AS result
+        WHERE
+        1=1
+        ORDER by
+        result.offer_type DESC,
+        result.offer_time DESC
+
+    </select>
+
+</mapper>

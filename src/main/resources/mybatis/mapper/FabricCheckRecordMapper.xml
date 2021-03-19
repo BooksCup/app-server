@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bc.app.server.mapper.FabricCheckRecordMapper">
 
-    <update id="updateByid" parameterType="map">
+    <update id="updateByid" parameterType="fabricCheckRecord">
         UPDATE t_fabric_check_record
         <trim prefix="SET" suffixOverrides=",">
             <if test='lengthAfter != null and lengthAfter != "" '>
@@ -11,11 +11,17 @@
             <if test='weightAfter != null and weightAfter != "" '>
                 weight_after = #{weightAfter},
             </if>
-            <if test='remark != null and remark != "" '>
-                remark=#{remark},
-            </if>
             <if test='isDelete != null and isDelete != "" '>
                 is_delete=#{isDelete},
+            </if>
+            <if test='widthTop != null and widthTop != "" '>
+                width_top=#{widthTop},
+            </if>
+            <if test='widthMiddle != null and widthMiddle != "" '>
+                width_middle=#{widthMiddle},
+            </if>
+            <if test='widthBottom != null and widthBottom != "" '>
+                width_bottom=#{widthBottom},
             </if>
             modify_time = now()
         </trim>
@@ -58,6 +64,9 @@
         weight_unit as weightUnit,
         delivery_date as deliveryDate,
         create_time as createTime,
+        width_middle as widthMiddle,
+        width_bottom as widthBottom,
+        width_top as widthTop,
         modify_time as modifyTime
         FROM
         `t_fabric_check_record`
@@ -145,35 +154,11 @@
         <if test="deliveryDate !=null and deliveryDate != ''">
             and delivery_date=#{deliveryDate}
         </if>
-        ORDER BY CAST(sno AS UNSIGNED)
+        ORDER BY   sno
     </select>
 
 
     <insert id="addRecord" parameterType="com.bc.app.server.entity.FabricCheckRecord">
-     insert into t_fabric_check_record
-        (
-        id,
-        sno,
-        length_before,
-        length_unit,
-        weight_before,
-        weight_unit,
-        create_time
-        )
-        values
-        (
-        #{id},
-        #{sno},
-        #{lengthBefore},
-        #{lengthUnit},
-        #{weightBefore},
-        #{weightUnit},
-         now()
-        )
-
-    </insert>
-
-    <insert id="insertFabricQcRecords" parameterType="com.bc.app.server.entity.FabricCheckRecord">
         insert into t_fabric_check_record
         (
         id,
@@ -189,7 +174,6 @@
         create_time
         )
         values
-        <foreach collection="list" item="fabricCheckRecord" separator=",">
             (
             #{fabricCheckRecord.id},
             #{fabricCheckRecord.sno},
@@ -203,7 +187,74 @@
             #{fabricCheckRecord.deliveryDate},
             now()
             )
+    </insert>
+
+
+    <insert id="insertFabricQcRecords" parameterType="com.bc.app.server.entity.FabricCheckRecord">
+        insert into t_fabric_check_record
+        (
+        id,
+        sno,
+        check_lot_info_id ,
+        length_before ,
+        length_after,
+        length_unit,
+        weight_before,
+        weight_after ,
+        weight_unit ,
+        delivery_date,
+        create_time,
+        modify_time
+        )
+        values
+        <foreach collection="list" item="fabricCheckRecord" separator=",">
+            (
+            #{fabricCheckRecord.id},
+            #{fabricCheckRecord.sno},
+            #{fabricCheckRecord.checkLotInfoId},
+            #{fabricCheckRecord.lengthBefore},
+            #{fabricCheckRecord.lengthAfter},
+            #{fabricCheckRecord.lengthUnit},
+            #{fabricCheckRecord.weightBefore},
+            #{fabricCheckRecord.weightAfter},
+            #{fabricCheckRecord.weightUnit},
+            #{fabricCheckRecord.deliveryDate},
+            now(),
+            now()
+            )
         </foreach>
+    </insert>
+    <insert id="insert" parameterType="com.bc.app.server.entity.FabricCheckRecord">
+        insert into t_fabric_check_record
+        (
+        id,
+        sno,
+        check_lot_info_id ,
+        length_before ,
+        length_after,
+        length_unit,
+        weight_before,
+        weight_after ,
+        weight_unit ,
+        delivery_date,
+        create_time,
+        modify_time
+        )
+        values
+            (
+            #{id},
+            #{sno},
+            #{checkLotInfoId},
+            #{lengthBefore},
+            #{lengthAfter},
+            #{lengthUnit},
+            #{weightBefore},
+            #{weightAfter},
+            #{weightUnit},
+            #{deliveryDate},
+            now(),
+            now()
+            )
     </insert>
 
     <delete id="deleteByWarehouseId" parameterType="string">

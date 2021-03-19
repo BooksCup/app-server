@@ -26,4 +26,10 @@ public class StockApplicationVo extends StockApplication implements Serializable
     private String auditUserName;
 
     private String copyUserName;
+
+    private String attrList;
+
+    private String x;
+
+    private String y;
 }

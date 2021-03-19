@@ -1,6 +1,7 @@
 package com.bc.app.server.service;
 
 import com.bc.app.server.entity.FabricCheckRecord;
+import com.bc.app.server.vo.fabricqcrecordcontrollervo.FabricCheckRecordSearchAllVo;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.FabricQcRecordAllByCheckLIIdVo;
 import com.bc.app.server.vo.fabricqcwarehousecontrollervo.UpdateByIdVo;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
@@ -28,17 +29,16 @@ public interface FabricCheckRecordService {
     List<FabricCheckRecord> getByWarehouseId(FabricCheckRecord fabricCheckRecord);
 
     /**
-     * 集合新增
      *
      * @param fabricCheckRecord
      * @return
      */
-    void addListRecord(FabricCheckRecord fabricCheckRecord);
+    void insertFabricCheckRecord(FabricCheckRecord fabricCheckRecord);
 
 
     Integer batchUpdateFabricCheckRecordByIds(List<FabricCheckRecord> list);
 
-    Integer updateById(Map<String, String> map);
+    Integer updateById(FabricCheckRecord fabricCheckRecord);
 
     GetByWarehouseIdVo getCountData(FabricCheckRecord fabricCheckRecord);
 
@@ -56,6 +56,13 @@ public interface FabricCheckRecordService {
      * @param map 入参
      * @return 检查记录表信息集合
      */
-    List<FabricQcRecordAllByCheckLIIdVo> getFabricQcRecordAllByCheckLIId(Map<String, String> map);
+    FabricCheckRecordSearchAllVo getFabricQcRecordAllByCheckLIId(Map<String, String> map);
 
+    /**
+     * 保存单个记录信息
+     * @param fabricCheckRecord   记录信息
+     * @param modifyTime
+     * @param fabricCheckTaskId
+     */
+    void insert(FabricCheckRecord fabricCheckRecord, String modifyTime, String fabricCheckTaskId);
 }

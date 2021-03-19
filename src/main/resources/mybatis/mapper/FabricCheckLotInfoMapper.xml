@@ -64,10 +64,17 @@
 
     <select id="getLotNoListByCheckTaskId" resultType="com.bc.app.server.entity.FabricCheckLotInfo">
         select
-        lot_no as lotNo
+        id,
+        fabric_check_task_id as fabricCheckTaskId,
+        lot_no as lotNo,
+        status,
+        num ,
+        length,
+        weight,
+        weight_unit as weightUnit
         from t_fabric_check_lot_info
-        where fabric_check_task_id = #{checkTaskId}
-        order by  create_date desc
+        where is_delete='0' and  fabric_check_task_id=#{checkTaskId}
+        order by modify_time desc
     </select>
 
 </mapper>

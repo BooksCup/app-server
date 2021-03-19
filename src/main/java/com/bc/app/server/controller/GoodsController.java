@@ -54,6 +54,7 @@ public class GoodsController {
      * @param goodsId 物品ID
      * @return 物品详情
      */
+    @CrossOrigin
     @ApiOperation(value = "根据物品ID获取物品详情", notes = "根据物品ID获取物品详情")
     @GetMapping(value = "/{goodsId}")
     public ResponseEntity<Goods> getGoodsById(
@@ -68,5 +69,6 @@ public class GoodsController {
         }
         return responseEntity;
     }
+
 
 }

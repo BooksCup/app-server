@@ -106,12 +106,12 @@ public class FabricCheckLotInfoController {
      */
     @ApiOperation(value = "根据任务表id查询缸号集合", notes = "根据任务表id查询缸号集合")
     @GetMapping(value = "/getLotNoList/{checkTaskId}")
-    public ResponseEntity<List<String>> getLotNoListByCheckTaskId(
+    public ResponseEntity<List<FabricCheckLotInfo>> getLotNoListByCheckTaskId(
             @PathVariable(value = "checkTaskId") String checkTaskId) {
         try {
             Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
             map.put("checkTaskId", checkTaskId);
-            List<String> lotNoList =  fabricCheckLotInfoService.getLotNoListByCheckTaskId(map);
+            List<FabricCheckLotInfo> lotNoList =  fabricCheckLotInfoService.getLotNoListByCheckTaskId(map);
             return new ResponseEntity<>(lotNoList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

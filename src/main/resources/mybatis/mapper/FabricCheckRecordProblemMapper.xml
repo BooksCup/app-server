@@ -150,6 +150,20 @@
         and   record_id = #{recordId} and problem_position_id=#{problemPositionId}
 
     </select>
+    <select id="getCountByTag" parameterType="list" resultType="com.bc.app.server.entity.ProblemImageClassify">
+        select
+        t.tag,
+        GROUP_CONCAT(t.image  SEPARATOR  '>') as images
+        from `t_fabric_check_record_problem` t
+        where t.is_delete = 0
+        <if test="list!=null and list.size!=0">
+            AND t.record_id in
+            <foreach collection="list" item="recordId" index="i" open="(" separator="," close=")">
+            #{recordId}
+           </foreach>
+         </if>
+        GROUP BY t.tag
+    </select>
 
 
     <update id="updateByRecordId" parameterType="com.bc.app.server.entity.FabricCheckRecordProblem">

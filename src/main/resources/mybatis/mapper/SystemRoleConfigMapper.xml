@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.SystemRoleConfigMapper">
+
+    <resultMap id="user" type="com.bc.app.server.entity.User">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <id column="name" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getUserListByModuleAndRole" resultMap="user" parameterType="map">
+        select
+        u.id,
+        u.name
+        from
+        t_system_role_config c
+        left join t_user u on c.user_id = u.id
+        where c.enterprise_id = #{enterpriseId}
+        and c.module = #{module}
+        and c.role = #{role}
+    </select>
+
+</mapper>

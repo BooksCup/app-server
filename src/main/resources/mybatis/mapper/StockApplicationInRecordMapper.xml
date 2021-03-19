@@ -5,21 +5,135 @@
     <insert id="insertList" parameterType="list">
         INSERT INTO t_stock_application_in_record
         (
-            id, ware_house_id, goods_id,goods_spec_id, count,apply_number,stock_application_id,
-            residual_number, price,create_user_id,create_time,box_id,enterprise_id,sort,
-            currency
+        id, ware_house_id, goods_id,goods_spec_id,apply_number,stock_application_id,
+        price,create_user_id,create_time,box_id,enterprise_id,sort,
+        currency
         )
         VALUES
         <foreach collection="list" item="item" separator=",">
             (
-            #{item.id},#{item.wareHouseId},#{item.goodsId},#{item.goodsSpecId},#{item.count},#{item.applyNumber},#{item.stockApplicationId},
-            #{item.residualNumber},#{item.price},#{item.createUserId},now(),#{item.boxId},#{item.enterpriseId},#{item.sort},
+            #{item.id},#{item.wareHouseId},#{item.goodsId},#{item.goodsSpecId},#{item.applyNumber},#{item.stockApplicationId},
+            #{item.price},#{item.createUserId},now(),#{item.boxId},#{item.enterpriseId},#{item.sort},
             #{item.currency}
             )
         </foreach>
     </insert>
+    <update id="updateList">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update t_stock_application_in_record
+            <trim prefix="SET" suffixOverrides=",">
+                <if test='item.count != null and item.count != "" '>
+                    count = #{item.count},
+                </if>
+                <if test='item.residualNumber != null and item.residualNumber != "" '>
+                    residual_number = #{item.residualNumber},
+                </if>
+                <if test='item.wareHouseId != null and item.wareHouseId != "" '>
+                    ware_house_id = #{item.wareHouseId},
+                </if>
+            </trim>
+            where goods_spec_id = #{item.goodsSpecId} and stock_application_id = #{item.stockApplicationId}
+        </foreach>
+    </update>
+    <delete id="deleteBatchStockApplicationInRecord">
+        DELETE FROM  t_stock_application_in_record
+        where create_user_id = #{createUserId} and  stock_application_id = #{stockApplicationId} and  enterprise_id =#{enterpriseId}
+    </delete>
 
-    <select id="findByStockApplicationId" parameterType="string" resultType="stockApplicationInRecord">
-         SELECT * FROM t_stock_application_in_record WHERE stock_application_id = #{stockApplicationId} ORDER BY sort ASC
+    <select id="findByStockApplicationId" parameterType="string"
+            resultType="com.bc.app.server.entity.StockApplicationInRecord">
+         SELECT
+            r.ware_house_id wareHouseId,
+            r.goods_id goodsId,
+            r.goods_spec_id goodsSpecId,
+            r.count,
+            r.apply_number applyNumber,
+            r.stock_application_id stockApplicationId,
+            r.residual_number residualNumber,
+            r.price,
+            wh.name wareHouseName,
+            gs.x,
+            gs.y
+         FROM t_stock_application_in_record r
+         LEFT JOIN t_goods_spec gs on gs.id = r.goods_spec_id
+         LEFT JOIN t_ware_house wh on wh.id = r.ware_house_id
+         WHERE r.stock_application_id = #{stockApplicationId}
+         ORDER BY r.sort
+         ASC
     </select>
+
+    <resultMap id="GoodsDetailMap" type="map">
+        <result column="residual_number" property="residualNumber" />
+        <result column="goods_id" property="goodsId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_photos" property="goodsPhotos" />
+        <result column="goods_no" property="goodsNo" />
+        <result column="name" property="goodsTypeName" />
+        <result column="goods_spec_id" property="goodsSpecId" />
+        <result column="count" property="count" />
+        <result column="create_time" property="createTime" />
+        <result column="goods_unit" property="goodsUnit" />
+        <result column="ware_house_id" property="wareHouseId" />
+        <result column="stock_type" property="stockType" />
+        <result column="id" property="id" />
+        <result column="stock_application_id" property="stockApplicationId" />
+        <result column="price" property="price" />
+        <result column="check_user_name" property="checkUserName" />
+        <result column="biz_type" property="bizType" />
+        <result column="price_cost" property="priceCost" />
+        <result column="receiver_name" property="receiverName" />
+        <result column="receive_address" property="receiveAddress" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <select id="getStockInfoByWareHouseId" parameterType="string" resultMap="GoodsDetailMap">
+        SELECT * FROM
+        (
+        (SELECT sum(tsair.residual_number) as residual_number,sum(count) as count,g.id as goods_id,g.goods_name,g.goods_photos,g.goods_no,gt.name,
+        tsair.goods_spec_id,tsair.create_time,ifnull(t.goods_unit,g.goods_unit) as goods_unit,'1' as stock_type,tsair.ware_house_id,tsair.id,tsair.stock_application_id,u.name as check_user_name,
+        tsair.price,t.biz_type,t.receiver_name,t.receive_address,t.remark
+        from t_stock_application_in_record tsair
+        left JOIN t_stock_application t on tsair.stock_application_id = t.id
+        left JOIN t_user u on u.id = t.check_user_id
+        left JOIN t_goods g on tsair.goods_id = g.id
+        LEFT JOIN t_goods_type gt on g.goods_type_id = gt.id
+        where t.status = '1'and t.stock_type = '1' and tsair.ware_house_id = #{wareHouseId}
+        group by tsair.stock_application_id
+        )
+        UNION  ALL
+        (select null as residual_number,sum(count) as count,g.id as goods_id,g.goods_name,g.goods_photos,g.goods_no,gt.name,
+        tsaor.goods_spec_id,tsaor.create_time,ifnull(t.goods_unit,g.goods_unit) as goods_unit,'2' as stock_type,tsaor.ware_house_id,tsaor.id,tsaor.stock_application_id,u.name as check_user_name,
+        tsaor.price,t.biz_type,t.receiver_name,t.receive_address,t.remark
+        from t_stock_application_out_record tsaor
+         left JOIN t_stock_application t on tsaor.stock_application_id = t.id
+         left JOIN t_user u on u.id = t.check_user_id
+        left JOIN t_goods g on tsaor.goods_id = g.id
+        LEFT JOIN t_goods_type gt on g.goods_type_id = gt.id
+        where t.status = '1' and t.stock_type = '2' and tsaor.ware_house_id = #{wareHouseId}
+        group by tsaor.stock_application_id
+        )
+        ) ss
+        order by ss.create_time desc
+    </select>
+
+
+    <select id="getStockListByWareHouseId" resultType="com.bc.app.server.entity.StockApplicationInRecord">
+        select
+        r.id,
+        r.goods_id as goodsId,
+        r.goods_spec_id as goodsSpecId,
+        sum(r.residual_number) as totalResidualNumber,
+        sum(r.price * r.residual_number) as totalPrice,
+        g.goods_photos goodsPhotos,
+        g.goods_name goodsName,
+        g.goods_no goodsNo,
+        gt.name as goodsTypeName
+        from t_stock_application_in_record r
+        LEFT JOIN t_stock_application t on t.id = r.stock_application_id
+        LEFT JOIN t_goods g on g.id = r.goods_id
+        LEFT JOIN t_goods_type gt on gt.id = g.goods_type_id
+        where r.ware_house_id = #{wareHouseId} and (r.box_id is null or r.box_id = '')  and t.`status` = '1' and t.is_delete = '0'
+        GROUP BY goods_id
+    </select>
+
 </mapper>

@@ -51,7 +51,10 @@ public class GoodsServiceImpl implements GoodsService {
      */
     @Override
     public Goods getGoodsById(String goodsId) {
-        return goodsMapper.selectById(goodsId);
+        Goods goods = goodsMapper.selectById(goodsId);
+        Integer isUsed = goodsMapper.getGoodsUsed(goodsId);
+        goods.setBeUsed(isUsed != null && isUsed.intValue() > 0 ? "1" : "0");
+        return goods;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.bc.app.server.vo.fabricqcrecordcontrollervo;
 
 import com.bc.app.server.entity.FabricCheckRecord;
+import com.bc.app.server.entity.ProblemImageClassify;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -15,6 +15,8 @@
         </trim>
         where id = #{id}
     </update>
+
+
     <update id="updateById">
         update t_fabric_check_task
         <trim prefix="SET" suffixOverrides=",">
@@ -97,33 +99,33 @@
 
     <select id="getFabricCheckTaskPageInfo" resultType="com.bc.app.server.entity.FabricCheckTask">
         select
-        id,
-        goods_name as goodsName,
-        goods_no as goodsNo,
-        goods_photos as goodsPhotos,
-        goods_id as goodsId,
-        related_company_name as relatedCompanyName,
-        related_company_short_name as relatedCompanyShortName,
-        related_company_id as relatedCompanyId,
-        order_no as orderNo,
-        order_theme as orderTheme,
-        order_id as orderId,
-        delivery_date as deliveryDate,
-        enterprise_id as enterpriseId
-        from t_fabric_check_task
-        where is_delete = '0' and enterprise_id = #{enterpriseId}
+        t.id,
+        t.goods_name as goodsName,
+        t.goods_no as goodsNo,
+        t.goods_photos as goodsPhotos,
+        t.goods_id as goodsId,
+        t.related_company_name as relatedCompanyName,
+        t.related_company_short_name as relatedCompanyShortName,
+        t.related_company_id as relatedCompanyId,
+        t.order_no as orderNo,
+        t.order_theme as orderTheme,
+        t.order_id as orderId,
+        t.delivery_date as deliveryDate,
+        t.enterprise_id as enterpriseId
+        from t_fabric_check_task t
+        where t.is_delete = '0' and t.enterprise_id = #{enterpriseId}
         <if test="keyword != null and keyword != ''">
-            and ( goods_name like concat('%', #{keyword},'%')
-            or goods_no like concat('%', #{keyword},'%')
-            or related_company_name like concat('%', #{keyword},'%')
-            or related_company_short_name like concat('%',#{keyword},'%')
-            or order_no like concat('%', #{keyword},'%'))
+            and ( t.goods_name like concat('%', #{keyword},'%')
+            or t.goods_no like concat('%', #{keyword},'%')
+            or t.related_company_name like concat('%', #{keyword},'%')
+            or t.related_company_short_name like concat('%',#{keyword},'%')
+            or t.order_no like concat('%', #{keyword},'%'))
         </if>
         <if test="modifyTimeApply != null and modifyTimeApply != ''">
-            order by modify_time_apply desc
+            order by t.modify_time_apply desc
         </if>
         <if test="modifyTimeExamine != null and modifyTimeExamine != ''">
-            order by modify_time_examine desc
+            order by t.modify_time_examine desc
         </if>
     </select>
 

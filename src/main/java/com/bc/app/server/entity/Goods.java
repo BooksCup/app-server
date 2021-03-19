@@ -46,8 +46,24 @@ public class Goods implements Serializable {
      */
     private String y;
 
+    private String beUsed;
+
+    /**
+     * 备注
+     */
+    private String description;
+
+    /**
+     * 库存
+     */
+    private String residualNumber;
+
     /**
      * 规格列表
      */
     private List<GoodsSpec> goodsSpecList;
+    private List<GoodsAttachment> goodsAttachmentList;
+
+    private List<StockApplicationInRecord> stock;
+    private List<WareHouse> wareHouseList;
 }

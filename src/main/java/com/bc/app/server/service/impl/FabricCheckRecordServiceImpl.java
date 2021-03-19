@@ -3,11 +3,13 @@ package com.bc.app.server.service.impl;
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.FabricCheckRecord;
 import com.bc.app.server.entity.FabricCheckRecordProblem;
+import com.bc.app.server.entity.ProblemImageClassify;
 import com.bc.app.server.mapper.FabricCheckRecordMapper;
 import com.bc.app.server.mapper.FabricCheckRecordProblemMapper;
 import com.bc.app.server.mapper.FabricCheckTaskMapper;
 import com.bc.app.server.service.FabricCheckRecordService;
 import com.bc.app.server.utils.CommonUtil;
+import com.bc.app.server.vo.fabricqcrecordcontrollervo.FabricCheckRecordSearchAllVo;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.FabricQcRecordAllByCheckLIIdVo;
 import com.bc.app.server.vo.fabricqcwarehousecontrollervo.UpdateByIdVo;
 import com.bc.app.server.vo.fabricqcrecordcontrollervo.GetByWarehouseIdVo;
@@ -62,8 +64,8 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
      * @return
      */
     @Override
-    public void addListRecord(FabricCheckRecord fabricCheckRecord) {
-        fabricCheckRecordMapper.addRecord(fabricCheckRecord);
+    public void insertFabricCheckRecord(FabricCheckRecord fabricCheckRecord) {
+        fabricCheckRecordMapper.insert(fabricCheckRecord);
     }
 
     @Transactional
@@ -73,8 +75,8 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
     }
 
     @Override
-    public Integer updateById(Map<String, String> map) {
-        return fabricCheckRecordMapper.updateByid(map);
+    public Integer updateById(FabricCheckRecord fabricCheckRecord) {
+        return fabricCheckRecordMapper.updateByid(fabricCheckRecord);
     }
 
     @Override
@@ -90,36 +92,64 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
      */
     @Override
     public List<FabricCheckRecord> insertFabricQcRecords(List<FabricCheckRecord> list, String modifyTime, String fabricCheckTaskId) {
-        if (CollectionUtils.isNotEmpty(list)) {
-            List<FabricCheckRecord> noIdList = new ArrayList<>();
-            List<FabricCheckRecord> haveIdList = new ArrayList<>();
-            for (FabricCheckRecord fabricCheckRecord : list) {
-                if (StringUtils.isEmpty(fabricCheckRecord.getId())) {
-                    fabricCheckRecord.setId(CommonUtil.generateId());
-                    noIdList.add(fabricCheckRecord);
-                } else {
-                    haveIdList.add(fabricCheckRecord);
+
+        if ("modifyTimeExamine".equals(modifyTime)) {
+            if (CollectionUtils.isNotEmpty(list)) {
+                List<FabricCheckRecord> noIdList = new ArrayList<>();
+                List<FabricCheckRecord> haveIdList = new ArrayList<>();
+                for (FabricCheckRecord fabricCheckRecord : list) {
+                    if (StringUtils.isEmpty(fabricCheckRecord.getId())) {
+                        fabricCheckRecord.setId(CommonUtil.generateId());
+                        noIdList.add(fabricCheckRecord);
+                    } else {
+                        haveIdList.add(fabricCheckRecord);
+                    }
+                }
+                //有id的更新，
+                if (CollectionUtils.isNotEmpty(haveIdList)) {
+                    fabricCheckRecordMapper.batchUpdateFabricCheckRecordByIds(haveIdList);
+                }
+                //没有id的保存
+                if (CollectionUtils.isNotEmpty(noIdList)) {
+                    fabricCheckRecordMapper.insertFabricQcRecords(noIdList);
                 }
             }
-            //有id的更新，
-            if (CollectionUtils.isNotEmpty(haveIdList)) {
-                fabricCheckRecordMapper.batchUpdateFabricCheckRecordByIds(haveIdList);
-            }
-            //没有id的保存
-            if (CollectionUtils.isNotEmpty(noIdList)) {
-                fabricCheckRecordMapper.insertFabricQcRecords(noIdList);
-            }
-            Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
-            map.put("id",fabricCheckTaskId);
-            if ("modifyTimeApply".equals(modifyTime)) {
-                map.put("modifyTimeApply", "modifyTimeApply");
-                fabricCheckTaskMapper.updateById(map);
-            } else if ("modifyTimeExamine".equals(modifyTime)) {
-                map.put("modifyTimeExamine", "modifyTimeExamine");
-                fabricCheckTaskMapper.updateById(map);
+        } else {
+            if (CollectionUtils.isNotEmpty(list)) {
+                fabricCheckRecordMapper.deleteByCheckLotInfoId(list.get(0).getCheckLotInfoId());
+                for (FabricCheckRecord fabricCheckRecord : list) {
+                    fabricCheckRecord.setId(CommonUtil.generateId());
+                }
+                fabricCheckRecordMapper.insertFabricQcRecords(list);
             }
         }
+
+
+        Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+        map.put("id", fabricCheckTaskId);
+        if ("modifyTimeApply".equals(modifyTime)) {
+            map.put("modifyTimeApply", "modifyTimeApply");
+            fabricCheckTaskMapper.updateById(map);
+        } else if ("modifyTimeExamine".equals(modifyTime)) {
+            map.put("modifyTimeExamine", "modifyTimeExamine");
+            fabricCheckTaskMapper.updateById(map);
+        }
         return list;
+    }
+
+
+    @Override
+    public void insert(FabricCheckRecord fabricCheckRecord, String modifyTime, String fabricCheckTaskId) {
+        fabricCheckRecordMapper.insert(fabricCheckRecord);
+        Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+        map.put("id", fabricCheckTaskId);
+        if ("modifyTimeApply".equals(modifyTime)) {
+            map.put("modifyTimeApply", "modifyTimeApply");
+            fabricCheckTaskMapper.updateById(map);
+        } else if ("modifyTimeExamine".equals(modifyTime)) {
+            map.put("modifyTimeExamine", "modifyTimeExamine");
+            fabricCheckTaskMapper.updateById(map);
+        }
     }
 
     /**
@@ -129,8 +159,10 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
      * @return 检查记录表信息集合
      */
     @Override
-    public List<FabricQcRecordAllByCheckLIIdVo> getFabricQcRecordAllByCheckLIId(Map<String, String> map) {
+    public FabricCheckRecordSearchAllVo getFabricQcRecordAllByCheckLIId(Map<String, String> map) {
+        FabricCheckRecordSearchAllVo fabricCheckRecordSearchAllVo = new FabricCheckRecordSearchAllVo();
         List<FabricQcRecordAllByCheckLIIdVo> list = fabricCheckRecordMapper.getFabricQcRecordGroupDeliveryDates(map);
+        List<String> recordIdList = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(list)) {
             for (FabricQcRecordAllByCheckLIIdVo f : list) {
                 map.put("deliveryDate", f.getDeliveryDate());
@@ -139,6 +171,7 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
                 if (CollectionUtils.isNotEmpty(fabricCheckRecordList)) {
                     for (FabricCheckRecord fabricCheckRecord : fabricCheckRecordList) {
                         FabricCheckRecordProblem fabricCheckRecordProblem = new FabricCheckRecordProblem();
+                        recordIdList.add(fabricCheckRecord.getId());
                         fabricCheckRecordProblem.setRecordId(fabricCheckRecord.getId());
                         List<FabricCheckRecordProblem> fabricCheckRecordProblemList = fabricCheckRecordProblemMapper.getCountData(fabricCheckRecordProblem);
                         if (CollectionUtils.isNotEmpty(fabricCheckRecordProblemList)) {
@@ -155,7 +188,19 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
                 }
             }
         }
-        return list;
+        List<ProblemImageClassify> problemImageClassifyList = fabricCheckRecordProblemMapper.getCountByTag(recordIdList);
+        List<ProblemImageClassify> problemImageClassifiesResult = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(problemImageClassifyList)) {
+            for (ProblemImageClassify ProblemImageClassify : problemImageClassifyList) {
+                String images = ProblemImageClassify.getImages();
+                images = images.replace("[]", "").replace(">", "").replace("][", ",");
+                ProblemImageClassify.setImages(images);
+                problemImageClassifiesResult.add(ProblemImageClassify);
+            }
+        }
+        fabricCheckRecordSearchAllVo.setProblemImageClassifyList(problemImageClassifiesResult);
+        fabricCheckRecordSearchAllVo.setFabricQcRecordAllByCheckLIIdVoList(list);
+        return fabricCheckRecordSearchAllVo;
     }
 
     Integer parseStrToInte(String string) {

@@ -3,11 +3,13 @@ package com.bc.app.server.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.bc.app.server.entity.FabricCheckProblemConfig;
+import com.bc.app.server.entity.FabricCheckRecord;
 import com.bc.app.server.entity.FabricCheckRecordProblem;
 import com.bc.app.server.entity.FabricCheckRecordProblemPosition;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.FabricCheckProblemConfigService;
 import com.bc.app.server.service.FabricCheckRecordProblemService;
+import com.bc.app.server.service.FabricCheckRecordService;
 import com.bc.app.server.vo.fabriccheckrecordproblemcontrollervo.GetFabricQcRecordProblemByRecordIdVo;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -41,6 +43,9 @@ public class FabricCheckRecordProblemController {
 
     @Autowired
     private FabricCheckProblemConfigService fabricCheckProblemConfigService;
+
+    @Autowired
+    private FabricCheckRecordService fabricCheckRecordService;
 
     /**
      * 新增问题记录
@@ -80,7 +85,7 @@ public class FabricCheckRecordProblemController {
      * @param tag      问题记录
      * @return
      */
-    @ApiOperation(value = "通过验货表id查询问题集合", notes = "通过验货表id查询问题集合")
+    @ApiOperation(value = "通过验货表id查询验货问题集合", notes = "通过验货表id查询验货问题集合")
     @GetMapping(value = "")
     public ResponseEntity<GetFabricQcRecordProblemByRecordIdVo> getFabricQcRecordProblemByRecordId(
             @RequestParam String recordId,
@@ -92,6 +97,10 @@ public class FabricCheckRecordProblemController {
             fabricCheckRecordProblem.setRecordId(recordId);
             fabricCheckRecordProblem.setTag(tag);
             GetFabricQcRecordProblemByRecordIdVo g = new GetFabricQcRecordProblemByRecordIdVo();
+            FabricCheckRecord fabricCheckRecord  = new FabricCheckRecord();
+            fabricCheckRecord.setId(recordId);
+            fabricCheckRecord = fabricCheckRecordService.selectById(fabricCheckRecord);
+            g.setFabricCheckRecord(fabricCheckRecord);
             List<FabricCheckRecordProblemPosition> list = fabricCheckRecordProblemService.getFabricQcRecordProblemByRecordId(fabricCheckRecordProblem);
             g.setFabricCheckRecordProblemPositionList(list);
             if (!StringUtils.isEmpty(enterpriseId)) {

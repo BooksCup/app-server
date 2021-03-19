@@ -169,6 +169,11 @@ public class StockApplication implements Serializable {
     private String currency;
 
     /**
+     * 审核时间
+     */
+    private String auditTime;
+
+    /**
      * 出入库详细
      */
     private List<StockApplicationInRecord> stockApplicationInRecordList;

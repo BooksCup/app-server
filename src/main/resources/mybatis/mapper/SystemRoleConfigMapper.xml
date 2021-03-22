@@ -5,10 +5,12 @@
     <resultMap id="user" type="com.bc.app.server.entity.User">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <id column="name" property="name" jdbcType="VARCHAR"/>
+        <id column="role" property="systemRole" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getUserListByModuleAndRole" resultMap="user" parameterType="map">
         select
+        c.role,
         u.id,
         u.name
         from
@@ -16,7 +18,9 @@
         left join t_user u on c.user_id = u.id
         where c.enterprise_id = #{enterpriseId}
         and c.module = #{module}
-        and c.role = #{role}
+        <if test="role != null and role != ''">
+            and c.role = #{role}
+        </if>
     </select>
 
 </mapper>

@@ -134,7 +134,7 @@
             resultType="com.bc.app.server.entity.FabricCheckRecord">
         SELECT
         id,
-        sno,
+        replace(sno,'-','.') as sno,
         check_lot_info_id as checkLotInfoId ,
         length_before as lengthBefore ,
         length_after as lengthAfter,
@@ -154,7 +154,7 @@
         <if test="deliveryDate !=null and deliveryDate != ''">
             and delivery_date=#{deliveryDate}
         </if>
-        ORDER BY   sno
+        ORDER BY sno*1
     </select>
 
 

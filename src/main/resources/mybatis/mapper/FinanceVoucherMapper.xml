@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.FinanceVoucherMapper">
+    <insert id="insert" parameterType="financeVoucher">
+        INSERT IGNORE INTO
+        t_finance_voucher
+        (
+        id,
+        department_id,
+        enterprise_id,
+        creator_id,
+        exchange_id,
+        module_name,
+        voucher_type,
+        summary,
+        currency,
+        currency_amount,
+        voucher_number,
+        remark,
+        voucher_status,
+        voucher_template_type,
+        create_time,
+        modify_time,
+        voucher_numberNew,
+        audit_id,
+        audit_time,
+        task_id,
+        time_stamp
+        )
+        VALUES
+        (
+        #{id},
+        #{departmentId},
+        #{enterpriseId},
+        #{creatorId},
+        #{exchangeId},
+        #{moduleName},
+        #{voucherType},
+        #{summary},
+        #{currency},
+        #{currencyAmount},
+        #{voucherNumber},
+        #{remark},
+        #{voucherStatus},
+        #{voucherTemplateType},
+        #{createTime},
+        #{modifyTime},
+        #{voucherNumberNew},
+        #{auditor},
+        #{auditTime},
+        #{taskId},
+        #{timeStamp}
+        )
+    </insert>
+
+    <select id="findTotalNumberByDate" parameterType="map" resultType="int">
+        select Count(*)
+        from t_finance_voucher
+        where voucher_numberNew like #{date}
+        and enterprise_id = #{enterpriseId}
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

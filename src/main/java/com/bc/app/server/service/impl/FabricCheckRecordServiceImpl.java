@@ -17,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -170,6 +171,9 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
                 f.setFabricCheckRecords(fabricCheckRecordList);
                 if (CollectionUtils.isNotEmpty(fabricCheckRecordList)) {
                     for (FabricCheckRecord fabricCheckRecord : fabricCheckRecordList) {
+                        if (!ObjectUtils.isEmpty(fabricCheckRecord) && !StringUtils.isEmpty(fabricCheckRecord.getSno())) {
+                            fabricCheckRecord.setSno(fabricCheckRecord.getSno().replace(".","-"));
+                        }
                         FabricCheckRecordProblem fabricCheckRecordProblem = new FabricCheckRecordProblem();
                         recordIdList.add(fabricCheckRecord.getId());
                         fabricCheckRecordProblem.setRecordId(fabricCheckRecord.getId());

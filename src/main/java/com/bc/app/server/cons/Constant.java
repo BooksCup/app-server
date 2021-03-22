@@ -73,4 +73,81 @@ public class Constant {
      */
     public static final String IS_NOT_INSTALL = "0";
 
+
+    /**
+     * 库存现金
+     */
+    public static final String INVENTORY_AMOUNT = "1001";
+
+    /**
+     * 银行存款
+     */
+    public static final String BANK_DEPOSIT = "1002";
+
+
+    /**
+     * 应收账款
+     */
+    public static final String ACCOUNTS_RECEIVABLE = "1122";
+
+
+    /**
+     * 应交税费-应交增值税
+     */
+    public static final String SHOUNLD_PAY_FEES = "2221";
+
+    /**
+     * 银行手续费  财务费用-手续费
+     */
+    public static final String BANK_CHARGES = "560303";
+
+    /**
+     * 原材料
+     */
+    public static final String RAW_MATERIALS = "1403";
+
+
+    /**
+     * 应付账款
+     */
+    public static final String ACCOUNTS_PAYABLE = "2202";
+
+    /**
+     * 库存商品
+     */
+    public static final String STOCK_GOODS = "1405";
+
+
+    /**
+     * 委托加工物资
+     */
+    public static final String COMMISSIONED_MATERIALS = "1408";
+
+    /**
+     * 营业外收入
+     */
+    public static final String NON_OPERATING_INCOME = "5301";
+
+
+    /**
+     * 营业外支出
+     */
+    public static final String NON_OPERATING_EXPENSES = "5711";
+
+    /**
+     * 管理费用
+     */
+    public static final String MANAGE_FEE = "5602";
+
+    /**
+     * 销售费用
+     */
+    public static final String SALE_FE = "5601";
+
+
+    //借贷 1借， 2贷
+    public static final String BORROW = "1";
+
+    public static final String LOAN = "2";
+
 }

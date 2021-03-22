@@ -7,14 +7,14 @@
         (
         id, ware_house_id, goods_id,goods_spec_id,apply_number,stock_application_id,
         price,create_user_id,create_time,box_id,enterprise_id,sort,
-        currency
+        currency,stock_type
         )
         VALUES
         <foreach collection="list" item="item" separator=",">
             (
             #{item.id},#{item.wareHouseId},#{item.goodsId},#{item.goodsSpecId},#{item.applyNumber},#{item.stockApplicationId},
             #{item.price},#{item.createUserId},now(),#{item.boxId},#{item.enterpriseId},#{item.sort},
-            #{item.currency}
+            #{item.currency},#{item.stockType}
             )
         </foreach>
     </insert>

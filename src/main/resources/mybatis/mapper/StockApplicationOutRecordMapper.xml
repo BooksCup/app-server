@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.StockApplicationOutRecordMapper">
+
+    <insert id="insertList" parameterType="list">
+        INSERT INTO t_stock_application_out_record
+        (
+        id,
+        in_record_id,
+        ware_house_id,
+        goods_id,
+        goods_spec_id,
+        count,
+        stock_application_id,
+        price,
+        create_user_id,
+        create_time,
+        box_id,
+        enterprise_id,
+        sort,
+        currency
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.inRecordId},
+            #{item.wareHouseId},
+            #{item.goodsId},
+            #{item.goodsSpecId},
+            #{item.count},
+            #{item.stockApplicationId},
+            #{item.price},
+            #{item.createUserId},
+            now(),
+            #{item.boxId},
+            #{item.enterpriseId},
+            #{item.sort},
+            #{item.currency}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

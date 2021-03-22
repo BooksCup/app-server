@@ -178,6 +178,9 @@ public class User implements Serializable {
      * 证件号
      */
     private String idNumber;
+
+    private String systemRole;
+
     /**
      * 电子合同平台的用户id
      */

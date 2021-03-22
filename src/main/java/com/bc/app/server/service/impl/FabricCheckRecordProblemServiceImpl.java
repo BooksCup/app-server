@@ -54,7 +54,7 @@ public class FabricCheckRecordProblemServiceImpl implements FabricCheckRecordPro
             fabricCheckRecordProblemPositionMapper.deleteById(fabricCheckRecordProblemPosition.getId());
             fabricCheckRecordProblemMapper.deleteByProblemPositionId(fabricCheckRecordProblemPosition.getId());
         }
-        if (!ObjectUtils.isEmpty(fabricCheckRecordProblemPosition)) {
+        if (!ObjectUtils.isEmpty(fabricCheckRecordProblemPosition) && !StringUtils.isEmpty(fabricCheckRecordProblemPosition.getProblemPosition())) {
             fabricCheckRecordProblemPosition.setId(CommonUtil.generateId());
             List<FabricCheckRecordProblem> fabricCheckRecordProblemList = fabricCheckRecordProblemPosition.getFabricCheckRecordProblemList();
             if (CollectionUtils.isNotEmpty(fabricCheckRecordProblemList)) {
@@ -62,10 +62,10 @@ public class FabricCheckRecordProblemServiceImpl implements FabricCheckRecordPro
                     fabricCheckRecordProblem.setId(CommonUtil.generateId());
                     fabricCheckRecordProblem.setProblemPositionId(fabricCheckRecordProblemPosition.getId());
                 }
+                fabricCheckRecordProblemMapper.addFabricQcRecordProblem(fabricCheckRecordProblemPosition.getFabricCheckRecordProblemList());
             }
+            fabricCheckRecordProblemPositionMapper.addFabricCheckRecordProblemPosition(fabricCheckRecordProblemPosition);
         }
-        fabricCheckRecordProblemPositionMapper.addFabricCheckRecordProblemPosition(fabricCheckRecordProblemPosition);
-        fabricCheckRecordProblemMapper.addFabricQcRecordProblem(fabricCheckRecordProblemPosition.getFabricCheckRecordProblemList());
     }
 
     /**

@@ -32,5 +32,15 @@ public class FabricCheckRecord implements Serializable {
     private  String widthMiddle;
     private  String widthBottom;
 
+    /**
+     * 机台号
+     */
+    private  String machineNumber;
+
+    /**
+     * 托盘号
+     */
+    private  String palletNumber;
+
     private FabricCheckRecordProblem fabricCheckRecordProblem;
 }

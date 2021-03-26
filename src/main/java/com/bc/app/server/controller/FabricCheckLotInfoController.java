@@ -36,6 +36,7 @@ public class FabricCheckLotInfoController {
      *
      * @param fabricCheckTaskId 面料盘点任务表id
      * @param lotNo             缸号
+     * @param fabricNumber      胚布号
      * @param num               卷数
      * @param length            数量
      * @param weight            重量
@@ -46,6 +47,7 @@ public class FabricCheckLotInfoController {
     public ResponseEntity<FabricCheckLotInfo> addFabricCheckLotInfo(
             @RequestParam String fabricCheckTaskId,
             @RequestParam(required = false) String lotNo,
+            @RequestParam(required = false) String fabricNumber,
             @RequestParam(required = false) String num,
             @RequestParam(required = false) String length,
             @RequestParam(required = false) String weight) {
@@ -58,6 +60,7 @@ public class FabricCheckLotInfoController {
             fabricCheckLotInfo.setNum(num);
             fabricCheckLotInfo.setFabricCheckTaskId(fabricCheckTaskId);
             fabricCheckLotInfo.setWeight(weight);
+            fabricCheckLotInfo.setFabricNumber(fabricNumber);
             fabricCheckLotInfoService.addFabricCheckLotInfo(fabricCheckLotInfo);
             responseEntity = new ResponseEntity<>(fabricCheckLotInfo, HttpStatus.OK);
         } catch (Exception e) {
@@ -111,7 +114,7 @@ public class FabricCheckLotInfoController {
         try {
             Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
             map.put("checkTaskId", checkTaskId);
-            List<FabricCheckLotInfo> lotNoList =  fabricCheckLotInfoService.getLotNoListByCheckTaskId(map);
+            List<FabricCheckLotInfo> lotNoList = fabricCheckLotInfoService.getLotNoListByCheckTaskId(map);
             return new ResponseEntity<>(lotNoList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

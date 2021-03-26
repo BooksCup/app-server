@@ -174,12 +174,18 @@ public class StockApplication implements Serializable {
     private String auditTime;
 
     /**
-     * 出入库详细
+     * 入库详细
      */
     private List<StockApplicationInRecord> stockApplicationInRecordList;
+
+    /**
+     * 出库详细
+     */
+    private List<StockApplicationOutRecord> stockApplicationOutRecordList;
 
     /**
      * 入库订单信息
      */
     private List<StockApplicationOrder> stockApplicationOrderList;
+
 }

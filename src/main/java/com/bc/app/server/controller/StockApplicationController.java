@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.Goods;
 import com.bc.app.server.entity.StockApplication;
-import com.bc.app.server.entity.StockApplicationInRecord;
 import com.bc.app.server.entity.vo.StockApplicationVo;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.StockApplicationService;
@@ -18,9 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

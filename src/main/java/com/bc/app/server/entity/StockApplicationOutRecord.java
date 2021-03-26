@@ -1,17 +1,18 @@
 package com.bc.app.server.entity;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
- *  出库记录
- **/
+ * 出库记录
+ *
+ * @author zhou
+ */
 @Data
 public class StockApplicationOutRecord implements Serializable {
-
 
     /**
      * 主键
@@ -42,6 +43,11 @@ public class StockApplicationOutRecord implements Serializable {
      * 物品规格ID
      */
     private String goodsSpecId;
+
+    /**
+     * 申请数量
+     */
+    private String applyNumber;
 
     /**
      * 出库数量
@@ -143,7 +149,7 @@ public class StockApplicationOutRecord implements Serializable {
      */
     private List<StockApplicationOrder> stockApplicationOrderList;
 
-   /**
+    /**
      * 备注
      */
     private String remark;

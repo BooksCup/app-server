@@ -130,11 +130,27 @@
         where is_delete='0' and  check_lot_info_id=#{checkLotInfoId} group by delivery_date
     </select>
 
+
+    <resultMap id="fabricQcRecordMap" type="com.bc.app.server.entity.FabricCheckRecord">
+        <result property="id" column="id"/>
+        <result property="sno" column="snoNum"/>
+        <result property="checkLotInfoId" column="checkLotInfoId"/>
+        <result property="lengthBefore" column="lengthBefore"/>
+        <result property="lengthAfter" column="lengthAfter"/>
+        <result property="lengthUnit" column="lengthUnit"/>
+        <result property="weightBefore" column="weightBefore"/>
+        <result property="weightAfter" column="weightAfter"/>
+        <result property="weightUnit" column="weightUnit"/>
+        <result property="deliveryDate" column="deliveryDate"/>
+        <result property="createTime" column="createTime"/>
+        <result property="modifyTime" column="modifyTime"/>
+    </resultMap>
+
     <select id="getFabricQcRecordAllByCheckLIId" parameterType="map"
-            resultType="com.bc.app.server.entity.FabricCheckRecord">
+            resultType="com.bc.app.server.entity.FabricCheckRecord"  resultMap="fabricQcRecordMap">
         SELECT
         id,
-        replace(sno,'-','.') as sno,
+        replace(sno,'-','.') as snoNum,
         check_lot_info_id as checkLotInfoId ,
         length_before as lengthBefore ,
         length_after as lengthAfter,
@@ -154,7 +170,7 @@
         <if test="deliveryDate !=null and deliveryDate != ''">
             and delivery_date=#{deliveryDate}
         </if>
-        ORDER BY sno*1
+        ORDER BY snoNum*1
     </select>
 
 
@@ -203,6 +219,8 @@
         weight_after ,
         weight_unit ,
         delivery_date,
+        machine_number,
+        pallet_number,
         create_time,
         modify_time
         )
@@ -219,6 +237,8 @@
             #{fabricCheckRecord.weightAfter},
             #{fabricCheckRecord.weightUnit},
             #{fabricCheckRecord.deliveryDate},
+            #{fabricCheckRecord.machineNumber},
+            #{fabricCheckRecord.palletNumber},
             now(),
             now()
             )

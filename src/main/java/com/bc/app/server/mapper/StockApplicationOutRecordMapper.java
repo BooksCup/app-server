@@ -18,4 +18,9 @@ public interface StockApplicationOutRecordMapper {
      */
     void insertList(List<StockApplicationOutRecord> stockApplicationOutRecordList);
 
+    /**
+     * @param stockApplicationId
+     * @return
+     */
+    List<StockApplicationOutRecord> findByStockApplicationId(String stockApplicationId);
 }

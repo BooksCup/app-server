@@ -93,8 +93,7 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
      */
     @Override
     public List<FabricCheckRecord> insertFabricQcRecords(List<FabricCheckRecord> list, String modifyTime, String fabricCheckTaskId) {
-
-        if ("modifyTimeExamine".equals(modifyTime)) {
+        if ("modifyTimeExamine".equals(modifyTime)) {//审核完毕
             if (CollectionUtils.isNotEmpty(list)) {
                 List<FabricCheckRecord> noIdList = new ArrayList<>();
                 List<FabricCheckRecord> haveIdList = new ArrayList<>();
@@ -124,8 +123,6 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
                 fabricCheckRecordMapper.insertFabricQcRecords(list);
             }
         }
-
-
         Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         map.put("id", fabricCheckTaskId);
         if ("modifyTimeApply".equals(modifyTime)) {

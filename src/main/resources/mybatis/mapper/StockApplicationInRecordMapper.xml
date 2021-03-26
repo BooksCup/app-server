@@ -7,17 +7,18 @@
         (
         id, ware_house_id, goods_id,goods_spec_id,apply_number,stock_application_id,
         price,create_user_id,create_time,box_id,enterprise_id,sort,
-        currency,stock_type
+        currency
         )
         VALUES
         <foreach collection="list" item="item" separator=",">
             (
             #{item.id},#{item.wareHouseId},#{item.goodsId},#{item.goodsSpecId},#{item.applyNumber},#{item.stockApplicationId},
             #{item.price},#{item.createUserId},now(),#{item.boxId},#{item.enterpriseId},#{item.sort},
-            #{item.currency},#{item.stockType}
+            #{item.currency}
             )
         </foreach>
     </insert>
+
     <update id="updateList">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update t_stock_application_in_record
@@ -35,6 +36,7 @@
             where goods_spec_id = #{item.goodsSpecId} and stock_application_id = #{item.stockApplicationId}
         </foreach>
     </update>
+
     <delete id="deleteBatchStockApplicationInRecord">
         DELETE FROM  t_stock_application_in_record
         where create_user_id = #{createUserId} and  stock_application_id = #{stockApplicationId} and  enterprise_id =#{enterpriseId}

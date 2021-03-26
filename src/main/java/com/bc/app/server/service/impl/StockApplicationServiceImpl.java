@@ -161,12 +161,15 @@ public class StockApplicationServiceImpl implements StockApplicationService {
                     // 入库记录
                     StockApplicationOutRecord r = new StockApplicationOutRecord();
                     r.setId(CommonUtil.generateId());
+                    r.setInRecordId("");
                     r.setCreateUserId(stockApplication.getCreateUserId());
                     r.setEnterpriseId(stockApplication.getEnterpriseId());
                     if (StringUtils.isEmpty(m.get("applyNum").toString())) {
                         r.setCount("0");
+                        r.setApplyNumber("0");
                     } else {
                         r.setCount(m.get("applyNum").toString());
+                        r.setApplyNumber(m.get("applyNum").toString());
                     }
                     r.setGoodsSpecId(m.get("id").toString());
                     r.setGoodsId(stockApplication.getStockGoodsId());
@@ -497,9 +500,16 @@ public class StockApplicationServiceImpl implements StockApplicationService {
     @Override
     public StockApplicationVo findById(String id) {
         StockApplicationVo stockApplication = stockApplicationMapper.findById(id);
-        List<StockApplicationInRecord> stockApplicationInRecordList = stockApplicationInRecordMapper.findByStockApplicationId(id);
-        if (CollectionUtils.isNotEmpty(stockApplicationInRecordList)) {
-            stockApplication.setStockApplicationInRecordList(stockApplicationInRecordList);
+        if (Constant.STOCK_TYPE_IN.equals(stockApplication.getStockType())) {
+            List<StockApplicationInRecord> stockApplicationInRecordList = stockApplicationInRecordMapper.findByStockApplicationId(id);
+            if (CollectionUtils.isNotEmpty(stockApplicationInRecordList)) {
+                stockApplication.setStockApplicationInRecordList(stockApplicationInRecordList);
+            }
+        } else if(Constant.STOCK_TYPE_OUT.equals(stockApplication.getStockType())) {
+            List<StockApplicationOutRecord> stockApplicationOutRecordList = stockApplicationOutRecordMapper.findByStockApplicationId(id);
+            if (CollectionUtils.isNotEmpty(stockApplicationOutRecordList)) {
+                stockApplication.setStockApplicationOutRecordList(stockApplicationOutRecordList);
+            }
         }
         return stockApplication;
     }

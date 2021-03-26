@@ -11,6 +11,7 @@
         goods_id,
         goods_spec_id,
         count,
+        apply_number,
         stock_application_id,
         price,
         create_user_id,
@@ -24,11 +25,12 @@
         <foreach collection="list" item="item" separator=",">
             (
             #{item.id},
-            #{item.inRecordId},
+            ' ',
             #{item.wareHouseId},
             #{item.goodsId},
             #{item.goodsSpecId},
             #{item.count},
+            #{item.applyNumber},
             #{item.stockApplicationId},
             #{item.price},
             #{item.createUserId},
@@ -40,5 +42,26 @@
             )
         </foreach>
     </insert>
+
+    <select id="findByStockApplicationId" parameterType="string"
+            resultType="com.bc.app.server.entity.StockApplicationOutRecord">
+        SELECT
+        r.ware_house_id wareHouseId,
+        r.goods_id goodsId,
+        r.goods_spec_id goodsSpecId,
+        r.count,
+        r.apply_number applyNumber,
+        r.stock_application_id stockApplicationId,
+        r.price,
+        wh.name wareHouseName,
+        gs.x,
+        gs.y
+        FROM t_stock_application_out_record r
+        LEFT JOIN t_goods_spec gs on gs.id = r.goods_spec_id
+        LEFT JOIN t_ware_house wh on wh.id = r.ware_house_id
+        WHERE r.stock_application_id = #{stockApplicationId}
+        ORDER BY r.sort
+        ASC
+    </select>
 
 </mapper>

@@ -1,5 +1,7 @@
 package com.bc.app.server.utils;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bc.app.server.entity.EContractApiResult;
 import com.bc.app.server.entity.NumberSequence;
 import com.bc.app.server.mapper.NumberSequenceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,27 @@ import java.util.*;
  * @author zhou
  */
 public class CommonUtil {
+
+
+    /**
+     * 测试地址
+     */
+    private static final String reqInterNme = "https://openapi.esign.cn";
+
+    /**
+     * appId 引用软件id
+     */
+    private static final String appId = "5111598374";
+
+    /**
+     * app key
+     */
+    private static final String secret = "3a107cb286a410e4e2a1de5e542607fe";
+
+    /**
+     * 固定类型
+     */
+    private static String grantType = "client_credentials";
 
 
     @Autowired
@@ -133,6 +156,21 @@ public class CommonUtil {
             e.printStackTrace();
         }
         return strDate;
+    }
+
+
+    public static String getToken() throws Exception {
+        EContractApiResult enterprise;
+        String url = "/v1/oauth2/access_token";
+        String reqUrl = reqInterNme.concat(url).concat("?appId=").concat(appId).concat("&secret=").concat(secret)
+                .concat("&grantType=").concat(grantType);
+        String tokenJson = HttpHelper.httpGet(reqUrl, null);
+        // parse status from json
+        enterprise = JSONObject.parseObject(tokenJson, EContractApiResult.class);
+        Object token;
+        token = enterprise.getData().get("token");
+        String tokenStr = (String) token;
+        return tokenStr;
     }
 
 }

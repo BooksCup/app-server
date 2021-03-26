@@ -1,10 +1,13 @@
 package com.bc.app.server.utils;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bc.app.server.entity.EContractApiResult;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -14,6 +17,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,6 +35,17 @@ import java.util.Map;
  * @author zhou
  */
 public class HttpUtil {
+
+    /**
+     * 测试地址
+     */
+    private static final String reqInterNme = "https://openapi.esign.cn";
+
+    /**
+     * appId 引用软件id
+     */
+    private static final String appId ="5111598374";
+
 
     private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
 
@@ -183,4 +198,82 @@ public class HttpUtil {
         }
         return null;
     }
+
+    /**
+     * post方法
+     *
+     * @param url 申请地址
+     * @params JSONObject 传递的json
+     * @params reqHeader 是否往header放置数据
+     * @params splice 是否拼接默认的地址  默认true。
+     */
+    public static EContractApiResult httpPost(String url, JSONObject json, HttpHead reqHeader, Boolean splice){
+        //放置header
+        if (null == reqHeader) {
+            reqHeader = new HttpHead();
+        }
+        String reqUri = url;
+        if (splice) {
+            reqUri = reqInterNme.concat(url);
+        }
+        String tokenJson = null;
+        try {
+            String token = CommonUtil.getToken();
+            tokenJson = "";
+            String jsonStr = json.toString();
+            if (!StringUtils.isEmpty(token)) {
+                reqHeader.setHeader("X-Tsign-Open-App-Id", appId);
+                reqHeader.setHeader("X-Tsign-Open-Token", token);
+                reqHeader.setHeader("Content-Type", "application/json");
+                tokenJson = HttpHelper.httpPost(reqUri, reqHeader.getAllHeaders(), jsonStr);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (splice) {
+            return JSONObject.parseObject(tokenJson, EContractApiResult.class);
+
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * put  主要用于put请求
+     *
+     * @param url 申请地址
+     * @params bufferFile 上传文件的二进制字节流
+     * @params reqHeader 是否往header放置数据
+     * @params splice 是否拼接默认的地址  默认true。
+     */
+    public static EContractApiResult httpPut(String url, JSONObject json, HttpHead reqHeader, Boolean splice) throws Exception {
+        //放置header
+        if (null == reqHeader) {
+            reqHeader = new HttpHead();
+        }
+        String reqUri = url;
+        if (splice) {
+            reqUri = reqInterNme.concat(url);
+        }
+        String token = CommonUtil.getToken();
+        String tokenJson = "";
+        String jsonStr = null;
+        if (!org.springframework.util.StringUtils.isEmpty(json)){
+            jsonStr = json.toString();
+        }
+        if (!StringUtils.isEmpty(token)) {
+            reqHeader.addHeader("content-type", "application/json; charset=utf-8");
+            reqHeader.setHeader("X-Tsign-Open-App-Id", appId);
+            reqHeader.setHeader("X-Tsign-Open-Token", token);
+            // tokenJson = HttpHelper.httpPut(reqUri, reqHeader.getAllHeaders(), filebytes);
+            tokenJson = HttpHelper.httpPut(reqUri, reqHeader.getAllHeaders(),jsonStr);
+        }
+        if (splice) {
+            return JSONObject.parseObject(tokenJson, EContractApiResult.class);
+        } else {
+            return null;
+        }
+
+    }
+
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.ContractMapper">
+
+    <resultMap id="contract" type="com.bc.app.server.entity.Contract">
+        <result property="id" column="id"/>
+        <result property="contractType" column="contract_type"/>
+        <result property="contractNo" column="contract_no"/>
+        <result property="fromUserId" column="from_user_id"/>
+        <result property="fromEnterpriseId" column="from_enterprise_id"/>
+        <result property="toUserId" column="to_user_id"/>
+        <result property="toEnterpriseId" column="to_enterprise_id"/>
+        <result property="themeTitleStr" column="theme_title_str"/>
+        <result property="goodsNamesStr" column="goods_names_str"/>
+        <result property="materialNumberStr" column="material_number_str"/>
+        <result property="contractAmount" column="contract_amount"/>
+        <result property="memo" column="memo"/>
+        <result property="status" column="status"/>
+        <result property="sendStatus" column="send_status"/>
+        <result property="contractNote" column="contract_note"/>
+        <result property="photos" column="photos"/>
+        <result property="goodsPhotos" column="goods_photos"/>
+        <result property="invoiceType" column="invoice_type"/>
+        <result property="exchangeRateType" column="exchange_rate_type"/>
+        <result property="receiveReminding" column="receive_reminding"/>
+        <result property="deleteStatus" column="delete_status"/>
+        <result property="source" column="source"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="title" column="title"/>
+        <result property="isShowSpec" column="is_show_spec"/>
+        <result property="signDate" column="sign_date"/>
+        <result property="toEnterpriseName" column="toEnterpriseName"/>
+        <!--<collection property="contractDetailList" column="id" javaType="List" ofType="contractDetail" select="getGoodsSpecList">-->
+        <!--</collection>-->
+    </resultMap>
+
+    <select id="getContractList" resultMap="contract">
+        select c.*,
+        e.name toEnterpriseName
+        from t_contract  c
+        left join t_exchange_enterprise e on c.to_enterprise_id = e.id and is_delete = '0'
+        where c.from_enterprise_id =#{enterpriseId}
+        <if test="keyword !=null and keyword != ''">
+            and (
+            c.contract_no like concat('%', #{keyword},'%')
+            or c.theme_title_str like concat('%', #{keyword},'%')
+            or c.goods_names_str like concat('%', #{keyword},'%')
+--  or c.contract_amount like concat('%', #{keyword},'%')
+            or e.name like concat('%', #{keyword},'%')
+            )
+        </if>
+        order by c.create_time desc
+
+
+    </select>
+</mapper>

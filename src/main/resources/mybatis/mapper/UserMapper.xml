@@ -14,6 +14,9 @@
         <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
         <result column="job_name" property="jobName" jdbcType="VARCHAR"/>
+        <result column="account_id" property="accountId" jdbcType="VARCHAR"/>
+        <result column="account_id_number" property="idNumber" jdbcType="VARCHAR"/>
+        <result column="real_name_cert_type" property="realNameCertType" jdbcType="VARCHAR"/>
         <result column="is_super_admin" property="isSuperAdmin" jdbcType="VARCHAR"/>
         <result column="isFabricCheckAdmin" property="isFabricCheckAdmin" jdbcType="VARCHAR"/>
         <result column="short_name" property="enterpriseShortName" jdbcType="VARCHAR"/>
@@ -85,9 +88,13 @@
         e.name as enterprise_name,
         e.short_name as short_name,
         e.address as enterprise_address,
+        account.account_id as account_id,
+        account.id_card as account_id_number,
+        account.real_type as real_name_cert_type,
         crc.role as isFabricCheckAdmin
         from t_user u
         left join t_enterprise e on u.enterprise_id = e.id
+        left join t_user_account account on u.id = account.user_id
         left join t_fabric_check_role_config crc on crc.user_id = u.id and crc.is_delete = '0'
         where u.phone = #{phone}
         and u.password = #{password}

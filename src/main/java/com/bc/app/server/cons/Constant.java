@@ -150,4 +150,8 @@ public class Constant {
 
     public static final String LOAN = "2";
 
+    public static final String E_CONTRACT_BASE_URL = "https://openapi.esign.cn";
+
+    public static final String REAL_TYPE_YES = "1";
+
 }

@@ -2,7 +2,6 @@ package com.bc.app.server.controller;
 
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.User;
-import com.bc.app.server.entity.UserApply;
 import com.bc.app.server.enums.ResponseMsg;
 import com.bc.app.server.service.UserApplyService;
 import com.bc.app.server.service.UserService;

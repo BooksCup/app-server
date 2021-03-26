@@ -12,8 +12,6 @@ import java.io.Serializable;
 @Data
 public class User implements Serializable {
 
-//    private static final long serialVersionUID = 7860006739676031050L;
-
     /**
      * 主键
      */
@@ -185,6 +183,7 @@ public class User implements Serializable {
      * 电子合同平台的用户id
      */
     private String accountId;
+    private String realNameCertType;
     private String enterpriseAddress;
     private String fabricCheckRole;
 

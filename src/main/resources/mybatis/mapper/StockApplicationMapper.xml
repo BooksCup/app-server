@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bc.app.server.mapper.StockApplicationMapper">
 
-
     <resultMap id="stockApplicationInRecordDtMap" type="com.bc.app.server.entity.WareHouse">
         <result column="w_id" property="id"></result>
         <result column="w_name" property="name"></result>
@@ -27,7 +26,6 @@
             <result column="x" property="x"></result>
             <result column="y" property="y"></result>
             <result column="s_remark" property="remark"></result>
-
         </collection>
     </resultMap>
 
@@ -103,6 +101,7 @@
         </trim>
         where id = #{id}
     </update>
+
     <update id="updateStockApplicationPackageRecordList">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update t_stock_application_package_record
@@ -223,6 +222,7 @@
         FROM t_stock_application_package
         WHERE   stock_application_id =#{stockApplicationId}
     </select>
+
     <select id="getStockByGoodsId" resultType="com.bc.app.server.entity.StockApplicationInRecord">
          SELECT sum(r.residual_number) residualNumber  ,
         r.goods_id as goodsId,
@@ -236,6 +236,7 @@
         and s.status = '1'
         group by goods_spec_id
     </select>
+
     <select id="getStockDetailByGoodsId" parameterType="string" resultMap="stockApplicationInRecordDtMap">
         SELECT r.*,w.id as w_id,w.name as w_name,w.contact_name,w.contact_phone,
         w.province,w.city,w.area,w.address,w.remark,

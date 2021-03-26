@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.UserAccountMapper">
+
+    <resultMap id="userAccountMap" type="com.bc.app.server.entity.UserAccount">
+        <id column="id" property="id"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="account_id" property="accountId"/>
+        <result column="user_id" property="userId"/>
+        <result column="id_card" property="idCard"/>
+        <result column="real_type" property="realType"/>
+        <result column="mobile" property="mobile"/>
+        <result column="flow_id" property="flowId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="userAccount">
+        insert into t_user_account
+        (id,
+        create_by,
+        create_time,
+        user_id,
+        account_id,
+        id_card,
+        mobile)
+        values
+        (#{id},
+        #{createBy},
+        now(),
+        #{userId},
+        #{accountId},
+        #{idCard},
+        #{mobile})
+    </insert>
+
+    <update id="updateUserAccountByAccountId">
+        UPDATE t_user_account
+        <set>
+            <if test="flowId != null and flowId !=''">
+                flow_id = #{flowId},
+            </if>
+            <if test="realType != null and realType !=''">
+                real_type = #{realType},
+            </if>
+            <if test="mobile != null and mobile !=''">
+                mobile = #{mobile},
+            </if>
+            <if test="idCard != null and idCard !=''">
+                id_card = #{idCard},
+            </if>
+        </set>
+        WHERE account_id = #{accountId}
+    </update>
+
+    <select id="getUserAccountByUserId" resultMap="userAccountMap">
+        select * from t_user_account where user_id = #{userId}
+    </select>
+
+</mapper>

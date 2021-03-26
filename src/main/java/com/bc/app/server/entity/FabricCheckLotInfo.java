@@ -55,4 +55,9 @@ public class FabricCheckLotInfo {
 
     private GetByWarehouseIdVo getByWarehouseIdVo;
 
+    /**
+     *胚布号
+     */
+    private String fabricNumber;
+
 }

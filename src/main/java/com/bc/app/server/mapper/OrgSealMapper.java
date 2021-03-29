@@ -34,7 +34,6 @@ public interface OrgSealMapper {
      */
     List<OrgSeal> getOrgSealListByEnterpriseId(String enterpriseId);
 
-
     /**
      * 根据第三方平台印章ID获取机构印章
      *

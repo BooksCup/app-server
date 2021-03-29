@@ -31,8 +31,17 @@
         <result property="isShowSpec" column="is_show_spec"/>
         <result property="signDate" column="sign_date"/>
         <result property="toEnterpriseName" column="toEnterpriseName"/>
-        <!--<collection property="contractDetailList" column="id" javaType="List" ofType="contractDetail" select="getGoodsSpecList">-->
-        <!--</collection>-->
+    </resultMap>
+
+    <resultMap id="contractDetail" type="com.bc.app.server.entity.ContractDetail">
+        <result property="id" column="id"/>
+        <result property="sourceId" column="source_id"/>
+        <result property="sourceJson" column="source_json"/>
+        <result property="thisCount" column="this_count"/>
+        <result property="thisCountJson" column="this_count_json"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="display" column="display"/>
     </resultMap>
 
     <select id="getContractList" resultMap="contract">
@@ -40,18 +49,32 @@
         e.name toEnterpriseName
         from t_contract  c
         left join t_exchange_enterprise e on c.to_enterprise_id = e.id and is_delete = '0'
-        where c.from_enterprise_id =#{enterpriseId}
+        where c.from_enterprise_id = #{enterpriseId}
         <if test="keyword !=null and keyword != ''">
             and (
             c.contract_no like concat('%', #{keyword},'%')
             or c.theme_title_str like concat('%', #{keyword},'%')
             or c.goods_names_str like concat('%', #{keyword},'%')
---  or c.contract_amount like concat('%', #{keyword},'%')
             or e.name like concat('%', #{keyword},'%')
             )
         </if>
         order by c.create_time desc
-
-
     </select>
+
+    <select id="getContractById" resultMap="contract">
+        select
+        *
+        from t_contract
+        where id = #{contractId}
+    </select>
+
+    <select id="getContractDetailListByContractId" resultMap="contractDetail">
+        select
+        *
+        from
+        t_contract_detail
+        where
+        contract_id = #{contractId}
+    </select>
+
 </mapper>

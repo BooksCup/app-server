@@ -2,6 +2,7 @@ package com.bc.app.server.service.impl;
 
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.Contract;
+import com.bc.app.server.entity.ContractDetail;
 import com.bc.app.server.mapper.ContractMapper;
 import com.bc.app.server.service.ContractService;
 import com.github.pagehelper.PageHelper;
@@ -41,6 +42,22 @@ public class ContractServiceImpl implements ContractService {
         PageHelper.startPage(pageNum, pageSize);
         List<Contract> page = contractMapper.getContractList(map);
         return new PageInfo<>(page);
+    }
+
+    /**
+     * 根据合同ID获取合同
+     *
+     * @param contractId 合同ID
+     * @return 合同
+     */
+    @Override
+    public Contract getContractById(String contractId) {
+        Contract contract = contractMapper.getContractById(contractId);
+        if (null != contract) {
+            List<ContractDetail> contractDetailList = contractMapper.getContractDetailListByContractId(contractId);
+            contract.setContractDetailList(contractDetailList);
+        }
+        return contract;
     }
 
 }

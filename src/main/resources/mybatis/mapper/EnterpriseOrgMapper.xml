@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.EnterpriseOrgMapper">
+
+    <resultMap id="enterpriseOrg" type="com.bc.app.server.entity.EnterpriseOrg">
+        <result property="id" column="id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="realType" column="real_type"/>
+        <result property="flowId" column="flow_id"/>
+    </resultMap>
+
+    <select id="getEnterpriseOrg" resultMap="enterpriseOrg">
+        select * from t_enterprise_org
+        where enterprise_id = #{enterpriseId}
+    </select>
+
+    <insert id="addEnterpriseOrg" parameterType="com.bc.app.server.entity.EnterpriseOrg">
+        insert into t_enterprise_org
+        (
+        id,
+        create_by,
+        create_time,
+        enterprise_id,
+        org_id
+        )
+        values
+        (
+        #{id},
+        #{createBy},
+        now(),
+        #{enterpriseId},
+        #{orgId}
+        )
+    </insert>
+
+    <update id="updateOrg" parameterType="com.bc.app.server.entity.EnterpriseOrg">
+        update t_enterprise_org
+        <set>
+            <if test="flowId != null and flowId !=''">
+                flow_id = #{flowId},
+            </if>
+            <if test="realType != null and realType !=''">
+                real_type = #{realType},
+            </if>
+        </set>
+        where org_id = #{orgId}
+    </update>
+
+</mapper>

@@ -198,12 +198,12 @@ public class Contract implements Serializable {
     private String modifyTime;
 
     /**
-     * 标题
+     * 标题(用于电子合同)
      */
     private String title;
 
     /**
-     * 合同预览 是否显示规格 0 不显示 1 显示
+     * 合同预览 是否显示规格 0:不显示 1:显示
      */
     private String isShowSpec;
 

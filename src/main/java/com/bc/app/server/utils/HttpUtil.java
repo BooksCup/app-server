@@ -1,7 +1,7 @@
 package com.bc.app.server.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bc.app.server.entity.EContractApiResult;
+import com.bc.app.server.entity.ElectronicContractApiResult;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -207,7 +207,7 @@ public class HttpUtil {
      * @params reqHeader 是否往header放置数据
      * @params splice 是否拼接默认的地址  默认true。
      */
-    public static EContractApiResult httpPost(String url, JSONObject json, HttpHead reqHeader, Boolean splice){
+    public static ElectronicContractApiResult httpPost(String url, JSONObject json, HttpHead reqHeader, Boolean splice){
         //放置header
         if (null == reqHeader) {
             reqHeader = new HttpHead();
@@ -231,7 +231,7 @@ public class HttpUtil {
             e.printStackTrace();
         }
         if (splice) {
-            return JSONObject.parseObject(tokenJson, EContractApiResult.class);
+            return JSONObject.parseObject(tokenJson, ElectronicContractApiResult.class);
 
         } else {
             return null;
@@ -246,7 +246,7 @@ public class HttpUtil {
      * @params reqHeader 是否往header放置数据
      * @params splice 是否拼接默认的地址  默认true。
      */
-    public static EContractApiResult httpPut(String url, JSONObject json, HttpHead reqHeader, Boolean splice) throws Exception {
+    public static ElectronicContractApiResult httpPut(String url, JSONObject json, HttpHead reqHeader, Boolean splice) throws Exception {
         //放置header
         if (null == reqHeader) {
             reqHeader = new HttpHead();
@@ -269,7 +269,7 @@ public class HttpUtil {
             tokenJson = HttpHelper.httpPut(reqUri, reqHeader.getAllHeaders(),jsonStr);
         }
         if (splice) {
-            return JSONObject.parseObject(tokenJson, EContractApiResult.class);
+            return JSONObject.parseObject(tokenJson, ElectronicContractApiResult.class);
         } else {
             return null;
         }

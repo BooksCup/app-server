@@ -2,15 +2,14 @@ package com.bc.app.server.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bc.app.server.cons.Constant;
-import com.bc.app.server.entity.EContractApiResult;
+import com.bc.app.server.entity.ElectronicContractApiResult;
 import com.bc.app.server.entity.UserAccount;
 import com.bc.app.server.mapper.UserAccountMapper;
 import com.bc.app.server.service.RealNameCertService;
 import com.bc.app.server.utils.CommonUtil;
-import com.bc.app.server.utils.EContractHttpUtil;
+import com.bc.app.server.utils.ElectronicContractHttpUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -50,12 +49,12 @@ public class RealNameCertServiceImpl implements RealNameCertService {
      * @return e签宝平台返回结果
      */
     @Override
-    public EContractApiResult addUserAccount(String idType, String userId, String userName, String identityNum, String mobile) {
+    public ElectronicContractApiResult addUserAccount(String idType, String userId, String userName, String identityNum, String mobile) {
         String url = Constant.E_CONTRACT_BASE_URL + "/v1/accounts/createByThirdPartyUserId";
         Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         map.put("userId", userId);
         UserAccount userAccount = userAccountMapper.getUserAccountByUserId(map);
-        EContractApiResult eContractApiResult;
+        ElectronicContractApiResult eContractApiResult;
         if (ObjectUtils.isEmpty(userAccount)) {
             // 如果用户e签宝账号为空,需要先去e签宝平台注册账号
             JSONObject paramJson = new JSONObject();
@@ -65,7 +64,7 @@ public class RealNameCertServiceImpl implements RealNameCertService {
             paramJson.put("idNumber", identityNum);
             paramJson.put("mobile", mobile);
             // 请求api accountId 第三方平台注册的id
-            eContractApiResult = EContractHttpUtil.httpPost(url, paramJson);
+            eContractApiResult = ElectronicContractHttpUtil.httpPost(url, paramJson);
             if (eContractApiResult.getCode() == 0 || eContractApiResult.getCode() == ACCOUNT_ALREADY_EXIST) {
                 String accountId = (String) eContractApiResult.getData().get("accountId");
                 userAccount = new UserAccount();
@@ -94,14 +93,14 @@ public class RealNameCertServiceImpl implements RealNameCertService {
      * @param mobile      手机号
      * @return e签宝平台返回结果
      */
-    public EContractApiResult accountCert(String identityNum, String accountId, String userName, String mobile) {
+    public ElectronicContractApiResult accountCert(String identityNum, String accountId, String userName, String mobile) {
         String url = Constant.E_CONTRACT_BASE_URL + "/v2/identity/auth/api/individual/telecom3Factors";
         JSONObject paramJson = new JSONObject();
         paramJson.put("name", userName);
         paramJson.put("idNo", identityNum);
         paramJson.put("mobileNo", mobile);
         paramJson.put("repetition", true);
-        EContractApiResult eContractApi = EContractHttpUtil.httpPost(url, paramJson);
+        ElectronicContractApiResult eContractApi = ElectronicContractHttpUtil.httpPost(url, paramJson);
         if (eContractApi.getCode() == 0) {
             String flowId = (String) eContractApi.getData().get("flowId");
             UserAccount account = new UserAccount();
@@ -122,16 +121,16 @@ public class RealNameCertServiceImpl implements RealNameCertService {
      * @return e签宝平台返回结果
      */
     @Override
-    public EContractApiResult checkVerifyCode(String userId, String code) {
+    public ElectronicContractApiResult checkVerifyCode(String userId, String code) {
         Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         map.put("userId", userId);
         UserAccount userAccount = userAccountMapper.getUserAccountByUserId(map);
-        EContractApiResult electronContractApi = null;
+        ElectronicContractApiResult electronContractApi = null;
         if (!ObjectUtils.isEmpty(userAccount)) {
             String url = Constant.E_CONTRACT_BASE_URL + "/v2/identity/auth/pub/individual/" + userAccount.getFlowId() + "/telecom3Factors";
             JSONObject paramJson = new JSONObject();
             paramJson.put("authcode", code);
-            electronContractApi = EContractHttpUtil.httpPut(url, paramJson);
+            electronContractApi = ElectronicContractHttpUtil.httpPut(url, paramJson);
             if (electronContractApi.getCode() == 0) {
                 userAccount.setRealType(Constant.REAL_TYPE_YES);
                 userAccountMapper.updateUserAccountByAccountId(userAccount);

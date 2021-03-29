@@ -1,6 +1,6 @@
 package com.bc.app.server.service;
 
-import com.bc.app.server.entity.EContractApiResult;
+import com.bc.app.server.entity.ElectronicContractApiResult;
 
 /**
  * 实名认证
@@ -25,7 +25,7 @@ public interface RealNameCertService {
      * @param mobile      手机号
      * @return e签宝平台返回结果
      */
-    EContractApiResult addUserAccount(String idType, String userId, String userName, String identityNum, String mobile);
+    ElectronicContractApiResult addUserAccount(String idType, String userId, String userName, String identityNum, String mobile);
 
     /**
      * 校验验证码
@@ -34,6 +34,6 @@ public interface RealNameCertService {
      * @param code   验证码
      * @return e签宝平台返回结果
      */
-    EContractApiResult checkVerifyCode(String userId, String code);
+    ElectronicContractApiResult checkVerifyCode(String userId, String code);
 
 }

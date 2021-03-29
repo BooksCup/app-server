@@ -1,7 +1,7 @@
 package com.bc.app.server.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bc.app.server.entity.EContractApiResult;
+import com.bc.app.server.entity.ElectronicContractApiResult;
 import org.apache.http.client.methods.HttpHead;
 import org.springframework.util.StringUtils;
 
@@ -10,11 +10,11 @@ import org.springframework.util.StringUtils;
  *
  * @author zhou
  */
-public class EContractHttpUtil {
+public class ElectronicContractHttpUtil {
 
     private static final String appId = "5111598374";
 
-    public static EContractApiResult httpPost(String url, JSONObject json) {
+    public static ElectronicContractApiResult httpPost(String url, JSONObject json) {
         String result = null;
         try {
             String token = CommonUtil.getToken();
@@ -28,10 +28,10 @@ public class EContractHttpUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return JSONObject.parseObject(result, EContractApiResult.class);
+        return JSONObject.parseObject(result, ElectronicContractApiResult.class);
     }
 
-    public static EContractApiResult httpPut(String url, JSONObject json) {
+    public static ElectronicContractApiResult httpPut(String url, JSONObject json) {
         String result = null;
         try {
             String token = CommonUtil.getToken();
@@ -45,6 +45,6 @@ public class EContractHttpUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return JSONObject.parseObject(result, EContractApiResult.class);
+        return JSONObject.parseObject(result, ElectronicContractApiResult.class);
     }
 }

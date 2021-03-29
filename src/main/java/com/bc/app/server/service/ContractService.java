@@ -22,4 +22,12 @@ public interface ContractService {
      */
     PageInfo<Contract> getContractPageInfo(String enterpriseId, String keyword, Integer pageNum, Integer pageSize);
 
+    /**
+     * 根据合同ID获取合同
+     *
+     * @param contractId 合同ID
+     * @return 合同
+     */
+    Contract getContractById(String contractId);
+
 }

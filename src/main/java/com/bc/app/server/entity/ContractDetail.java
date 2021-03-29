@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 合同明细
  *
- * @author leo
+ * @author zhou
  */
 @Data
 public class ContractDetail implements Serializable {

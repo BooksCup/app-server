@@ -44,6 +44,11 @@ public enum ResponseMsg {
 
     PUSH_SUCCESS("PUSH_SUCCESS", "推送成功"),
     PUSH_ERROR("PUSH_ERROR", "推送失败"),
+
+    CREATE_SIGN_FLOW_SUCCESS("CREATE_SIGN_FLOW_SUCCESS", "签署流程创建成功"),
+    ORG_SEAL_NOT_EXISTS("ORG_SEAL_NOT_EXISTS", "机构印章不存在"),
+    CONTRACT_TITLE_EMPTY("CONTRACT_TITLE_EMPTY", "该合同没有设置标题"),
+    ENTERPRISE_NOT_CERT("ENTERPRISE_NOT_CERT", "未获取到企业认证信息，请先认证企业"),
     ;
 
     ResponseMsg(String responseCode, String responseMessage) {

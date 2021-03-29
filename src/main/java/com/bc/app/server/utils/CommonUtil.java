@@ -1,7 +1,7 @@
 package com.bc.app.server.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bc.app.server.entity.EContractApiResult;
+import com.bc.app.server.entity.ElectronicContractApiResult;
 import com.bc.app.server.entity.NumberSequence;
 import com.bc.app.server.mapper.NumberSequenceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,13 +160,13 @@ public class CommonUtil {
 
 
     public static String getToken() throws Exception {
-        EContractApiResult enterprise;
+        ElectronicContractApiResult enterprise;
         String url = "/v1/oauth2/access_token";
         String reqUrl = reqInterNme.concat(url).concat("?appId=").concat(appId).concat("&secret=").concat(secret)
                 .concat("&grantType=").concat(grantType);
         String tokenJson = HttpHelper.httpGet(reqUrl, null);
         // parse status from json
-        enterprise = JSONObject.parseObject(tokenJson, EContractApiResult.class);
+        enterprise = JSONObject.parseObject(tokenJson, ElectronicContractApiResult.class);
         Object token;
         token = enterprise.getData().get("token");
         String tokenStr = (String) token;

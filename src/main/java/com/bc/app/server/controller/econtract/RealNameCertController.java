@@ -1,6 +1,6 @@
 package com.bc.app.server.controller.econtract;
 
-import com.bc.app.server.entity.EContractApiResult;
+import com.bc.app.server.entity.ElectronicContractApiResult;
 import com.bc.app.server.service.RealNameCertService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -39,19 +39,19 @@ public class RealNameCertController {
      */
     @ApiOperation(value = "添加用户账号至e签宝平台并开启实名认证流程", notes = "添加用户账号至e签宝平台并开启实名认证流程")
     @PostMapping(value = "")
-    public ResponseEntity<EContractApiResult> addUserAccount(
+    public ResponseEntity<ElectronicContractApiResult> addUserAccount(
             @RequestParam(required = false, defaultValue = "CRED_PSN_CH_IDCARD") String idType,
             @RequestParam String userId,
             @RequestParam String userName,
             @RequestParam String mobile,
             @RequestParam String identityNum) {
-        ResponseEntity<EContractApiResult> responseEntity;
+        ResponseEntity<ElectronicContractApiResult> responseEntity;
         try {
-            EContractApiResult electronContractApi = realNameCertService.addUserAccount(idType, userId, userName, identityNum, mobile);
+            ElectronicContractApiResult electronContractApi = realNameCertService.addUserAccount(idType, userId, userName, identityNum, mobile);
             responseEntity = new ResponseEntity<>(electronContractApi, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            responseEntity = new ResponseEntity<>(new EContractApiResult(), HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>(new ElectronicContractApiResult(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }
@@ -65,16 +65,16 @@ public class RealNameCertController {
      */
     @ApiOperation(value = "校验验证码", notes = "校验验证码")
     @GetMapping(value = "/check")
-    public ResponseEntity<EContractApiResult> checkVerifyCode(
+    public ResponseEntity<ElectronicContractApiResult> checkVerifyCode(
             @RequestParam String userId,
             @RequestParam String code) {
-        ResponseEntity<EContractApiResult> responseEntity;
+        ResponseEntity<ElectronicContractApiResult> responseEntity;
         try {
-            EContractApiResult electronContractApi = realNameCertService.checkVerifyCode(userId, code);
+            ElectronicContractApiResult electronContractApi = realNameCertService.checkVerifyCode(userId, code);
             responseEntity = new ResponseEntity<>(electronContractApi, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            responseEntity = new ResponseEntity<>(new EContractApiResult(), HttpStatus.INTERNAL_SERVER_ERROR);
+            responseEntity = new ResponseEntity<>(new ElectronicContractApiResult(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

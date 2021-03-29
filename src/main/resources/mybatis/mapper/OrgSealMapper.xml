@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.OrgSealMapper">
+
+    <resultMap id="orgSeal" type="com.bc.app.server.entity.OrgSeal">
+        <result property="id" column="id"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="enterpriseId" column="enterprise_id"></result>
+        <result property="orgId" column="org_id"></result>
+        <result property="status" column="status"></result>
+        <result property="defaultFlag" column="default_flag"></result>
+        <result property="sealId" column="seal_id"></result>
+        <result property="alias" column="seal_alias"></result>
+        <result property="color" column="seal_color"></result>
+        <result property="height" column="seal_height"></result>
+        <result property="width" column="seal_width"></result>
+        <result property="htext" column="seal_htext"></result>
+        <result property="qtext" column="seal_qtext"></result>
+        <result property="type" column="seal_type"></result>
+        <result property="central" column="seal_central"></result>
+        <result property="url" column="seal_url"></result>
+        <result property="templateType" column="seal_template_type"></result>
+    </resultMap>
+
+    <select id="getOrgSealBySealId" resultMap="orgSeal">
+        select * from
+        t_org_seal where seal_id = #{sealId}
+    </select>
+
+    <select id="getOrgSealById" resultMap="orgSeal">
+        select * from
+        t_org_seal where id = #{id}
+    </select>
+
+    <select id="getOrgSealListByEnterpriseId" parameterType="map" resultMap="orgSeal">
+        select * from t_org_seal
+        where status = '0'
+        and enterprise_id = #{enterpriseId}
+        order by default_flag asc, create_time desc
+    </select>
+
+    <insert id="addOrgSeal" parameterType="com.bc.app.server.entity.OrgSeal">
+        insert into t_org_seal
+        (
+        id,
+        create_time,
+        org_id,
+        enterprise_id,
+        status,
+        default_flag,
+        seal_id,
+        seal_alias,
+        seal_color,
+        seal_height,
+        seal_width,
+        seal_htext,
+        seal_qtext,
+        seal_type,
+        seal_central,
+        seal_url,
+        seal_template_type
+        )
+        values
+        (
+        #{id},
+        now(),
+        #{orgId},
+        #{enterpriseId},
+        #{status},
+        #{defaultFlag},
+        #{sealId},
+        #{alias},
+        #{color},
+        #{height},
+        #{width},
+        #{htext},
+        #{qtext},
+        #{type},
+        #{central},
+        #{url},
+        #{templateType}
+        )
+    </insert>
+
+    <insert id="addOrgSealList" parameterType="list">
+        insert into t_org_seal
+        (
+        id,
+        create_time,
+        org_id,
+        enterprise_id,
+        status,
+        default_flag,
+        seal_id,
+        seal_alias,
+        seal_color,
+        seal_height,
+        seal_width,
+        seal_htext,
+        seal_qtext,
+        seal_type,
+        seal_central,
+        seal_url,
+        seal_template_type
+        )
+        values
+        <foreach collection="list" separator="," item="item">
+            (
+            #{item.id},
+            now(),
+            #{item.orgId},
+            #{item.enterpriseId},
+            #{item.status},
+            #{item.defaultFlag},
+            #{item.sealId},
+            #{item.alias},
+            #{item.color},
+            #{item.height},
+            #{item.width},
+            #{item.htext},
+            #{item.qtext},
+            #{item.type},
+            #{item.central},
+            #{item.url},
+            #{item.templateType}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateOrgSealDefault" parameterType="map">
+        update t_org_seal
+        set default_flag = #{defaultFlag}
+        where id = #{orgSealId}
+    </update>
+
+    <update id="updateOrgSealAlias">
+        update t_org_seal
+        set seal_alias = #{alias}
+        where id = #{id}
+    </update>
+
+    <update id="deleteOrgSeal">
+        update t_org_seal set status = '1' where id = #{id}
+    </update>
+
+</mapper>

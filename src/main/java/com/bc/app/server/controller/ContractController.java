@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 合同
  *
- * @author qiu
+ * @author zhou
  */
 @RestController
 @RequestMapping("/contract")
@@ -44,6 +44,27 @@ public class ContractController {
         } catch (Exception e) {
             e.printStackTrace();
             responseEntity = new ResponseEntity<>(new PageInfo<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 根据合同ID获取合同
+     *
+     * @param contractId 合同ID
+     * @return 合同
+     */
+    @ApiOperation(value = "根据合同ID获取合同", notes = "根据合同ID获取合同")
+    @GetMapping(value = "/{contractId}")
+    public ResponseEntity<Contract> getContractById(
+            @PathVariable String contractId) {
+        ResponseEntity<Contract> responseEntity;
+        try {
+            Contract contract = contractService.getContractById(contractId);
+            responseEntity = new ResponseEntity<>(contract, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseEntity = new ResponseEntity<>(new Contract(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

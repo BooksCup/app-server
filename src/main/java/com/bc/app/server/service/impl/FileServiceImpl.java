@@ -14,53 +14,52 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+/**
+ * 文件
+ *
+ * @author zhou
+ */
 @Service("fileService")
 public class FileServiceImpl implements FileService {
 
-    public void getUploadUrl(String orgId, String imgStr) {
-        try {
-            String url = Constant.E_CONTRACT_BASE_URL + "/v1/files/getUploadUrl";
-            //放置参数
-            JSONObject jsobj = new JSONObject();
-            //计算文件的md5值
-            ByteArrayOutputStream bos = PdfUtil.html2pdf(imgStr);
-            byte[] aa = bos.toByteArray();
-            InputStream in = new ByteArrayInputStream(aa);
+    /**
+     * 生成合同的pdf文件，通过上传方式在e签宝创建文件
+     *
+     * @param htmlContent 网页内容(带html标签)
+     * @return 文件id
+     * @throws Exception 异常
+     */
+    @Override
+    public String uploadFileToSignPlatform(String htmlContent) throws Exception {
+        String fileId = "";
+        String url = Constant.E_CONTRACT_BASE_URL + "/v1/files/getUploadUrl";
+        JSONObject paramJson = new JSONObject();
+        ByteArrayOutputStream bos = PdfUtil.html2pdf(htmlContent);
+        byte[] pdfFileByteArray = bos.toByteArray();
+        InputStream in = new ByteArrayInputStream(pdfFileByteArray);
 
-            String contentMd5 = GetKey.getStreamMD5(in);
-            jsobj.put("contentMd5", contentMd5);
-            //文件的MIME类型
-            String contentType = "application/pdf";
-            jsobj.put("contentType", contentType);
-            //文件名称
-            jsobj.put("fileName", "采购合同.pdf");
-            //文件大小
-            Integer fileSize = bos.size();
-            jsobj.put("fileSize", fileSize);
+        String contentMd5 = GetKey.getStreamMD5(in);
+        paramJson.put("contentMd5", contentMd5);
+        // 文件的MIME类型
+        String contentType = "application/pdf";
+        paramJson.put("contentType", contentType);
+        // 文件名称
+        paramJson.put("fileName", "采购合同.pdf");
+        // 文件大小
+        Integer fileSize = bos.size();
+        paramJson.put("fileSize", fileSize);
 
-            jsobj.put("convert2Pdf", false);
-            jsobj.put("accountId", orgId);
-            //请求api  返回的文件 id  文件上传的直传地址 uploadUrl
-            ElectronicContractApiResult electronContractApi = ElectronicContractHttpUtil.httpPost(url, jsobj);
-            //将返回回来的文件id存入自己的表
-            if (electronContractApi.getCode() == 0) {
-                String fileId = (String) electronContractApi.getData().get("fileId");
-                String uploadUrl = (String) electronContractApi.getData().get("uploadUrl");
-                System.out.println("uploadUrl:>>>>>>>>>>>" + uploadUrl);
-                uploadFile(uploadUrl, contentType, contentMd5, aa);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        paramJson.put("convert2Pdf", false);
+        ElectronicContractApiResult electronContractApi = ElectronicContractHttpUtil.httpPost(url, paramJson);
+        if (electronContractApi.getCode() == 0) {
+            fileId = (String) electronContractApi.getData().get("fileId");
+            String uploadUrl = (String) electronContractApi.getData().get("uploadUrl");
+            HttpHead reqHeader = new HttpHead();
+            reqHeader.setHeader("Content-MD5", contentMd5);
+            reqHeader.setHeader("Content-Type", contentType);
+            ElectronicContractHttpUtil.httpPutFile(uploadUrl, reqHeader, pdfFileByteArray);
         }
-
-    }
-
-    public void uploadFile(String uploadUrl, String contentType, String contentMd5, byte[] fileBytes) throws Exception {
-        //放置参数
-        HttpHead reqHeader = new HttpHead();
-        reqHeader.setHeader("Content-MD5", contentMd5);
-        reqHeader.setHeader("Content-Type", contentType);
-        ElectronicContractHttpUtil.httpPutFile(uploadUrl, reqHeader, fileBytes);
+        return fileId;
     }
 
 }

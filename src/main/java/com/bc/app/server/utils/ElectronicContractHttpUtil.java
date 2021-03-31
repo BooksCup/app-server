@@ -31,6 +31,24 @@ public class ElectronicContractHttpUtil {
         return JSONObject.parseObject(result, ElectronicContractApiResult.class);
     }
 
+    public static ElectronicContractApiResult httpPost(String url, String json) {
+        String result = null;
+        try {
+            String token = CommonUtil.getToken();
+            if (!StringUtils.isEmpty(token)) {
+                HttpHead httpHead = new HttpHead();
+                httpHead.setHeader("X-Tsign-Open-App-Id", appId);
+                httpHead.setHeader("X-Tsign-Open-Token", token);
+                httpHead.setHeader("Content-Type", "application/json");
+                result = HttpHelper.httpPost(url, httpHead.getAllHeaders(), json);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return JSONObject.parseObject(result, ElectronicContractApiResult.class);
+    }
+
+
     public static ElectronicContractApiResult httpPut(String url, JSONObject json) {
         String result = null;
         try {
@@ -47,4 +65,31 @@ public class ElectronicContractHttpUtil {
         }
         return JSONObject.parseObject(result, ElectronicContractApiResult.class);
     }
+
+    /**
+     * post方法  主要用于文件传输
+     *
+     * @param url 申请地址
+     * @params bufferFile 上传文件的二进制字节流
+     * @params reqHeader 是否往header放置数据
+     * @params splice 是否拼接默认的地址  默认true。
+     */
+    public static ElectronicContractApiResult httpPutFile(String url, HttpHead reqHeader, byte[] filebytes) {
+        String result = null;
+        try {
+            String token = CommonUtil.getToken();
+            if (!StringUtils.isEmpty(token)) {
+                HttpHead httpHead = new HttpHead();
+                httpHead.addHeader("content-type", "application/json; charset=utf-8");
+                httpHead.setHeader("X-Tsign-Open-App-Id", appId);
+                httpHead.setHeader("X-Tsign-Open-Token", token);
+                result = HttpHelper.httpPutByte2(url, filebytes, reqHeader.getAllHeaders());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return JSONObject.parseObject(result, ElectronicContractApiResult.class);
+
+    }
+
 }

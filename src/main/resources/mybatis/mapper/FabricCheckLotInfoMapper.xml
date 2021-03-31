@@ -73,7 +73,8 @@
         num ,
         length,
         weight,
-        weight_unit as weightUnit
+        weight_unit as weightUnit,
+        fabric_number as fabricNumber
         from t_fabric_check_lot_info
         where is_delete='0' and  fabric_check_task_id=#{checkTaskId}
         order by modify_time desc

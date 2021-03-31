@@ -35,11 +35,12 @@ public class ContractController {
     public ResponseEntity<PageInfo<Contract>> getContractPageInfo(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String enterpriseId,
+            @RequestParam String phone,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         ResponseEntity<PageInfo<Contract>> responseEntity;
         try {
-            PageInfo<Contract> pageInfo = contractService.getContractPageInfo(enterpriseId, keyword, pageNum, pageSize);
+            PageInfo<Contract> pageInfo = contractService.getContractPageInfo(enterpriseId, phone, keyword, pageNum, pageSize);
             responseEntity = new ResponseEntity<>(pageInfo, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,13 +55,15 @@ public class ContractController {
      * @param contractId 合同ID
      * @return 合同
      */
+    @CrossOrigin
     @ApiOperation(value = "根据合同ID获取合同", notes = "根据合同ID获取合同")
     @GetMapping(value = "/{contractId}")
     public ResponseEntity<Contract> getContractById(
-            @PathVariable String contractId) {
+            @PathVariable String contractId,
+            @RequestParam String enterpriseId) {
         ResponseEntity<Contract> responseEntity;
         try {
-            Contract contract = contractService.getContractById(contractId);
+            Contract contract = contractService.getContractById(contractId, enterpriseId);
             responseEntity = new ResponseEntity<>(contract, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

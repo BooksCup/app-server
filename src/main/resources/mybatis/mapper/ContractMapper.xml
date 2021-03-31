@@ -44,12 +44,12 @@
         <result property="display" column="display"/>
     </resultMap>
 
-    <select id="getContractList" resultMap="contract">
+    <select id="getContractList" resultMap="contract" parameterType="map">
         select c.*,
         e.name toEnterpriseName
         from t_contract  c
         left join t_exchange_enterprise e on c.to_enterprise_id = e.id and is_delete = '0'
-        where c.from_enterprise_id = #{enterpriseId}
+        where (c.from_enterprise_id = #{enterpriseId} or c.to_phone = #{phone})
         <if test="keyword !=null and keyword != ''">
             and (
             c.contract_no like concat('%', #{keyword},'%')

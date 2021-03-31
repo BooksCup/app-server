@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hello World</title>
+	<style>
+	  table.table-separate th{
+    font-weight:bold;
+    font-size:14px;
+    border-top:1px solid #F3EDE9 !important;
+  }
+  table.table-separate td{
+    padding: 13px 0;
+    font-weight:100;
+  }
+  .table-separate td.tit{
+    background-color: #f4f9fe;
+    font-weight:normal;
+    padding:22px 0;
+    width:15%;
+  }
+  .table-separate td.cont{
+    text-align: left;
+    padding:16px 22px;
+    width:85%;
+    line-height:175%;
+  }
+  .table-separate.no-border th{
+    border:none;
+    text-align: left;
+  }
+  .table-separate.no-border td{
+    text-align: left;
+    border:none;
+  }
+	@page {
+	size:210mm 297mm;//纸张大小A4
+	margin: 0.25in;
+	-fs-flow-bottom: "footer";
+	-fs-flow-left: "left";
+	-fs-flow-right: "right";
+	border: thin solid black;
+	padding: 1em;
+	}
+	#footer {
+	font-size: 90%; font-style: italic;
+	position: absolute; top: 0; left: 0;
+	-fs-move-to-flow: "footer";
+	}
+	#pagenumber:before {
+	content: counter(page);
+	}
+	#pagecount:before {content: counter(pages);
+	}
+	table {
+			border-collapse: collapse;
+			table-layout: fixed;
+			word-break:break-all;
+			font-size: 10px;
+			width: 100%;
+			text-align: center;
+	}
+	td {
+		word-break:break-all;
+		word-wrap : break-word;
+	}
+	</style>
+	</head>
+<body >
+<div id="footer" style="">  Page <span id="pagenumber"/> of <span id="pagecount"/> </div>
+<div id="main">
+    <div style="max-width:600px;margin:0 auto;padding:10px;">
+        <div style="text-align: center; padding: 5mm 0;">
+            <div style="font-weight: bold; font-size: 30px;"> HI Fudi&amp;More</div>
+            <div> THANK YOU FOR SHOPPING WITH Fudi&amp;More!</div>
+        </div>
+        <div style="border: 1px solid black; background-color: #f8f8f8; padding: 4mm;">
+            <div style="font-size: 17px; font-weight: bold; border-bottom: 1px solid black; padding-bottom: 5mm;"> ORDER DETAILS</div>
+            <div style="padding-top: 10px;">
+                <div><strong>Order:&nbsp;</strong>D-8C2Y Placed on 29/09/2019 10:04</div>
+                <div><strong>Carrier:&nbsp;</strong>Delivery</div>
+                <div><strong>Payment:&nbsp;</strong>Cash Payment</div>
+            </div>
+        </div>
+        <div style="margin-top: 4mm;">
+            <table class="table-separate" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;padding:10px;">
+                <thead>
+                <tr style="text-align: center; height: 40px;">
+                    <th style="width: 90px; background-color: #f8f8f8; border-top: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                        Reference
+                    </th>
+                    <th colspan="2" style="background-color: #f8f8f8; border-top: 1px solid black; border-right: 1px solid black;">Product</th>
+                    <th style="width: 110px; background-color: #f8f8f8; border-top: 1px solid black; border-right: 1px solid black;">Unit price</th>
+                    <th style="width: 80px; background-color: #f8f8f8; border-top: 1px solid black; border-right: 1px solid black;">Quantity</th>
+                    <th style="width: 90px; background-color: #f8f8f8; border-top: 1px solid black; border-right: 1px solid black;">Total price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr style="text-align: center; ">
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                        Main
+                    </td>
+                    <td colspan="2"
+                        style="border-top: 1px solid black; border-bottom:1px solid black; border-right: 1px solid black; text-align: left; padding: 010px;">
+                        SweetSour Chicken
+                    </td>
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;">&euro; 7.00</td>
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;">1</td>
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;">&euro; 7.00</td>
+                </tr>
+                <tr style="text-align: center; ">
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                        Main
+                    </td>
+                    <td colspan="2"
+                        style="border-top: 1px solid black; border-bottom:1px solid black; border-right: 1px solid black; text-align: left; padding: 010px;">
+                        Black Bean Stir Fry
+                    </td>
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;">&euro; 9.00</td>
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;">1</td>
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;">&euro; 9.00</td>
+                </tr>
+                <tr style="text-align: center; ">
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black;">
+                        Pizzas
+                    </td>
+                    <td colspan="2"
+                        style="border-top: 1px solid black; border-bottom:1px solid black; border-right: 1px solid black; text-align: left; padding: 010px;">
+                        Test Design Your Own 8" Pizza
+                    </td>
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;">&euro; 6.00</td>
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;">1</td>
+                    <td style="border-top: 1px solid black; border-bottom: 1px solid black; border-right: 1px solid black;">&euro; 6.00</td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr style="text-align: center; height: 8mm;">
+                    <td colspan="5"
+                        style="text-align: right; width: 90px; background-color: #f8f8f8; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; padding: 0 10px;">
+                        Item:
+                    </td>
+                    <td style="background-color: #f8f8f8; border-bottom: 1px solid black; border-right: 1px solid black;">3</td>
+                </tr>
+                <tr style="text-align: center; height: 8mm;">
+                    <td colspan="5"
+                        style="text-align: right; width: 90px; background-color: #f8f8f8; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; padding: 0 10px;">
+                        Subtotal:
+                    </td>
+                    <td style="background-color: #f8f8f8; border-bottom: 1px solid black; border-right: 1px solid black;">&euro;24.00</td>
+                </tr>
+                <tr style="text-align: center; height: 8mm;">
+                    <td colspan="5"
+                        style="text-align: right; width: 90px; background-color: #f8f8f8; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; padding: 0 10px;">
+                        Deliver Fee:
+                    </td>
+                    <td style="background-color: #f8f8f8; border-bottom: 1px solid black; border-right: 1px solid black;">+&euro;2.00</td>
+                </tr>
+                <tr style="text-align: center; height: 8mm;">
+                    <td colspan="5"
+                        style="text-align: right; width: 90px; background-color: #f8f8f8; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; padding: 0 10px;">
+                        Discount:
+                    </td>
+                    <td style="background-color: #f8f8f8; border-bottom: 1px solid black; border-right: 1px solid black;">-&euro;0.00</td>
+                </tr>
+                <tr style="text-align: center; height: 8mm;">
+                    <td colspan="5"
+                        style="text-align: right; width: 90px; background-color: #f8f8f8; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; padding: 0 10px;">
+                        Total:
+                    </td>
+                    <td style="background-color: #f8f8f8; border-bottom: 1px solid black; border-right: 1px solid black;">&euro;24.00</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div>
+            <div style="border: 1px solid black; background-color: #f8f8f8; padding:5mm; margin-top: 5mm;">
+                <div style="font-size: 17px; font-weight: bold; border-bottom: 1px solid black; padding-bottom: 15px;"> DELIVERY ADDRESS</div>
+                <div style="padding-top: 10px;">
+                    <div><strong>guan</strong> &#9742; <strong>13656690321</strong></div>
+                    <div> 1024/ Edenhall,ModelFarmRd,Cork,${userName},A 2048</div>
+                </div>
+            </div>
+        </div>
+        <div style="font-size: 13px;"><p>You can review your order and download your invoice from the "<a target="_blank"
+                                                                                                          href="http://www.fudiandmore.ie/#/FudiIndex/Order1">Order
+            history</a>"section of your customer account by clicking "<a target="_blank" href="http://www.fudiandmore.ie/#/FudiIndex/Personalcenter1">My
+            account</a>" on ourshop.</p></div>
+        <hr style="border-width: 5px;"/>
+        <div> Fudi,More powered by <a target="_blank" href="http://www.fudiandmore.ie">A2BLiving</a></div>
+    </div>
+</div>
+</body>
+</html>

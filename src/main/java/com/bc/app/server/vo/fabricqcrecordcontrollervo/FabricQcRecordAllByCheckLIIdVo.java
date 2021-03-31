@@ -16,6 +16,9 @@ import java.util.List;
 public class FabricQcRecordAllByCheckLIIdVo implements Serializable {
 
     private String deliveryDate;
+    private String machineNumber;
+    private String palletNumber;
+
     private String totalNum;
     private String lengthBeforeTotal;
     private String lengthAfterTotal;

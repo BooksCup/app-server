@@ -9,12 +9,14 @@
         id,
         record_id,
         problem_position,
+        remark,
         create_time
         )
         values(
         #{id},
         #{recordId},
         #{problemPosition},
+        #{remark},
         now()
         )
     </insert>
@@ -26,6 +28,7 @@
         select
         id,
         record_id as recordId,
+        remark ,
         problem_position as problemPosition
         from t_fabric_check_record_problem_position
         where record_id = #{recordId}

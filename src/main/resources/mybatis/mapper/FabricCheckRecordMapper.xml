@@ -44,6 +44,12 @@
                 <if test='item.weightBefore != null and item.weightBefore != "" '>
                     weight_before = #{item.weightBefore},
                 </if>
+                <if test='item.machineNumber != null and item.machineNumber != "" '>
+                    machine_number = #{item.machineNumber},
+                </if>
+                <if test='item.palletNumber != null and item.palletNumber != "" '>
+                    pallet_number = #{item.palletNumber},
+                </if>
                 modify_time = now()
             </trim>
             where id = #{item.id}
@@ -121,6 +127,8 @@
             resultType="com.bc.app.server.vo.fabricqcrecordcontrollervo.FabricQcRecordAllByCheckLIIdVo">
         select
          delivery_date as  deliveryDate,
+         machine_number as machineNumber,
+         pallet_number as palletNumber,
          count(delivery_date) as totalnum,
           CAST(SUM( length_before ) as DECIMAL(13,2)) AS lengthBeforeTotal,
         CAST(SUM( length_after ) as DECIMAL(13,2)) AS lengthAfterTotal,
@@ -169,6 +177,12 @@
         </if>
         <if test="deliveryDate !=null and deliveryDate != ''">
             and delivery_date=#{deliveryDate}
+        </if>
+        <if test="machineNumber !=null and machineNumber != ''">
+            and machine_number=#{machineNumber}
+        </if>
+        <if test="palletNumber !=null and palletNumber != ''">
+            and pallet_number=#{palletNumber}
         </if>
         ORDER BY snoNum*1
     </select>

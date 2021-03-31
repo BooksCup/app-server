@@ -18,6 +18,7 @@ public class FabricCheckRecordProblemPosition implements Serializable {
     private  String id;
     private  String problemPosition;
     private  String recordId;
+    private  String remark;
 
     private List<FabricCheckRecordProblem> fabricCheckRecordProblemList;
     private String fabricCheckRecordProblemStrJson;

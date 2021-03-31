@@ -222,6 +222,8 @@ public class Contract implements Serializable {
      */
     private String signDate;
 
+    private List<OrgSeal> orgSealList;
+
     public String getId() {
         return id;
     }
@@ -524,6 +526,14 @@ public class Contract implements Serializable {
 
     public void setSignDate(String signDate) {
         this.signDate = signDate;
+    }
+
+    public List<OrgSeal> getOrgSealList() {
+        return orgSealList;
+    }
+
+    public void setOrgSealList(List<OrgSeal> orgSealList) {
+        this.orgSealList = orgSealList;
     }
 
 }

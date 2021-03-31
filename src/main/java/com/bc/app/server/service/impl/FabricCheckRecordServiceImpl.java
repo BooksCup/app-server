@@ -164,6 +164,8 @@ public class FabricCheckRecordServiceImpl implements FabricCheckRecordService {
         if (CollectionUtils.isNotEmpty(list)) {
             for (FabricQcRecordAllByCheckLIIdVo f : list) {
                 map.put("deliveryDate", f.getDeliveryDate());
+                map.put("machineNumber", f.getMachineNumber());
+                map.put("palletNumber", f.getPalletNumber());
                 List<FabricCheckRecord> fabricCheckRecordList = fabricCheckRecordMapper.getFabricQcRecordAllByCheckLIId(map);
                 f.setFabricCheckRecords(fabricCheckRecordList);
                 if (CollectionUtils.isNotEmpty(fabricCheckRecordList)) {

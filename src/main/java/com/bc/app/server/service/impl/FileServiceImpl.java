@@ -48,7 +48,6 @@ public class FileServiceImpl implements FileService {
                 String uploadUrl = (String) electronContractApi.getData().get("uploadUrl");
                 System.out.println("uploadUrl:>>>>>>>>>>>" + uploadUrl);
                 uploadFile(uploadUrl, contentType, contentMd5, aa);
-//            addFlowDocument(orgId,sealId,flowId,fileId);
             }
         } catch (Exception e) {
             e.printStackTrace();

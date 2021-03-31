@@ -34,8 +34,8 @@ public enum ResponseMsg {
     UPDATE_SUCCESS("UPDATE_SUCCESS", "修改成功"),
     UPDATE_ERROR("UPDATE_ERROR", "修改失败/没传信息"),
 
-    DELETE_SUCCESS("DETELE_SUCCESS", "修改成功"),
-    DELETE_ERROR("DETELE_ERROR", "修改失败"),
+    DELETE_SUCCESS("DETELE_SUCCESS", "删除成功"),
+    DELETE_ERROR("DETELE_ERROR", "删除失败"),
 
     IMPORT_SUCCESS("IMPORT_SUCCESS", "导入成功"),
     IMPORT_ERROR("IMPORT_ERROR", "导入失败"),
@@ -44,6 +44,9 @@ public enum ResponseMsg {
 
     PUSH_SUCCESS("PUSH_SUCCESS", "推送成功"),
     PUSH_ERROR("PUSH_ERROR", "推送失败"),
+
+    EXPORT_PDF_SUCCESS("EXPORT_PDF_SUCCESS", "导出PDF成功"),
+    EXPORT_PDF_ERROR("EXPORT_PDF_ERROR", "导出PDF失败"),
 
     CREATE_SIGN_FLOW_SUCCESS("CREATE_SIGN_FLOW_SUCCESS", "签署流程创建成功"),
     ORG_SEAL_NOT_EXISTS("ORG_SEAL_NOT_EXISTS", "机构印章不存在"),

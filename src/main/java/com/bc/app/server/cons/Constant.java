@@ -154,4 +154,7 @@ public class Constant {
 
     public static final String REAL_TYPE_YES = "1";
 
+    public static final String FONT_PATH_LINUX = "/usr/share/fonts/chinese/SimSun.ttf";
+    public static final String FONT_PATH_WINDOWS = "D://simsun.ttc";
+
 }

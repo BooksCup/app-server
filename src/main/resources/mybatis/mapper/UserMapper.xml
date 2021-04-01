@@ -110,6 +110,14 @@
         where u.id = #{userId}
     </select>
 
+    <select id="getUserByPhone" resultMap="user" parameterType="String">
+        select
+        u.*,
+        account.account_id as account_id
+        from t_user u
+        left join t_user_account account on u.id = account.user_id
+        where u.phone = #{phone}
+    </select>
 
     <select id="getUserList" resultType="com.bc.app.server.entity.User" parameterType="map">
         select

@@ -11,8 +11,12 @@ import org.springframework.http.ResponseEntity;
  */
 public interface ElectronicContractService {
 
-    ResponseEntity<String> createSignFlow(ContractSignFlow signFlow);
-
-    ResponseEntity<String> createSignFlow2(ContractFlow contractFlow);
+    /**
+     * 创建并启动签署流程
+     *
+     * @param contractFlow 签署流程
+     * @return ResponseEntity
+     */
+    ResponseEntity<String> createAndStartSignFlow(ContractFlow contractFlow);
 
 }

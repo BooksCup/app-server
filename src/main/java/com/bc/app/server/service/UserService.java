@@ -31,6 +31,14 @@ public interface UserService {
     List<User> getUserById(String userId);
 
     /**
+     * 根据手机号获取用户列表
+     *
+     * @param phone 手机号
+     * @return 用户列表
+     */
+    List<User> getUserByPhone(String phone);
+
+    /**
      * 查询用户分页信息
      *
      * @param map      入参信息

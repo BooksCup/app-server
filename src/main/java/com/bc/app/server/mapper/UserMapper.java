@@ -1,6 +1,5 @@
 package com.bc.app.server.mapper;
 
-import com.bc.app.server.entity.App;
 import com.bc.app.server.entity.User;
 
 import java.util.List;
@@ -22,33 +21,40 @@ public interface UserMapper {
     List<User> getUserByPhoneAndPassword(Map<String, String> paramMap);
 
     /**
-     * 根据用户ID获取用户
+     * 根据用户ID获取用户列表
      *
      * @param userId 用户ID
-     * @return 用户
+     * @return 用户列表
      */
     List<User> getUserById(String userId);
 
+    /**
+     * 根据手机号获取用户列表
+     *
+     * @param phone 手机号
+     * @return 用户列表
+     */
+    List<User> getUserByPhone(String phone);
 
     /**
-     * 获取用户列表信息
+     * 查询用户列表
      *
-     * @param map 入参
-     * @return 用户列表信息
+     * @param map 参数map
+     * @return 用户列表
      */
     List<User> getUserList(Map<String, Object> map);
 
     /**
-     * 批量添加user信息
+     * 批量添加用户
      *
-     * @param userList user列表
+     * @param userList 用户列表
      */
     void addUserList(List<User> userList);
 
     /**
-     * 添加用户信息
+     * 添加用户
      *
-     * @param user 用户信息
+     * @param user 用户
      */
     void addUser(User user);
 }

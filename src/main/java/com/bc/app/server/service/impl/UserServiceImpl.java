@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
 
-
     /**
      * 通过登录获取用户列表
      *
@@ -56,6 +55,17 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserById(String userId) {
         // 手机号密码登录
         return userMapper.getUserById(userId);
+    }
+
+    /**
+     * 根据手机号获取用户列表
+     *
+     * @param phone 手机号
+     * @return 用户列表
+     */
+    @Override
+    public List<User> getUserByPhone(String phone) {
+        return userMapper.getUserByPhone(phone);
     }
 
     /**

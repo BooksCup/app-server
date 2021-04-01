@@ -8,8 +8,12 @@
         <result property="contractNo" column="contract_no"/>
         <result property="fromUserId" column="from_user_id"/>
         <result property="fromEnterpriseId" column="from_enterprise_id"/>
+        <result property="fromEnterpriseName" column="from_enterprise_name"/>
+        <result property="fromEnterpriseAddress" column="from_enterprise_address"/>
         <result property="toUserId" column="to_user_id"/>
         <result property="toEnterpriseId" column="to_enterprise_id"/>
+        <result property="toEnterpriseName" column="to_enterprise_name"/>
+        <result property="toEnterpriseAddress" column="to_enterprise_address"/>
         <result property="themeTitleStr" column="theme_title_str"/>
         <result property="goodsNamesStr" column="goods_names_str"/>
         <result property="materialNumberStr" column="material_number_str"/>
@@ -30,7 +34,6 @@
         <result property="title" column="title"/>
         <result property="isShowSpec" column="is_show_spec"/>
         <result property="signDate" column="sign_date"/>
-        <result property="toEnterpriseName" column="toEnterpriseName"/>
     </resultMap>
 
     <resultMap id="contractDetail" type="com.bc.app.server.entity.ContractDetail">
@@ -46,8 +49,8 @@
 
     <select id="getContractList" resultMap="contract" parameterType="map">
         select c.*,
-        e.name toEnterpriseName
-        from t_contract  c
+        e.name as to_enterprise_address
+        from t_contract c
         left join t_exchange_enterprise e on c.to_enterprise_id = e.id and is_delete = '0'
         where (c.from_enterprise_id = #{enterpriseId} or c.to_phone = #{phone})
         <if test="keyword !=null and keyword != ''">
@@ -63,9 +66,15 @@
 
     <select id="getContractById" resultMap="contract">
         select
-        *
-        from t_contract
-        where id = #{contractId}
+        c.*,
+        e.name as from_enterprise_name,
+        e.address as from_enterprise_address,
+        ee.name as to_enterprise_name,
+        ee.address as to_enterprise_address
+        from t_contract c
+        left join t_enterprise e on c.from_enterprise_id = e.id
+        left join t_exchange_enterprise ee on c.to_enterprise_id = ee.id
+        where c.id = #{contractId}
     </select>
 
     <select id="getContractDetailListByContractId" resultMap="contractDetail">

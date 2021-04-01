@@ -39,20 +39,20 @@ public interface UserMapper {
     /**
      * 查询用户列表
      *
-     * @param map 参数map
+     * @param paramMap 参数map
      * @return 用户列表
      */
-    List<User> getUserList(Map<String, Object> map);
+    List<User> getUserList(Map<String, Object> paramMap);
 
     /**
-     * 批量添加用户
+     * 保存用户列表
      *
      * @param userList 用户列表
      */
     void addUserList(List<User> userList);
 
     /**
-     * 添加用户
+     * 保存用户
      *
      * @param user 用户
      */

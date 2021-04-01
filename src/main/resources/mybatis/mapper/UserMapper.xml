@@ -130,8 +130,8 @@
         from t_user u
         left join t_department d on d.id = u.department_id and d.delete_status = '0'
         left join t_enterprise e on e.id = u.enterprise_id and e.delete_status = '0'
-        where u.job_status BETWEEN 1 AND 4 and u.enterprise_id = #{enterpriseId}
-        ORDER BY u.create_time DESC
+        where u.job_status between 1 and 4 and u.enterprise_id = #{enterpriseId}
+        order by u.create_time desc
     </select>
 
 </mapper>

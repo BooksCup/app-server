@@ -59,17 +59,25 @@ public class BigDecimalUtil {
         return b1.subtract(b2).doubleValue();
     }
 
-
     /**
      * 　　* 精确乘法
      */
 
-    public static double mul(double value1, double value2) {
-        BigDecimal b1 = BigDecimal.valueOf(value1);
-        BigDecimal b2 = BigDecimal.valueOf(value2);
-        return b1.multiply(b2).doubleValue();
+    public static BigDecimal multiply(Object value1, Object value2) {
+        BigDecimal b1;
+        BigDecimal b2;
+        try {
+            b1 = new BigDecimal(String.valueOf(value1));
+        } catch (Exception e) {
+            b1 = new BigDecimal("0.00");
+        }
+        try {
+            b2 = new BigDecimal(String.valueOf(value2));
+        } catch (Exception e) {
+            b2 = new BigDecimal("0.00");
+        }
+        return b1.multiply(b2);
     }
-
 
     /**
      * 　　* 精确除法 使用默认精度

@@ -26,11 +26,11 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     /**
-     * 通过登录获取用户列表
+     * 通过登录获取用户
      *
      * @param phone    手机号
      * @param password 密码
-     * @return 用户列表
+     * @return 用户
      */
     @Override
     public User getUserByLogin(String phone, String password) {
@@ -46,10 +46,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 根据用户ID获取用户
+     * 根据用户ID获取用户列表
      *
      * @param userId 用户ID
-     * @return 用户
+     * @return 用户列表
      */
     @Override
     public List<User> getUserById(String userId) {
@@ -71,22 +71,22 @@ public class UserServiceImpl implements UserService {
     /**
      * 查询用户分页信息
      *
-     * @param map      入参信息
-     * @param pageNum  当前页
-     * @param pageSize 每页实现个数
+     * @param paramMap 参数map
+     * @param pageNum  当前分页数
+     * @param pageSize 分页大小
      * @return 用户分页信息
      */
     @Override
-    public PageInfo<User> getUserPageInfo(Map<String, Object> map, Integer pageNum, Integer pageSize) {
+    public PageInfo<User> getUserPageInfo(Map<String, Object> paramMap, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<User> userPageInfo = userMapper.getUserList(map);
+        List<User> userPageInfo = userMapper.getUserList(paramMap);
         return new PageInfo<>(userPageInfo);
     }
 
     /**
-     * 批量添加user信息
+     * 保存用户列表
      *
-     * @param userList user列表
+     * @param userList 用户列表
      */
     @Override
     public void addUserList(List<User> userList) {
@@ -94,9 +94,9 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 添加用户信息
+     * 保存用户
      *
-     * @param user 用户信息
+     * @param user 用户
      */
     @Override
     public void addUser(User user) {

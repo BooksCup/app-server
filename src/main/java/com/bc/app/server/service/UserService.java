@@ -14,19 +14,19 @@ import java.util.Map;
 public interface UserService {
 
     /**
-     * 通过登录获取用户列表
+     * 通过登录获取用户
      *
      * @param phone    手机号
      * @param password 密码
-     * @return 用户列表
+     * @return 用户
      */
     User getUserByLogin(String phone, String password);
 
     /**
-     * 根据用户ID获取用户
+     * 根据用户ID获取用户列表
      *
      * @param userId 用户ID
-     * @return 用户
+     * @return 用户列表
      */
     List<User> getUserById(String userId);
 
@@ -41,24 +41,24 @@ public interface UserService {
     /**
      * 查询用户分页信息
      *
-     * @param map      入参信息
-     * @param pageNum  当前页
-     * @param pageSize 每页实现个数
+     * @param paramMap 参数map
+     * @param pageNum  当前分页数
+     * @param pageSize 分页大小
      * @return 用户分页信息
      */
-    PageInfo<User> getUserPageInfo(Map<String, Object> map, Integer pageNum, Integer pageSize);
+    PageInfo<User> getUserPageInfo(Map<String, Object> paramMap, Integer pageNum, Integer pageSize);
 
     /**
-     * 批量添加用户信息
+     * 保存用户列表
      *
-     * @param userList user列表
+     * @param userList 用户列表
      */
     void addUserList(List<User> userList);
 
     /**
-     * 添加用户信息
+     * 保存用户
      *
-     * @param user 用户信息
+     * @param user 用户
      */
     void addUser(User user);
 }

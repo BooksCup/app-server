@@ -41,19 +41,19 @@ public class UserApplyController {
     private static final Logger logger = LoggerFactory.getLogger(VerifyCodeController.class);
 
     @Resource
-    private VerifyCodeService verifyCodeService;
+    VerifyCodeService verifyCodeService;
 
     @Resource
-    private SmsConfigService smsConfigService;
+    SmsConfigService smsConfigService;
 
     @Resource
-    private UserApplyService userApplyService;
+    UserApplyService userApplyService;
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @Autowired
-    private JMessageClient jMessageClient;
+    JMessageClient jMessageClient;
 
     /**
      * 提交用户申请
@@ -75,7 +75,7 @@ public class UserApplyController {
         ResponseEntity<String> responseEntity;
         try {
             // 检查验证码
-            Map<String, String> paramMap = new HashMap<>();
+            Map<String, String> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
             paramMap.put("phone", phone);
             paramMap.put("type", Constant.VERIFY_CODE_TYPE_REGISTER);
             List<String> validVerifyCodeList = verifyCodeService.getValidVerifyCodeList(paramMap);
@@ -121,7 +121,7 @@ public class UserApplyController {
         try {
             if (Constant.OPERATE_STATUS_AGREE.equals(operateStatus)) {
                 // 同意
-                Map<String, Object> paramMap = new HashMap<>();
+                Map<String, Object> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
                 paramMap.put("applyId", applyId);
                 UserApply userApply = userApplyService.getUserApplyById(paramMap);
                 // 用户表新增数据
@@ -151,7 +151,7 @@ public class UserApplyController {
                 // 拒绝
                 // 发送拒绝短信
             }
-            Map<String, Object> paramMap = new HashMap<>();
+            Map<String, Object> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
             paramMap.put("applyId", applyId);
             paramMap.put("operateStatus", operateStatus);
             userApplyService.agreeOrRefuseUserApply(paramMap);
@@ -179,7 +179,7 @@ public class UserApplyController {
             @RequestParam String enterpriseId) {
         ResponseEntity<List<UserApply>> responseEntity;
         try {
-            Map<String, Object> paramMap = new HashMap<>();
+            Map<String, Object> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
             paramMap.put("enterpriseId", enterpriseId);
             paramMap.put("operateStatus", Constant.OPERATE_STATUS_INIT);
 

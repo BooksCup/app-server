@@ -38,10 +38,10 @@ public class VerifyCodeController {
     private static final Logger logger = LoggerFactory.getLogger(VerifyCodeController.class);
 
     @Resource
-    private VerifyCodeService verifyCodeService;
+    VerifyCodeService verifyCodeService;
 
     @Resource
-    private SmsConfigService smsConfigService;
+    SmsConfigService smsConfigService;
 
     /**
      * 获取验证码
@@ -65,12 +65,12 @@ public class VerifyCodeController {
 
             if (type.equals(Constant.VERIFY_CODE_TYPE_REGISTER)) {
                 // 短信发送
-                Map<String, String> paramMap = new HashMap<>();
+                Map<String, String> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
                 paramMap.put("phones", phone);
                 paramMap.put("signName", smsConfig.getSign());
                 paramMap.put("templateCode", smsConfig.getTemplateCode());
 
-                Map<String, String> templateParamMap = new HashMap<>();
+                Map<String, String> templateParamMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
                 templateParamMap.put("code", code);
                 paramMap.put("templateParam", JSON.toJSONString(templateParamMap));
                 HttpUtil.doPost(Constant.SERVICE_SMS_URL, paramMap);

@@ -6,6 +6,10 @@ package com.bc.app.server.enums;
  * @author zhou
  */
 public enum ModuleEnum {
+
+    /**
+     * 系统模块
+     */
     STOCK_IN("STOCK_IN", "入库"),
     ;
 

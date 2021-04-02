@@ -31,6 +31,13 @@ import java.util.Map;
 @Service("htmlTemplateService")
 public class HtmlTemplateServiceImpl implements HtmlTemplateService {
 
+    /**
+     * 获取合同网页模板
+     *
+     * @param contract 合同
+     * @return 合同网页模板
+     * @throws Exception 异常
+     */
     @Override
     public String getContractHtmlTemplate(Contract contract) throws Exception {
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/contract.html");
@@ -56,8 +63,8 @@ public class HtmlTemplateServiceImpl implements HtmlTemplateService {
         List<ContractDetail> contractDetailList = contract.getContractDetailList();
         StringBuffer detailBuffer = new StringBuffer();
         int index = 1;
-        BigDecimal totalAmount = new BigDecimal(0.0);
-        BigDecimal totalCount = new BigDecimal(0.0);
+        BigDecimal totalAmount = new BigDecimal("0.0");
+        BigDecimal totalCount = new BigDecimal("0.0");
 
         for (ContractDetail contractDetail : contractDetailList) {
             ContractGoods contractGoods = JSON.parseObject(contractDetail.getSourceJson(), ContractGoods.class);

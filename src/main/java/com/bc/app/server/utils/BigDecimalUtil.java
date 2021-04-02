@@ -9,9 +9,10 @@ import java.math.BigDecimal;
  */
 public class BigDecimalUtil {
 
-    // 除法运算默认精度
+    /**
+     * 除法运算默认精度
+     */
     private static final int DEF_DIV_SCALE = 10;
-
 
     private BigDecimalUtil() {
 

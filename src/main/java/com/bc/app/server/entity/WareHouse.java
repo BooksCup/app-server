@@ -1,7 +1,6 @@
 package com.bc.app.server.entity;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.List;

@@ -6,6 +6,10 @@ package com.bc.app.server.enums;
  * @author zhou
  */
 public enum PushServiceTypeEnum {
+
+    /**
+     * 推送类型
+     */
     ADD_STOCK_IN_APPLY_OFFICE_SUPPLIES("ADD_STOCK_IN_APPLY_OFFICE_SUPPLIES", "办公用品入库单"),
     ;
 

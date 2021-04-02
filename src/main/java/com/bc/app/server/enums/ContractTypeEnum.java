@@ -7,6 +7,9 @@ package com.bc.app.server.enums;
  */
 public enum ContractTypeEnum {
 
+    /**
+     * 合同类型
+     */
     PURCHASE("P", "采购合同"),
     SELL("S", "销售合同"),
     PROCESSING("W", "加工合同"),

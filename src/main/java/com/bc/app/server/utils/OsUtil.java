@@ -15,6 +15,9 @@ public class OsUtil {
     private static final String OS_NAME_LINUX = "Linux";
 
     public enum OsType {
+        /**
+         * 操作系统类型
+         */
         OS_TYPE_LINUX, OS_TYPE_WIN, OS_TYPE_SOLARIS, OS_TYPE_MAC, OS_TYPE_FREEBSD, OS_TYPE_OTHER
     }
 
@@ -36,12 +39,12 @@ public class OsUtil {
         }
     }
 
-    public static final OsType osType = getOsType();
-    public static final boolean WINDOWS = (osType == OsType.OS_TYPE_WIN);
-    public static final boolean SOLARIS = (osType == OsType.OS_TYPE_SOLARIS);
-    public static final boolean MAC = (osType == OsType.OS_TYPE_MAC);
-    public static final boolean FREEBSD = (osType == OsType.OS_TYPE_FREEBSD);
-    public static final boolean LINUX = (osType == OsType.OS_TYPE_LINUX);
-    public static final boolean OTHER = (osType == OsType.OS_TYPE_OTHER);
+    public static final OsType OS_TYPE = getOsType();
+    public static final boolean WINDOWS = (OS_TYPE == OsType.OS_TYPE_WIN);
+    public static final boolean SOLARIS = (OS_TYPE == OsType.OS_TYPE_SOLARIS);
+    public static final boolean MAC = (OS_TYPE == OsType.OS_TYPE_MAC);
+    public static final boolean FREEBSD = (OS_TYPE == OsType.OS_TYPE_FREEBSD);
+    public static final boolean LINUX = (OS_TYPE == OsType.OS_TYPE_LINUX);
+    public static final boolean OTHER = (OS_TYPE == OsType.OS_TYPE_OTHER);
 
 }

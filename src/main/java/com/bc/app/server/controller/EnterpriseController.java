@@ -1,5 +1,6 @@
 package com.bc.app.server.controller;
 
+import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.Enterprise;
 import com.bc.app.server.entity.User;
 import com.bc.app.server.enums.ResponseMsg;
@@ -42,7 +43,7 @@ public class EnterpriseController {
             if (StringUtils.isEmpty(keyword.trim())) {
                 return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
             }
-            Map<String, Object> paramMap = new HashMap<>();
+            Map<String, Object> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
             paramMap.put("keyword", keyword);
             List<Enterprise> enterpriseList = enterpriseService.getEnterpriseListByKeyword(paramMap);
             responseEntity = new ResponseEntity<>(enterpriseList, HttpStatus.OK);
@@ -86,7 +87,7 @@ public class EnterpriseController {
             @RequestParam(required = false) String userId) {
         ResponseEntity<List<User>> responseEntity;
         try {
-            Map<String, Object> paramMap = new HashMap<>();
+            Map<String, Object> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
             paramMap.put("enterpriseId", enterpriseId);
             paramMap.put("keyword", keyword);
 

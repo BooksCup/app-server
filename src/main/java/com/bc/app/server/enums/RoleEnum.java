@@ -6,6 +6,10 @@ package com.bc.app.server.enums;
  * @author zhou
  */
 public enum RoleEnum {
+
+    /**
+     * 角色
+     */
     ADMIN("0", "管理员"),
     AUDITOR("1", "审核人"),
     COPY("2", "抄送人"),

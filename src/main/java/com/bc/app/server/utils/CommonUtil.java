@@ -18,7 +18,6 @@ import java.util.*;
  */
 public class CommonUtil {
 
-
     /**
      * 测试地址
      */
@@ -97,35 +96,6 @@ public class CommonUtil {
         SimpleDateFormat sf = new SimpleDateFormat("yyyyMMddHHmmss");
         String format = sf.format(new Date());
         return format;
-    }
-
-
-    public static synchronized String getOrderNostr(String code, String type, String enterpriseId) {
-        // 初始值从“1”开始
-        int num = 1;
-        NumberSequence numberSequence = numberSequenceMapper.getByType(enterpriseId, type);
-        // 第一次获取的数据是NULL
-        if (numberSequence == null) {
-            NumberSequence insertNumberSequence = new NumberSequence();
-            insertNumberSequence.setId(CommonUtil.generateId());
-            insertNumberSequence.setType(type);
-            insertNumberSequence.setVal(1);
-            insertNumberSequence.setEnterpriseId(enterpriseId);
-            numberSequenceMapper.insert(insertNumberSequence);
-        } else {
-            num = numberSequence.getVal() + 1;
-            numberSequenceMapper.updateVal(numberSequence.getId());
-        }
-        String n = String.valueOf(num);
-        int max = 99;
-        int min = 9;
-        if (num <= max && num > min) {
-            n = "0" + n;
-        } else if (num <= min) {
-            n = "00" + n;
-        }
-//        return new StringBuffer().append(CommonUtil.getTimeStr()).append(code).append(n).toString();
-        return null;
     }
 
     /**

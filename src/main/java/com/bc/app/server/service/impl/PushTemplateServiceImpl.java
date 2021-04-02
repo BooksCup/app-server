@@ -24,6 +24,7 @@ public class PushTemplateServiceImpl implements PushTemplateService {
      * @param serviceType 推送类型
      * @return 推送模板
      */
+    @Override
     public PushTemplate getPushTemplateMapperByServiceType(String serviceType) {
         return pushTemplateMapper.getPushTemplateMapperByServiceType(serviceType);
     }

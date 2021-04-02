@@ -2,25 +2,25 @@ package com.bc.app.server.utils;
 
 import org.apache.commons.text.StringSubstitutor;
 
-import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 占位符工具类
+ *
+ * @author zhou
+ */
 public class PlaceholderUtil {
-    public static void main(String[] args) {
-        String template = "${userName}提交了新的${stockBizType}单，${goodsName}共${applyNum}${goodsUnit}，点击查看详情";
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("userName", "张三");
-        paramMap.put("stockBizType", "办公用品入库");
-        paramMap.put("goodsName", "笔");
-        paramMap.put("applyNum", "13");
-        paramMap.put("goodsUnit", "根");
-        String result = replace(template, paramMap);
-        System.out.println(result);
+
+    /**
+     * 使用数据替换模板中的占位符
+     *
+     * @param template 模板
+     * @param dataMap  数据map
+     * @return 替换后的完整字符串
+     */
+    public static String replace(String template, Map<String, String> dataMap) {
+        StringSubstitutor stringSubstitutor = new StringSubstitutor(dataMap);
+        return stringSubstitutor.replace(template);
     }
 
-    public static String replace(String template, Map<String, String> paramMap) {
-        StringSubstitutor stringSubstitutor = new StringSubstitutor(paramMap);
-        String result = stringSubstitutor.replace(template);
-        return result;
-    }
 }

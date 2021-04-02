@@ -144,10 +144,15 @@ public class Constant {
      */
     public static final String SALE_FE = "5601";
 
-
-    //借贷 1借， 2贷
+    //借贷
+    /**
+     * 借
+     */
     public static final String BORROW = "1";
 
+    /**
+     * 贷
+     */
     public static final String LOAN = "2";
 
     public static final String E_CONTRACT_BASE_URL = "https://openapi.esign.cn";

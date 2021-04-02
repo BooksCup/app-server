@@ -1,10 +1,8 @@
 package com.bc.app.server.service;
 
 import com.bc.app.server.entity.App;
-import com.bc.app.server.vo.appcontrollervo.UserAppVo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 应用
@@ -13,7 +11,6 @@ import java.util.Map;
  */
 
 public interface AppService {
-
 
     /**
      * 重置已经安装的应用列表

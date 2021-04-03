@@ -10,10 +10,12 @@ import com.bc.app.server.utils.CommonUtil;
 public class Linkman {
 
     private String id;
+    private String userId;
+    private String enterpriseId;
     private String name;
     private String phone;
     private String email;
-    private String enterpriseName;
+    private String companyName;
     private String remark;
     private String createTime;
     private String modifyTime;
@@ -22,15 +24,17 @@ public class Linkman {
 
     }
 
-    public Linkman(String name, String phone, String email, String enterpriseName, String remark) {
+    public Linkman(String userId, String enterpriseId, String name, String phone,
+                   String email, String companyName, String remark) {
         this.id = CommonUtil.generateId();
+        this.userId = userId;
+        this.enterpriseId = enterpriseId;
         this.name = name;
         this.phone = phone;
         this.email = email;
-        this.enterpriseName = enterpriseName;
+        this.companyName = companyName;
         this.remark = remark;
     }
-
 
     public String getId() {
         return id;
@@ -38,6 +42,22 @@ public class Linkman {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(String enterpriseId) {
+        this.enterpriseId = enterpriseId;
     }
 
     public String getName() {
@@ -64,12 +84,12 @@ public class Linkman {
         this.email = email;
     }
 
-    public String getEnterpriseName() {
-        return enterpriseName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setEnterpriseName(String enterpriseName) {
-        this.enterpriseName = enterpriseName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getRemark() {

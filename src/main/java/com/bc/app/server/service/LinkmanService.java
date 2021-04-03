@@ -1,8 +1,8 @@
 package com.bc.app.server.service;
 
 import com.bc.app.server.entity.econtract.Linkman;
+import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,12 +27,14 @@ public interface LinkmanService {
     void updateLinkman(Linkman linkman);
 
     /**
-     * 获取合同联系人列表
+     * 获取合同联系人分页信息
      *
      * @param paramMap 参数map
-     * @return 合同联系人列表
+     * @param pageNum  当前分页数
+     * @param pageSize 分页大小
+     * @return 合同联系人分页信息
      */
-    List<Linkman> getLinkmanList(Map<String, Object> paramMap);
+    PageInfo<Linkman> getLinkmanPageInfo(Map<String, Object> paramMap, Integer pageNum, Integer pageSize);
 
     /**
      * 删除合同联系人

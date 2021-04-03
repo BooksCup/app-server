@@ -7,7 +7,7 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
-        <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
         <result column="modify_time" property="modifyTime" jdbcType="VARCHAR"/>
@@ -17,25 +17,35 @@
         insert into t_contract_link_man
         (
         id,
+        enterprise_id,
         name,
         phone,
         email,
-        enterprise_name,
+        company_name,
         remark,
+        create_user,
         create_time,
         modify_time
         )
         values
         (
         #{id},
+        #{enterpriseId},
         #{name},
         #{phone},
         #{email},
-        #{enterpriseName},
+        #{companyName},
         #{remark},
+        #{userId},
         now(),
         now()
         )
     </insert>
+
+    <select id="getLinkmanList" resultMap="linkman">
+        select * from t_contract_link_man
+        where enterprise_id = #{enterpriseId}
+        order by create_time desc
+    </select>
 
 </mapper>

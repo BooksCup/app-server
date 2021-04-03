@@ -3,6 +3,8 @@ package com.bc.app.server.service.impl;
 import com.bc.app.server.entity.econtract.Linkman;
 import com.bc.app.server.mapper.LinkmanMapper;
 import com.bc.app.server.service.LinkmanService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -41,14 +43,18 @@ public class LinkmanServiceImpl implements LinkmanService {
     }
 
     /**
-     * 获取合同联系人列表
+     * 获取合同联系人分页信息
      *
      * @param paramMap 参数map
-     * @return 合同联系人列表
+     * @param pageNum  当前分页数
+     * @param pageSize 分页大小
+     * @return 合同联系人分页信息
      */
     @Override
-    public List<Linkman> getLinkmanList(Map<String, Object> paramMap) {
-        return null;
+    public PageInfo<Linkman> getLinkmanPageInfo(Map<String, Object> paramMap, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Linkman> linkmanList = linkmanMapper.getLinkmanList(paramMap);
+        return new PageInfo<>(linkmanList);
     }
 
     /**

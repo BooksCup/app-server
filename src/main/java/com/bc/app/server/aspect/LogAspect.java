@@ -51,6 +51,7 @@ public class LogAspect {
             long end = System.currentTimeMillis();
             LOG.info("请求地址: " + request.getRequestURI());
             LOG.info("用户IP: " + request.getRemoteAddr());
+            LOG.info("请求方式: " + request.getMethod());
             LOG.info("CLASS_METHOD: " + joinPoint.getSignature().getDeclaringTypeName() + "." + signature.getName());
             LOG.info("参数列表: ");
             if (signature instanceof MethodSignature) {

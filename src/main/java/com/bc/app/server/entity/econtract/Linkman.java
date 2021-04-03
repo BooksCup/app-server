@@ -24,6 +24,16 @@ public class Linkman {
 
     }
 
+    public Linkman(String name, String phone,
+                   String email, String companyName, String remark) {
+        this.id = CommonUtil.generateId();
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.companyName = companyName;
+        this.remark = remark;
+    }
+
     public Linkman(String userId, String enterpriseId, String name, String phone,
                    String email, String companyName, String remark) {
         this.id = CommonUtil.generateId();

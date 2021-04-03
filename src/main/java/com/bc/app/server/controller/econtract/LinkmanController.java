@@ -26,6 +26,18 @@ public class LinkmanController {
     @Resource
     LinkmanService linkmanService;
 
+    /**
+     * 新增合同联系人
+     *
+     * @param userId       用户ID
+     * @param enterpriseId 企业ID
+     * @param name         姓名
+     * @param phone        手机号
+     * @param email        邮箱
+     * @param companyName  所属企业名
+     * @param remark       备注
+     * @return ResponseEntity
+     */
     @ApiOperation(value = "新增合同联系人", notes = "新增合同联系人")
     @PostMapping(value = "")
     public ResponseEntity<String> addLinkman(
@@ -71,6 +83,60 @@ public class LinkmanController {
         } catch (Exception e) {
             e.printStackTrace();
             responseEntity = new ResponseEntity<>(new PageInfo<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 修改合同联系人
+     *
+     * @param id          合同联系人ID
+     * @param name        姓名
+     * @param phone       手机号
+     * @param email       邮箱
+     * @param companyName 所属企业名
+     * @param remark      备注
+     * @return ResponseEntity
+     */
+    @ApiOperation(value = "修改合同联系人", notes = "修改合同联系人")
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<String> updateLinkman(
+            @PathVariable String id,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String companyName,
+            @RequestParam(required = false) String remark) {
+        ResponseEntity<String> responseEntity;
+        try {
+            Linkman linkman = new Linkman(name, phone, email, companyName, remark);
+            linkman.setId(id);
+            linkmanService.updateLinkman(linkman);
+            responseEntity = new ResponseEntity<>(ResponseMsg.UPDATE_SUCCESS.getResponseCode(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseEntity = new ResponseEntity<>(ResponseMsg.UPDATE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 删除合同联系人
+     *
+     * @param id 合同联系人ID
+     * @return ResponseEntity
+     */
+    @ApiOperation(value = "删除合同联系人", notes = "删除合同联系人")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<String> deleteLinkman(
+            @PathVariable String id) {
+        ResponseEntity<String> responseEntity;
+        try {
+            linkmanService.deleteLinkman(id);
+            responseEntity = new ResponseEntity<>(ResponseMsg.DELETE_SUCCESS.getResponseCode(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseEntity = new ResponseEntity<>(ResponseMsg.DELETE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

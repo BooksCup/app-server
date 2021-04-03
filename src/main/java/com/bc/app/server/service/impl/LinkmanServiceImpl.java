@@ -39,7 +39,7 @@ public class LinkmanServiceImpl implements LinkmanService {
      */
     @Override
     public void updateLinkman(Linkman linkman) {
-
+        linkmanMapper.updateLinkman(linkman);
     }
 
     /**
@@ -64,6 +64,6 @@ public class LinkmanServiceImpl implements LinkmanService {
      */
     @Override
     public void deleteLinkman(String id) {
-
+        linkmanMapper.deleteLinkman(id);
     }
 }

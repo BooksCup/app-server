@@ -48,4 +48,32 @@
         order by create_time desc
     </select>
 
+    <update id="updateLinkman" parameterType="linkman">
+        update t_contract_link_man
+        <trim prefix="set" suffixOverrides=",">
+            <if test='name != null and name != "" '>
+                name = #{name},
+            </if>
+            <if test='phone != null and phone != "" '>
+                phone = #{phone},
+            </if>
+            <if test='email != null and email != "" '>
+                email = #{email},
+            </if>
+            <if test='companyName != null and companyName != "" '>
+                company_name = #{companyName},
+            </if>
+            <if test='remark != null and remark != "" '>
+                remark = #{remark},
+            </if>
+            modify_time = now()
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLinkman" parameterType="String">
+        delete from t_contract_link_man
+        where id = #{id}
+    </delete>
+
 </mapper>

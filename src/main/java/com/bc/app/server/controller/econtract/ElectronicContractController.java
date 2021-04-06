@@ -1,13 +1,10 @@
 package com.bc.app.server.controller.econtract;
 
-import com.bc.app.server.cons.Constant;
+import com.bc.app.server.entity.Contract;
 import com.bc.app.server.entity.User;
 import com.bc.app.server.entity.econtract.*;
 import com.bc.app.server.enums.ResponseMsg;
-import com.bc.app.server.service.ElectronicContractService;
-import com.bc.app.server.service.FileService;
-import com.bc.app.server.service.UserService;
-import com.bc.app.server.utils.PlaceholderUtil;
+import com.bc.app.server.service.*;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +15,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 电子合同
@@ -46,12 +38,20 @@ public class ElectronicContractController {
     @Resource
     UserService userService;
 
+    @Resource
+    HtmlTemplateService htmlTemplateService;
+
+    @Resource
+    ContractService contractService;
+
     /**
-     * @param subject
-     * @param sealId
-     * @param contractId
-     * @param signerPhone
-     * @return
+     * 创建并开启签署流程
+     *
+     * @param subject     文件主题
+     * @param sealId      签章ID
+     * @param contractId  合同ID
+     * @param signerPhone 签约人手机号
+     * @return ResponseEntity
      */
     @ApiOperation(value = "创建并开启签署流程", notes = "创建并开启签署流程")
     @PostMapping(value = "/signFlow")
@@ -76,17 +76,8 @@ public class ElectronicContractController {
                 return new ResponseEntity<>("", HttpStatus.OK);
             }
 
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("template/contract.html");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuffer templateBuffer = new StringBuffer();
-            String data;
-            while ((data = bufferedReader.readLine()) != null) {
-                templateBuffer.append(data);
-            }
-
-            String template = templateBuffer.toString();
-            Map<String, String> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
-            String htmlContent = PlaceholderUtil.replace(template, paramMap);
+            Contract contract = contractService.getContractById(contractId, "");
+            String htmlContent = htmlTemplateService.getContractHtmlTemplate(contract);
             String fileId = fileService.uploadFileToSignPlatform(htmlContent);
 
             ContractFlow contractFlow = new ContractFlow();
@@ -103,13 +94,13 @@ public class ElectronicContractController {
             Signer signer = new Signer();
             SignerAccount signerAccount = new SignerAccount();
             signerAccount.setSignerAccountId(accountId);
-            List<Signfield> signfieldList = new ArrayList<>();
+            List<Signfield> signFieldList = new ArrayList<>();
             Signfield signField = new Signfield();
             signField.setFileId(fileId);
-            signfieldList.add(signField);
+            signFieldList.add(signField);
 
             signer.setSignerAccount(signerAccount);
-            signer.setSignfields(signfieldList);
+            signer.setSignfields(signFieldList);
             signerList.add(signer);
 
             contractFlow.setDocs(docList);

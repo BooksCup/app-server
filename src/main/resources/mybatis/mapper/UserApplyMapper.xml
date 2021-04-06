@@ -5,13 +5,15 @@
     <resultMap id="userApply" type="com.bc.app.server.entity.UserApply">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <id column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR"/>
+        <id column="name" property="name" jdbcType="VARCHAR"/>
         <id column="phone" property="phone" jdbcType="VARCHAR"/>
+        <id column="password" property="password" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="getUserApplyById" resultType="com.bc.app.server.entity.UserApply">
+    <select id="getUserApplyById" resultMap="userApply" parameterType="map">
         select
         id,
-        enterprise_id as enterpriseId,
+        enterprise_id,
         name,
         phone,
         password

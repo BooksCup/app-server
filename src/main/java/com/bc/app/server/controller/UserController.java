@@ -94,11 +94,12 @@ public class UserController {
         return responseEntity;
     }
 
-
     /**
      * 获取用户分页信息
      *
      * @param enterpriseId 企业id
+     * @param pageNum      当前分页数
+     * @param pageSize     分页大小
      * @return 用户分页信息
      */
     @ApiOperation(value = "获取用户分页信息", notes = "获取用户分页信息")

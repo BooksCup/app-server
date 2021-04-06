@@ -105,6 +105,13 @@ public class UserApplyController {
         return responseEntity;
     }
 
+    /**
+     * 操作用户申请
+     *
+     * @param applyId       申请ID
+     * @param operateStatus 操作状态
+     * @return ResponseEntity
+     */
     @ApiOperation(value = "操作用户申请", notes = "操作用户申请")
     @PutMapping(value = "/{applyId}")
     public ResponseEntity<String> operateUserApply(
@@ -125,7 +132,7 @@ public class UserApplyController {
                 user.setId(userId);
                 user.setEnterpriseId(userApply.getEnterpriseId());
                 user.setName(userApply.getName());
-                user.setPassword(Md5Util.md5Decode32(Constant.DEFAULT_IM_PASSWORD));
+                user.setPassword(userApply.getPassword());
                 user.setImPassword(imPassword);
                 user.setPhone(userApply.getPhone());
                 user.setJobNo(CommonUtil.getJobNo());

@@ -107,7 +107,7 @@ public class ElectronicContractController {
             contractFlow.setFlowInfo(flowInfo);
             contractFlow.setSigners(signerList);
 
-            responseEntity = electronicContractService.createAndStartSignFlow(contractFlow);
+            responseEntity = electronicContractService.createAndStartSignFlow(contractId, contractFlow);
         } catch (Exception e) {
             e.printStackTrace();
             responseEntity = new ResponseEntity<>(ResponseMsg.CREATE_AND_START_SIGN_FLOW_ERROR.getResponseCode(),

@@ -32,10 +32,10 @@ public enum ResponseMsg {
 
 
     UPDATE_SUCCESS("UPDATE_SUCCESS", "修改成功"),
-    UPDATE_ERROR("UPDATE_ERROR", "修改失败/没传信息"),
+    UPDATE_ERROR("UPDATE_ERROR", "修改失败"),
 
-    DELETE_SUCCESS("DETELE_SUCCESS", "删除成功"),
-    DELETE_ERROR("DETELE_ERROR", "删除失败"),
+    DELETE_SUCCESS("DELETE_SUCCESS", "删除成功"),
+    DELETE_ERROR("DELETE_ERROR", "删除失败"),
 
     IMPORT_SUCCESS("IMPORT_SUCCESS", "导入成功"),
     IMPORT_ERROR("IMPORT_ERROR", "导入失败"),

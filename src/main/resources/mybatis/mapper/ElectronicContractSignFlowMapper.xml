@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.ElectronicContractSignFlowMapper">
+
+    <insert id="addElectronicContractSignFlow" parameterType="com.bc.app.server.entity.econtract.SignFlow">
+        insert into t_contract_sign_flow
+        (
+        id,
+        contract_id,
+        flow_id,
+        create_time
+        )
+        values
+        (
+        #{id},
+        #{contractId},
+        #{flowId},
+        now()
+        )
+    </insert>
+
+</mapper>

@@ -14,7 +14,14 @@ public class ElectronicContractHttpUtil {
 
     private static final String appId = "5111598374";
 
-    public static ElectronicContractApiResult httpPost(String url, JSONObject json) {
+    /**
+     * post请求
+     *
+     * @param url       url
+     * @param jsonParam 请求参数(json格式)
+     * @return 电子合同API返回值
+     */
+    public static ElectronicContractApiResult httpPost(String url, String jsonParam) {
         String result = null;
         try {
             String token = CommonUtil.getToken();
@@ -23,42 +30,7 @@ public class ElectronicContractHttpUtil {
                 httpHead.setHeader("X-Tsign-Open-App-Id", appId);
                 httpHead.setHeader("X-Tsign-Open-Token", token);
                 httpHead.setHeader("Content-Type", "application/json");
-                result = HttpHelper.httpPost(url, httpHead.getAllHeaders(), String.valueOf(json));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return JSONObject.parseObject(result, ElectronicContractApiResult.class);
-    }
-
-    public static ElectronicContractApiResult httpPost(String url, String json) {
-        String result = null;
-        try {
-            String token = CommonUtil.getToken();
-            if (!StringUtils.isEmpty(token)) {
-                HttpHead httpHead = new HttpHead();
-                httpHead.setHeader("X-Tsign-Open-App-Id", appId);
-                httpHead.setHeader("X-Tsign-Open-Token", token);
-                httpHead.setHeader("Content-Type", "application/json");
-                result = HttpHelper.httpPost(url, httpHead.getAllHeaders(), json);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return JSONObject.parseObject(result, ElectronicContractApiResult.class);
-    }
-
-
-    public static ElectronicContractApiResult httpPut(String url, JSONObject json) {
-        String result = null;
-        try {
-            String token = CommonUtil.getToken();
-            if (!StringUtils.isEmpty(token)) {
-                HttpHead httpHead = new HttpHead();
-                httpHead.addHeader("content-type", "application/json; charset=utf-8");
-                httpHead.setHeader("X-Tsign-Open-App-Id", appId);
-                httpHead.setHeader("X-Tsign-Open-Token", token);
-                result = HttpHelper.httpPut(url, httpHead.getAllHeaders(), String.valueOf(json));
+                result = HttpHelper.httpPost(url, httpHead.getAllHeaders(), jsonParam);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,14 +39,13 @@ public class ElectronicContractHttpUtil {
     }
 
     /**
-     * post方法  主要用于文件传输
+     * put请求
      *
-     * @param url 申请地址
-     * @params bufferFile 上传文件的二进制字节流
-     * @params reqHeader 是否往header放置数据
-     * @params splice 是否拼接默认的地址  默认true。
+     * @param url       url
+     * @param jsonParam 请求参数(json格式)
+     * @return 电子合同API返回值
      */
-    public static ElectronicContractApiResult httpPutFile(String url, HttpHead reqHeader, byte[] filebytes) {
+    public static ElectronicContractApiResult httpPut(String url, String jsonParam) {
         String result = null;
         try {
             String token = CommonUtil.getToken();
@@ -83,13 +54,33 @@ public class ElectronicContractHttpUtil {
                 httpHead.addHeader("content-type", "application/json; charset=utf-8");
                 httpHead.setHeader("X-Tsign-Open-App-Id", appId);
                 httpHead.setHeader("X-Tsign-Open-Token", token);
-                result = HttpHelper.httpPutByte2(url, filebytes, reqHeader.getAllHeaders());
+                result = HttpHelper.httpPut(url, httpHead.getAllHeaders(), String.valueOf(jsonParam));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return JSONObject.parseObject(result, ElectronicContractApiResult.class);
+    }
 
+    /**
+     * 发送字节流
+     *
+     * @param url      url
+     * @param httpHead 请求头
+     * @param bytes    字节流
+     * @return 电子合同API返回值
+     */
+    public static ElectronicContractApiResult httpPutFile(String url, HttpHead httpHead, byte[] bytes) {
+        String result = null;
+        try {
+            String token = CommonUtil.getToken();
+            if (!StringUtils.isEmpty(token)) {
+                result = HttpHelper.httpPutBytes(url, bytes, httpHead.getAllHeaders());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return JSONObject.parseObject(result, ElectronicContractApiResult.class);
     }
 
 }

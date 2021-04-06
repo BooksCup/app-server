@@ -45,7 +45,7 @@ public class ElectronicContractServiceImpl implements ElectronicContractService 
                 // 启动签署流程
                 String flowId = (String) apiResult.getData().get("flowId");
                 url = Constant.E_CONTRACT_BASE_URL + "/v1/signflows/" + flowId + "/start";
-                apiResult = ElectronicContractHttpUtil.httpPut(url, new JSONObject());
+                apiResult = ElectronicContractHttpUtil.httpPut(url, String.valueOf(new JSONObject()));
                 // 持久化
 
                 SignFlow signFlow = new SignFlow(contractId, flowId);

@@ -64,7 +64,7 @@ public class RealNameCertServiceImpl implements RealNameCertService {
             paramJson.put("idNumber", identityNum);
             paramJson.put("mobile", mobile);
             // 请求api accountId 第三方平台注册的id
-            eContractApiResult = ElectronicContractHttpUtil.httpPost(url, paramJson);
+            eContractApiResult = ElectronicContractHttpUtil.httpPost(url, String.valueOf(paramJson));
             if (eContractApiResult.getCode() == 0 || eContractApiResult.getCode() == ACCOUNT_ALREADY_EXIST) {
                 String accountId = (String) eContractApiResult.getData().get("accountId");
                 userAccount = new UserAccount();
@@ -100,7 +100,7 @@ public class RealNameCertServiceImpl implements RealNameCertService {
         paramJson.put("idNo", identityNum);
         paramJson.put("mobileNo", mobile);
         paramJson.put("repetition", true);
-        ElectronicContractApiResult eContractApi = ElectronicContractHttpUtil.httpPost(url, paramJson);
+        ElectronicContractApiResult eContractApi = ElectronicContractHttpUtil.httpPost(url, String.valueOf(paramJson));
         if (eContractApi.getCode() == 0) {
             String flowId = (String) eContractApi.getData().get("flowId");
             UserAccount account = new UserAccount();
@@ -130,7 +130,7 @@ public class RealNameCertServiceImpl implements RealNameCertService {
             String url = Constant.E_CONTRACT_BASE_URL + "/v2/identity/auth/pub/individual/" + userAccount.getFlowId() + "/telecom3Factors";
             JSONObject paramJson = new JSONObject();
             paramJson.put("authcode", code);
-            electronContractApi = ElectronicContractHttpUtil.httpPut(url, paramJson);
+            electronContractApi = ElectronicContractHttpUtil.httpPut(url, String.valueOf(paramJson));
             if (electronContractApi.getCode() == 0) {
                 userAccount.setRealType(Constant.REAL_TYPE_YES);
                 userAccountMapper.updateUserAccountByAccountId(userAccount);

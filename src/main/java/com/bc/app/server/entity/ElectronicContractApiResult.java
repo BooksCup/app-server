@@ -1,7 +1,5 @@
 package com.bc.app.server.entity;
 
-import lombok.Data;
-
 import java.util.Map;
 
 /**

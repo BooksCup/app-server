@@ -1,11 +1,9 @@
 package com.bc.app.server.utils;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ByteArrayEntity;
@@ -15,6 +13,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
@@ -27,18 +27,43 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
-import static java.lang.System.out;
-
 /**
- * 描述 http请求处理模块
+ * http工具类
  *
+ * @author zhou
  */
 @Configuration
-@Slf4j
 public class HttpHelper {
-    private static RequestConfig requestConfig;
 
-    // get 请求
+    private static final Logger logger = LoggerFactory.getLogger(HttpHelper.class);
+    private static final String REQ_ENCODING_UTF8 = "utf-8";
+    private static PoolingHttpClientConnectionManager httpClientConnectionManager;
+
+    public HttpHelper() {
+        httpClientConnectionManager = new PoolingHttpClientConnectionManager();
+        httpClientConnectionManager.setMaxTotal(100);
+        httpClientConnectionManager.setDefaultMaxPerRoute(20);
+    }
+
+    /**
+     * get请求
+     *
+     * @param url url
+     * @return 返回值
+     * @throws Exception 异常
+     */
+    public static String httpGet(String url) throws Exception {
+        return httpGet(url, null);
+    }
+
+    /**
+     * get请求
+     *
+     * @param url     url
+     * @param headers 请求头
+     * @return 返回值
+     * @throws Exception 异常
+     */
     public static String httpGet(String url, Header[] headers) throws Exception {
         HttpUriRequest uriRequest = new HttpGet(url);
         if (null != headers) {
@@ -47,14 +72,13 @@ public class HttpHelper {
         CloseableHttpClient httpClient = null;
         try {
             httpClient = declareHttpClientSSL(url);
-            CloseableHttpResponse httpresponse = httpClient.execute(uriRequest);
-            HttpEntity httpEntity = httpresponse.getEntity();
-            String result = EntityUtils.toString(httpEntity, REQ_ENCODEING_UTF8);
-            return result;
+            CloseableHttpResponse httpResponse = httpClient.execute(uriRequest);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            return EntityUtils.toString(httpEntity, REQ_ENCODING_UTF8);
         } catch (ClientProtocolException e) {
-            out.println(String.format("http请求失败，uri{%s},exception{%s}", new Object[]{url, e}));
+            logger.error(String.format("http请求失败，uri{%s},exception{%s}", new Object[]{url, e}));
         } catch (IOException e) {
-            out.println(String.format("IO Exception，uri{%s},exception{%s}", new Object[]{url, e}));
+            logger.error(String.format("IO Exception，uri{%s},exception{%s}", new Object[]{url, e}));
         } finally {
             if (null != httpClient) {
                 httpClient.close();
@@ -63,25 +87,32 @@ public class HttpHelper {
         return null;
     }
 
-    // post 请求
+    /**
+     * post请求
+     *
+     * @param url     url
+     * @param headers 请求头
+     * @param params  请求参数
+     * @return 返回值
+     * @throws Exception 异常
+     */
     public static String httpPost(String url, Header[] headers, String params) throws Exception {
         HttpPost post = new HttpPost(url);
         if (null != headers) {
             post.setHeaders(headers);
         }
         post.setEntity(new StringEntity(params, Charset.forName("utf-8")));
-        HttpResponse httpresponse = null;
+        HttpResponse httpResponse;
         CloseableHttpClient httpClient = null;
         try {
             httpClient = declareHttpClientSSL(url);
-            httpresponse = httpClient.execute(post);
-            HttpEntity httpEntity = httpresponse.getEntity();
-            String result = EntityUtils.toString(httpEntity, REQ_ENCODEING_UTF8);
-            return result;
+            httpResponse = httpClient.execute(post);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            return EntityUtils.toString(httpEntity, REQ_ENCODING_UTF8);
         } catch (ClientProtocolException e) {
-            out.println(String.format("http请求失败，uri{%s},exception{%s}", new Object[]{url, e}));
+            logger.error(String.format("http请求失败，uri{%s},exception{%s}", new Object[]{url, e}));
         } catch (IOException e) {
-            out.println(String.format("IO Exception，uri{%s},exception{%s}", new Object[]{url, e}));
+            logger.error(String.format("IO Exception，uri{%s},exception{%s}", new Object[]{url, e}));
         } finally {
             if (null != httpClient) {
                 httpClient.close();
@@ -90,29 +121,35 @@ public class HttpHelper {
         return null;
     }
 
-
-    // put 请求
+    /**
+     * put请求
+     *
+     * @param url     url
+     * @param headers 请求头
+     * @param params  请求参数
+     * @return 返回值
+     * @throws Exception 异常
+     */
     public static String httpPut(String url, Header[] headers, String params) throws Exception {
         HttpPut put = new HttpPut(url);
         if (null != headers) {
             put.setHeaders(headers);
         }
         // 设置传输编码格式
-        if (!StringUtils.isEmpty(params)){
+        if (!StringUtils.isEmpty(params)) {
             put.setEntity(new StringEntity(params, Charset.forName("utf-8")));
         }
-        HttpResponse httpresponse = null;
+        HttpResponse httpResponse;
         CloseableHttpClient httpClient = null;
         try {
             httpClient = declareHttpClientSSL(url);
-            httpresponse = httpClient.execute(put);
-            HttpEntity httpEntity = httpresponse.getEntity();
-            String result = EntityUtils.toString(httpEntity, REQ_ENCODEING_UTF8);
-            return result;
+            httpResponse = httpClient.execute(put);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            return EntityUtils.toString(httpEntity, REQ_ENCODING_UTF8);
         } catch (ClientProtocolException e) {
-            out.println(String.format("http请求失败，uri{%s},exception{%s}", new Object[]{url, e}));
+            logger.error(String.format("http请求失败，uri{%s},exception{%s}", new Object[]{url, e}));
         } catch (IOException e) {
-            out.println(String.format("IO Exception，uri{%s},exception{%s}", new Object[]{url, e}));
+            logger.error(String.format("IO Exception，uri{%s},exception{%s}", new Object[]{url, e}));
         } finally {
             if (null != httpClient) {
                 httpClient.close();
@@ -121,28 +158,35 @@ public class HttpHelper {
         return null;
     }
 
-    // put 请求
-    public static String httpPutByte2(String url, byte[] filebytes, Header[] headers) throws IOException {
+    /**
+     * 发送字节流
+     *
+     * @param url     url
+     * @param bytes   字节流
+     * @param headers 请求头
+     * @return 返回值
+     * @throws IOException 异常
+     */
+    public static String httpPutBytes(String url, byte[] bytes, Header[] headers) throws IOException {
         HttpPut put = new HttpPut(url);
         if (null != headers) {
             put.setHeaders(headers);
         }
         // 设置传输编码格式
-        if (filebytes != null) {
-            put.setEntity(new ByteArrayEntity(filebytes));
+        if (bytes != null) {
+            put.setEntity(new ByteArrayEntity(bytes));
         }
-        HttpResponse httpresponse = null;
+        HttpResponse httpResponse;
         CloseableHttpClient httpClient = null;
         try {
             httpClient = declareHttpClientSSL(url);
-            httpresponse = httpClient.execute(put);
-            HttpEntity httpEntity = httpresponse.getEntity();
-            String result = EntityUtils.toString(httpEntity, REQ_ENCODEING_UTF8);
-            return result;
+            httpResponse = httpClient.execute(put);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            return EntityUtils.toString(httpEntity, REQ_ENCODING_UTF8);
         } catch (ClientProtocolException e) {
-            out.println(String.format("http请求失败，uri{%s},exception{%s}", new Object[]{url, e}));
+            logger.error(String.format("http请求失败，uri{%s},exception{%s}", new Object[]{url, e}));
         } catch (IOException e) {
-            out.println(String.format("IO Exception，uri{%s},exception{%s}", new Object[]{url, e}));
+            logger.error(String.format("IO Exception，uri{%s},exception{%s}", new Object[]{url, e}));
         } finally {
             if (null != httpClient) {
                 httpClient.close();
@@ -161,8 +205,6 @@ public class HttpHelper {
 
     /**
      * 设置SSL请求处理
-     *
-     * @param
      */
     private static CloseableHttpClient sslClient() {
         try {
@@ -190,21 +232,5 @@ public class HttpHelper {
             throw new RuntimeException(e);
         }
     }
-
-    // this is config
-    private static final String REQ_ENCODEING_UTF8 = "utf-8";
-    private static PoolingHttpClientConnectionManager httpClientConnectionManager;
-
-    public HttpHelper() {
-        httpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        httpClientConnectionManager.setMaxTotal(100);
-        httpClientConnectionManager.setDefaultMaxPerRoute(20);
-    }
-
-    // get 请求
-    public static String httpGet(String url) throws Exception {
-        return httpGet(url, null);
-    }
-
 
 }

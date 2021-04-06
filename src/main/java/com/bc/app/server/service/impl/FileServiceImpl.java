@@ -50,14 +50,14 @@ public class FileServiceImpl implements FileService {
         paramJson.put("fileSize", fileSize);
 
         paramJson.put("convert2Pdf", false);
-        ElectronicContractApiResult electronContractApi = ElectronicContractHttpUtil.httpPost(url, paramJson);
+        ElectronicContractApiResult electronContractApi = ElectronicContractHttpUtil.httpPost(url, String.valueOf(paramJson));
         if (electronContractApi.getCode() == 0) {
             fileId = (String) electronContractApi.getData().get("fileId");
             String uploadUrl = (String) electronContractApi.getData().get("uploadUrl");
-            HttpHead reqHeader = new HttpHead();
-            reqHeader.setHeader("Content-MD5", contentMd5);
-            reqHeader.setHeader("Content-Type", contentType);
-            ElectronicContractHttpUtil.httpPutFile(uploadUrl, reqHeader, pdfFileByteArray);
+            HttpHead httpHead = new HttpHead();
+            httpHead.setHeader("Content-MD5", contentMd5);
+            httpHead.setHeader("Content-Type", contentType);
+            ElectronicContractHttpUtil.httpPutFile(uploadUrl, httpHead, pdfFileByteArray);
         }
         return fileId;
     }

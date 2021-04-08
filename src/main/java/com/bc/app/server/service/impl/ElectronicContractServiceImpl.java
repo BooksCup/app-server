@@ -7,6 +7,8 @@ import com.bc.app.server.entity.*;
 import com.bc.app.server.entity.econtract.ContractFlow;
 import com.bc.app.server.entity.econtract.SignFlow;
 import com.bc.app.server.enums.ResponseMsg;
+import com.bc.app.server.enums.SendStatusEnum;
+import com.bc.app.server.mapper.ContractMapper;
 import com.bc.app.server.mapper.ElectronicContractSignFlowMapper;
 import com.bc.app.server.service.ElectronicContractService;
 import com.bc.app.server.utils.ElectronicContractHttpUtil;
@@ -15,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 电子合同
@@ -26,6 +30,9 @@ public class ElectronicContractServiceImpl implements ElectronicContractService 
 
     @Resource
     ElectronicContractSignFlowMapper electronicContractSignFlowMapper;
+
+    @Resource
+    ContractMapper contractMapper;
 
     /**
      * 创建并启动签署流程
@@ -45,11 +52,16 @@ public class ElectronicContractServiceImpl implements ElectronicContractService 
                 // 启动签署流程
                 String flowId = (String) apiResult.getData().get("flowId");
                 url = Constant.E_CONTRACT_BASE_URL + "/v1/signflows/" + flowId + "/start";
-                apiResult = ElectronicContractHttpUtil.httpPut(url, String.valueOf(new JSONObject()));
+                ElectronicContractHttpUtil.httpPut(url, String.valueOf(new JSONObject()));
                 // 持久化
 
                 SignFlow signFlow = new SignFlow(contractId, flowId);
                 electronicContractSignFlowMapper.addElectronicContractSignFlow(signFlow);
+
+                // 合同状态修改为已发送
+                Map<String, Object> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+                paramMap.put("id", contractId);
+                paramMap.put("sendStatus", SendStatusEnum.SENTED.getCode());
 
             }
             responseEntity = new ResponseEntity<>(ResponseMsg.CREATE_AND_START_SIGN_FLOW_SUCCESS.getResponseCode(), HttpStatus.OK);

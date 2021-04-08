@@ -37,4 +37,11 @@ public interface ContractMapper {
      */
     List<ContractDetail> getContractDetailListByContractId(String contractId);
 
+    /**
+     * 修改合同发送状态
+     *
+     * @param paramMap 参数map
+     */
+    void updateContractSendStatus(Map<String, Object> paramMap);
+
 }

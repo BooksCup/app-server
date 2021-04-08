@@ -86,4 +86,10 @@
         contract_id = #{contractId}
     </select>
 
+    <update id="updateContractSendStatus">
+        update t_contract
+        set send_status = #{sendStatus}
+        where id = #{id}
+    </update>
+
 </mapper>

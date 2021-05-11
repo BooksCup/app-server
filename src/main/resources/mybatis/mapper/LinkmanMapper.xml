@@ -9,6 +9,7 @@
         <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="real_type" property="realType" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
         <result column="modify_time" property="modifyTime" jdbcType="VARCHAR"/>
     </resultMap>
@@ -43,8 +44,10 @@
     </insert>
 
     <select id="getLinkmanList" resultMap="linkman">
-        select * from t_contract_link_man
+        select l.*, u.real_type from t_contract_link_man l
+        left join t_user_account u on l.phone = u.mobile
         where enterprise_id = #{enterpriseId}
+        group by l.phone
         order by create_time desc
     </select>
 

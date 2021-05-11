@@ -90,6 +90,10 @@ public class ElectronicContractController {
             FlowInfo flowInfo = new FlowInfo();
             flowInfo.setBusinessScene(subject);
 
+            FlowConfigInfo flowConfigInfo = new FlowConfigInfo();
+            flowConfigInfo.setNoticeDeveloperUrl("http://115.159.201.120:8085/signResult");
+            flowInfo.setFlowConfigInfo(flowConfigInfo);
+
             List<Signer> signerList = new ArrayList<>();
             Signer signer = new Signer();
             SignerAccount signerAccount = new SignerAccount();
@@ -101,6 +105,7 @@ public class ElectronicContractController {
 
             signer.setSignerAccount(signerAccount);
             signer.setSignfields(signFieldList);
+            signer.setThirdOrderNo(contractId);
             signerList.add(signer);
 
             contractFlow.setDocs(docList);

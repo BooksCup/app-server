@@ -1,13 +1,12 @@
 package com.bc.app.server.mapper;
 
 import com.bc.app.server.entity.Order;
-import com.bc.app.server.entity.Theme;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * 应用程序
+ * 订单
  *
  * @author qiu
  */
@@ -21,5 +20,18 @@ public interface OrderMapper {
      */
     List<Order> getOrderList(Map<String, String> map);
 
+    /**
+     * 保存订单
+     *
+     * @param order 订单
+     */
     void saveOrder(Order order);
+
+    /**
+     * 保存订单详情
+     *
+     * @param order 订单
+     */
+    void saveOrderExt(Order order);
+
 }

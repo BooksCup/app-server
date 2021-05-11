@@ -19,6 +19,7 @@ public class Order implements Serializable {
     private String relatedCompanyShortName;
     private String deliveryDates;
     private String orderId;
+    private String extId;
     private String orderNo;
     private String themeId;
     private String orderTheme;

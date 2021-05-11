@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.ScheduleMapper">
+
+    <insert id="addSchedule" parameterType="com.bc.app.server.entity.Schedule">
+        insert into t_schedule
+        (
+        id,
+        title,
+        begin_time,
+        end_time,
+        address,
+        remark,
+        images,
+        create_time,
+        modify_time
+        )
+        values
+        (
+        #{id},
+        #{title},
+        #{beginTime},
+        #{endTime},
+        #{address},
+        #{remark},
+        #{images},
+        now(),
+        now()
+        )
+    </insert>
+
+</mapper>

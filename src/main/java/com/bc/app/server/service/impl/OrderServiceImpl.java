@@ -65,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
         order.setThemeId(theme.getId());
         //保存订单相关信息
         orderMapper.saveOrder(order);
+        orderMapper.saveOrderExt(order);
         //保存主题
         themeMapper.saveTheme(theme);
     }

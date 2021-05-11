@@ -103,4 +103,14 @@ public class UserServiceImpl implements UserService {
         userMapper.addUser(user);
     }
 
+    /**
+     * 修改用户密码
+     *
+     * @param paramMap 参数map
+     */
+    @Override
+    public void updateUserPwd(Map<String, String> paramMap) {
+        userMapper.updateUserPwd(paramMap);
+    }
+
 }

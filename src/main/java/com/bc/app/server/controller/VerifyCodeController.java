@@ -5,6 +5,7 @@ import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.SmsConfig;
 import com.bc.app.server.entity.VerifyCode;
 import com.bc.app.server.enums.ResponseMsg;
+import com.bc.app.server.enums.VerifyCodeTypeEnum;
 import com.bc.app.server.service.SmsConfigService;
 import com.bc.app.server.service.VerifyCodeService;
 import com.bc.app.server.utils.CommonUtil;
@@ -62,14 +63,18 @@ public class VerifyCodeController {
             verifyCodeService.addVerifyCode(verifyCode);
 
             SmsConfig smsConfig = smsConfigService.getSmsConfigByType(type);
-
-            if (type.equals(Constant.VERIFY_CODE_TYPE_REGISTER)) {
-                // 短信发送
-                Map<String, String> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
-                paramMap.put("phones", phone);
-                paramMap.put("signName", smsConfig.getSign());
-                paramMap.put("templateCode", smsConfig.getTemplateCode());
-
+            Map<String, String> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+            paramMap.put("phones", phone);
+            paramMap.put("signName", smsConfig.getSign());
+            paramMap.put("templateCode", smsConfig.getTemplateCode());
+            if (type.equals(VerifyCodeTypeEnum.REGISTER.getCode())) {
+                // 注册
+                Map<String, String> templateParamMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+                templateParamMap.put("code", code);
+                paramMap.put("templateParam", JSON.toJSONString(templateParamMap));
+                HttpUtil.doPost(Constant.SERVICE_SMS_URL, paramMap);
+            } else if (type.equals(VerifyCodeTypeEnum.MODIFY_PASSWORD.getCode())) {
+                // 修改密码
                 Map<String, String> templateParamMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
                 templateParamMap.put("code", code);
                 paramMap.put("templateParam", JSON.toJSONString(templateParamMap));

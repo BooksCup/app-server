@@ -29,6 +29,11 @@ public class FabricCheckLotInfo {
     private String length;
 
     /**
+     * 长度单位
+     */
+    private String lengthUnit;
+
+    /**
      * 重量
      */
     private String weight;

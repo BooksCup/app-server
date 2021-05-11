@@ -3,13 +3,14 @@ package com.bc.app.server.controller;
 import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.User;
 import com.bc.app.server.enums.ResponseMsg;
+import com.bc.app.server.enums.VerifyCodeTypeEnum;
 import com.bc.app.server.service.UserApplyService;
 import com.bc.app.server.service.UserService;
+import com.bc.app.server.service.VerifyCodeService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -36,8 +37,12 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @Autowired
+    @Resource
     private UserApplyService userApplyService;
+
+    @Resource
+    private VerifyCodeService verifyCodeService;
+
 
     /**
      * 登录
@@ -53,11 +58,21 @@ public class UserController {
             @RequestParam(required = false) String password) {
         ResponseEntity<User> responseEntity;
         try {
-            User user = userService.getUserByLogin(phone, password);
-            if (null == user) {
+            List<User> userListByPhone = userService.getUserByPhone(phone);
+            if (CollectionUtils.isEmpty(userListByPhone)) {
+                // 用户不存在
                 MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
                 headers.add("responseCode", ResponseMsg.USER_NOT_EXIST.getResponseCode());
                 headers.add("responseMessage", ResponseMsg.USER_NOT_EXIST.getResponseMessage());
+                return new ResponseEntity<>(new User(), headers, HttpStatus.BAD_REQUEST);
+            }
+
+            User user = userService.getUserByLogin(phone, password);
+            if (null == user) {
+                // 密码错误
+                MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+                headers.add("responseCode", ResponseMsg.PASSWORD_INCORRECT.getResponseCode());
+                headers.add("responseMessage", ResponseMsg.PASSWORD_INCORRECT.getResponseMessage());
                 return new ResponseEntity<>(new User(), headers, HttpStatus.BAD_REQUEST);
             } else {
                 responseEntity = new ResponseEntity<>(user, HttpStatus.OK);
@@ -118,6 +133,55 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             responseEntity = new ResponseEntity<>(new PageInfo<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param phone    手机号
+     * @param code     验证码
+     * @param password 密码
+     * @return ResponseEntity
+     */
+    @ApiOperation(value = "修改密码", notes = "修改密码")
+    @PutMapping(value = "/password")
+    public ResponseEntity<String> modifyUserPassword(
+            @RequestParam String phone,
+            @RequestParam String code,
+            @RequestParam String password) {
+        ResponseEntity<String> responseEntity;
+        try {
+            // 检查验证码
+            Map<String, String> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
+            paramMap.put("phone", phone);
+            paramMap.put("type", VerifyCodeTypeEnum.MODIFY_PASSWORD.getCode());
+            List<String> validVerifyCodeList = verifyCodeService.getValidVerifyCodeList(paramMap);
+            if (CollectionUtils.isEmpty(validVerifyCodeList)) {
+                return new ResponseEntity<>(ResponseMsg.
+                        VERIFY_CODE_EXPIRE.getResponseCode(), HttpStatus.BAD_REQUEST);
+            } else {
+                String validVerifyCode = validVerifyCodeList.get(0);
+                if (!code.equals(validVerifyCode)) {
+                    return new ResponseEntity<>(ResponseMsg.
+                            VERIFY_CODE_EXPIRE.getResponseCode(), HttpStatus.BAD_REQUEST);
+                }
+            }
+
+            // 修改密码
+            paramMap.clear();
+            paramMap.put("password", password);
+            paramMap.put("phone", phone);
+            userService.updateUserPwd(paramMap);
+
+            responseEntity = new ResponseEntity<>(ResponseMsg.
+                    UPDATE_SUCCESS.getResponseCode(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("[modifyUserPassword] error: " + e.getMessage());
+            responseEntity = new ResponseEntity<>(ResponseMsg.
+                    UPDATE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

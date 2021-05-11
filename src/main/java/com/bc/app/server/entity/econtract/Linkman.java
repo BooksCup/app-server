@@ -17,6 +17,7 @@ public class Linkman {
     private String email;
     private String companyName;
     private String remark;
+    private String realType;
     private String createTime;
     private String modifyTime;
 
@@ -108,6 +109,14 @@ public class Linkman {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getRealType() {
+        return realType;
+    }
+
+    public void setRealType(String realType) {
+        this.realType = realType;
     }
 
     public String getCreateTime() {

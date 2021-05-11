@@ -30,7 +30,6 @@ public enum ResponseMsg {
     ADD_ERROR("ADD_ERROR", "新增失败"),
     ADD_REPEAT("ADD_REPEAT", "重复新增"),
 
-
     UPDATE_SUCCESS("UPDATE_SUCCESS", "修改成功"),
     UPDATE_ERROR("UPDATE_ERROR", "修改失败"),
 
@@ -41,6 +40,7 @@ public enum ResponseMsg {
     IMPORT_ERROR("IMPORT_ERROR", "导入失败"),
 
     USER_NOT_EXIST("USER_NOT_EXIST", "用户不存在"),
+    PASSWORD_INCORRECT("PASSWORD_INCORRECT", "密码错误"),
 
     PUSH_SUCCESS("PUSH_SUCCESS", "推送成功"),
     PUSH_ERROR("PUSH_ERROR", "推送失败"),

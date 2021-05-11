@@ -44,6 +44,12 @@
                 <if test='item.weightBefore != null and item.weightBefore != "" '>
                     weight_before = #{item.weightBefore},
                 </if>
+                <if test='item.lengthUnit != null and item.lengthUnit != "" '>
+                    length_unit = #{item.lengthUnit},
+                </if>
+                <if test='item.weightUnit != null and item.weightUnit != "" '>
+                    weight_unit = #{item.weightUnit},
+                </if>
                 <if test='item.machineNumber != null and item.machineNumber != "" '>
                     machine_number = #{item.machineNumber},
                 </if>

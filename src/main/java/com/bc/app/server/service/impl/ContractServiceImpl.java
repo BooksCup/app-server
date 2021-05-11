@@ -75,4 +75,14 @@ public class ContractServiceImpl implements ContractService {
         return contract;
     }
 
+    /**
+     * 修改合同发送状态
+     *
+     * @param paramMap 参数map
+     */
+    @Override
+    public void updateContractSendStatus(Map<String, Object> paramMap) {
+        contractMapper.updateContractSendStatus(paramMap);
+    }
+
 }

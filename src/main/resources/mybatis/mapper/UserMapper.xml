@@ -134,4 +134,10 @@
         order by u.create_time desc
     </select>
 
+    <update id="updateUserPwd" parameterType="map">
+        update t_user
+        set password = #{password}
+        where phone = #{phone}
+    </update>
+
 </mapper>

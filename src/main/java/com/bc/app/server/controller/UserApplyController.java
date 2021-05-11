@@ -5,6 +5,7 @@ import com.bc.app.server.cons.Constant;
 import com.bc.app.server.entity.User;
 import com.bc.app.server.entity.UserApply;
 import com.bc.app.server.enums.ResponseMsg;
+import com.bc.app.server.enums.VerifyCodeTypeEnum;
 import com.bc.app.server.service.SmsConfigService;
 import com.bc.app.server.service.UserApplyService;
 import com.bc.app.server.service.UserService;
@@ -77,7 +78,7 @@ public class UserApplyController {
             // 检查验证码
             Map<String, String> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
             paramMap.put("phone", phone);
-            paramMap.put("type", Constant.VERIFY_CODE_TYPE_REGISTER);
+            paramMap.put("type", VerifyCodeTypeEnum.REGISTER.getCode());
             List<String> validVerifyCodeList = verifyCodeService.getValidVerifyCodeList(paramMap);
             if (CollectionUtils.isEmpty(validVerifyCodeList)) {
                 return new ResponseEntity<>(ResponseMsg.

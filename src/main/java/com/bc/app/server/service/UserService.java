@@ -61,4 +61,12 @@ public interface UserService {
      * @param user 用户
      */
     void addUser(User user);
+
+    /**
+     * 修改用户密码
+     *
+     * @param paramMap 参数map
+     */
+    void updateUserPwd(Map<String, String> paramMap);
+
 }

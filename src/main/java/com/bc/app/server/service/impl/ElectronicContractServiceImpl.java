@@ -62,6 +62,7 @@ public class ElectronicContractServiceImpl implements ElectronicContractService 
                 Map<String, Object> paramMap = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
                 paramMap.put("id", contractId);
                 paramMap.put("sendStatus", SendStatusEnum.SENTED.getCode());
+                contractMapper.updateContractSendStatus(paramMap);
 
             }
             responseEntity = new ResponseEntity<>(ResponseMsg.CREATE_AND_START_SIGN_FLOW_SUCCESS.getResponseCode(), HttpStatus.OK);

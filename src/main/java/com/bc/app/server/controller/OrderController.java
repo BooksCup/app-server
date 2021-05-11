@@ -1,7 +1,9 @@
 package com.bc.app.server.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.bc.app.server.cons.Constant;
+import com.bc.app.server.entity.DeliveryTime;
 import com.bc.app.server.entity.Order;
 import com.bc.app.server.entity.Theme;
 import com.bc.app.server.enums.ResponseMsg;
@@ -14,7 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -92,7 +96,8 @@ public class OrderController {
         Map<String, String> map = new HashMap<>(Constant.DEFAULT_HASH_MAP_CAPACITY);
         try {
             Order order = new Order();
-            order.setOrderId(CommonUtil.generateId());
+            String orderId = CommonUtil.generateId();
+            order.setOrderId(orderId);
             order.setRelatedCompanyId(relatedCompanyId);
             order.setGoodsId(goodsId);
             map.put("deliveryTime", deliveryTime);
@@ -102,6 +107,13 @@ public class OrderController {
             order.setType(type);
             order.setRemarks(remarks);
             order.setOrderPhotos(orderPhotos);
+            List<DeliveryTime> deliveryTimeList = new ArrayList<>();
+            DeliveryTime time = new DeliveryTime();
+            order.setExtId(CommonUtil.generateId());
+            time.setDeliveryTime(deliveryTime);
+            time.setDeliveryCount(num);
+            deliveryTimeList.add(time);
+            order.setDeliveryDates(JSON.toJSONString(deliveryTimeList));
 
             Theme theme = new Theme();
             theme.setThemeTitle(themeTitle);

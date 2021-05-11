@@ -50,7 +50,11 @@ public class FabricCheckLotInfoController {
             @RequestParam(required = false) String fabricNumber,
             @RequestParam(required = false) String num,
             @RequestParam(required = false) String length,
-            @RequestParam(required = false) String weight) {
+            @RequestParam(required = false) String weight,
+            @RequestParam(required = false) String weightUnit,
+            @RequestParam(required = false) String lengthUnit
+
+    ) {
         ResponseEntity<FabricCheckLotInfo> responseEntity;
         try {
             FabricCheckLotInfo fabricCheckLotInfo = new FabricCheckLotInfo();
@@ -60,6 +64,8 @@ public class FabricCheckLotInfoController {
             fabricCheckLotInfo.setNum(num);
             fabricCheckLotInfo.setFabricCheckTaskId(fabricCheckTaskId);
             fabricCheckLotInfo.setWeight(weight);
+            fabricCheckLotInfo.setWeightUnit(weightUnit);
+            fabricCheckLotInfo.setLengthUnit(lengthUnit);
             fabricCheckLotInfo.setFabricNumber(fabricNumber);
             fabricCheckLotInfoService.addFabricCheckLotInfo(fabricCheckLotInfo);
             responseEntity = new ResponseEntity<>(fabricCheckLotInfo, HttpStatus.OK);

@@ -49,6 +49,22 @@
         )
     </insert>
 
+    <insert id="saveOrderExt" parameterType="order">
+        insert into
+        t_order_ext
+        (
+        id,
+        master_id,
+        delivery_time_json
+        )
+        values
+        (
+        #{extId},
+        #{orderId},
+        #{deliveryDates}
+        )
+    </insert>
+
     <select id="getOrderList" parameterType="map" resultType="com.bc.app.server.entity.Order">
         select
         g.id as goodsId,

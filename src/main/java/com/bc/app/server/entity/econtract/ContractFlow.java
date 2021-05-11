@@ -2,6 +2,11 @@ package com.bc.app.server.entity.econtract;
 
 import java.util.List;
 
+/**
+ * 签署流程
+ *
+ * @author zhou
+ */
 public class ContractFlow {
 
     private List<Doc> docs;
@@ -31,4 +36,5 @@ public class ContractFlow {
     public void setSigners(List<Signer> signers) {
         this.signers = signers;
     }
+
 }

@@ -4,6 +4,8 @@ package com.bc.app.server.service;
 import com.bc.app.server.entity.Contract;
 import com.github.pagehelper.PageInfo;
 
+import java.util.Map;
+
 /**
  * 合同
  *
@@ -31,5 +33,12 @@ public interface ContractService {
      * @return 合同
      */
     Contract getContractById(String contractId, String enterpriseId);
+
+    /**
+     * 修改合同发送状态
+     *
+     * @param paramMap 参数map
+     */
+    void updateContractSendStatus(Map<String, Object> paramMap);
 
 }

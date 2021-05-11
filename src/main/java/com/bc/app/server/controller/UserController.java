@@ -43,7 +43,6 @@ public class UserController {
     @Resource
     private VerifyCodeService verifyCodeService;
 
-
     /**
      * 登录
      *

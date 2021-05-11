@@ -11,6 +11,7 @@ public class Schedule {
 
     private String id;
     private String title;
+    private String userId;
     private String beginTime;
     private String endTime;
     private String address;
@@ -21,9 +22,11 @@ public class Schedule {
 
     }
 
-    public Schedule(String title, String beginTime, String endTime, String address, String remark, String images) {
+    public Schedule(String title, String userId, String beginTime, String endTime,
+                    String address, String remark, String images) {
         this.id = CommonUtil.generateId();
         this.title = title;
+        this.userId = userId;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.address = address;
@@ -45,6 +48,14 @@ public class Schedule {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getBeginTime() {

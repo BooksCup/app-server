@@ -22,7 +22,7 @@ import java.util.Map;
  * @author zhou
  */
 @RestController
-@RequestMapping("/addressBook")
+@RequestMapping("/user")
 public class AddressBookController {
 
     /**
@@ -34,9 +34,9 @@ public class AddressBookController {
     AddressBookService addressBookService;
 
     @ApiOperation(value = "新增通讯录", notes = "新增通讯录")
-    @PostMapping(value = "")
+    @PostMapping(value = "/{userId}/addressBook")
     public ResponseEntity<String> addAddressBook(
-            @RequestParam String userId,
+            @PathVariable String userId,
             @RequestParam String name,
             @RequestParam String phones,
             @RequestParam String images,
@@ -73,9 +73,9 @@ public class AddressBookController {
      * @return 通讯录分页信息
      */
     @ApiOperation(value = "获取通讯录分页信息", notes = "获取通讯录分页信息")
-    @GetMapping(value = "/search")
+    @GetMapping(value = "/{userId}/addressBook")
     public ResponseEntity<PageInfo<AddressBook>> getAddressBookPageInfo(
-            @RequestParam String userId,
+            @PathVariable String userId,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         ResponseEntity<PageInfo<AddressBook>> responseEntity;

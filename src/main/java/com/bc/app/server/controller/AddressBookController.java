@@ -33,6 +33,23 @@ public class AddressBookController {
     @Resource
     AddressBookService addressBookService;
 
+    /**
+     * 新增通讯录
+     *
+     * @param userId  用户ID
+     * @param name    姓名
+     * @param phones  手机号(jsonArray格式)
+     * @param images  相关图片(jsonArray格式)
+     * @param tels    电话(jsonArray格式)
+     * @param email   邮箱
+     * @param company 公司名
+     * @param job     职位
+     * @param website 网址
+     * @param address 地址
+     * @param tags    标签(jsonArray格式)
+     * @param remark  备注
+     * @return 新增结果
+     */
     @ApiOperation(value = "新增通讯录", notes = "新增通讯录")
     @PostMapping(value = "/{userId}/addressBook")
     public ResponseEntity<String> addAddressBook(
@@ -87,6 +104,29 @@ public class AddressBookController {
         } catch (Exception e) {
             e.printStackTrace();
             responseEntity = new ResponseEntity<>(new PageInfo<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
+    /**
+     * 获取通讯录详情
+     *
+     * @param userId        用户ID
+     * @param addressBookId 通讯录ID
+     * @return 通讯录详情
+     */
+    @ApiOperation(value = "获取通讯录详情", notes = "获取通讯录详情")
+    @GetMapping(value = "/{userId}/addressBook/{addressBookId}")
+    public ResponseEntity<AddressBook> getAddressBookPageInfo(
+            @PathVariable String userId,
+            @PathVariable String addressBookId) {
+        ResponseEntity<AddressBook> responseEntity;
+        try {
+            AddressBook addressBook = addressBookService.getAddressBookById(addressBookId);
+            responseEntity = new ResponseEntity<>(addressBook, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseEntity = new ResponseEntity<>(new AddressBook(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }

@@ -47,4 +47,15 @@ public class AddressBookServiceImpl implements AddressBookService {
         return new PageInfo<>(addressBookList);
     }
 
+    /**
+     * 根据ID查找通讯录
+     *
+     * @param id ID
+     * @return 通讯录
+     */
+    @Override
+    public AddressBook getAddressBookById(String id) {
+        return addressBookMapper.getAddressBookById(id);
+    }
+
 }

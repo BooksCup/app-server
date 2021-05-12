@@ -27,4 +27,12 @@ public interface AddressBookMapper {
      */
     List<AddressBook> getAddressBookList(Map<String, Object> paramMap);
 
+    /**
+     * 根据ID查找通讯录
+     *
+     * @param id ID
+     * @return 通讯录
+     */
+    AddressBook getAddressBookById(String id);
+
 }

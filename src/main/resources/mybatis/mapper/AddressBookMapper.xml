@@ -68,4 +68,12 @@
         order by modify_time desc
     </select>
 
+    <select id="getAddressBookById" resultMap="addressBook" parameterType="String">
+        select
+        *
+        from
+        t_address_book
+        where id = #{id}
+    </select>
+
 </mapper>

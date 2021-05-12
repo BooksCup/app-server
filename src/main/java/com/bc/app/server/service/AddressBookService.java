@@ -29,4 +29,12 @@ public interface AddressBookService {
      */
     PageInfo<AddressBook> getAddressBookPageInfo(Map<String, Object> paramMap, Integer pageNum, Integer pageSize);
 
+    /**
+     * 根据ID查找通讯录
+     *
+     * @param id ID
+     * @return 通讯录
+     */
+    AddressBook getAddressBookById(String id);
+
 }

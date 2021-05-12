@@ -1,19 +1,30 @@
 package com.bc.app.server.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.bc.app.server.cons.Constant;
+import com.bc.app.server.entity.AddressBook;
+import com.bc.app.server.entity.OssConfig;
 import com.bc.app.server.entity.Schedule;
+import com.bc.app.server.entity.SystemConfig;
 import com.bc.app.server.enums.ResponseMsg;
+import com.bc.app.server.service.AddressBookService;
 import com.bc.app.server.service.ScheduleService;
+import com.bc.app.server.service.SystemConfigService;
+import com.bc.app.server.utils.AvatarUtil;
+import com.bc.app.server.utils.JsonUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +44,25 @@ public class ScheduleController {
     @Resource
     ScheduleService scheduleService;
 
+    @Resource
+    AddressBookService addressBookService;
+
+    @Resource
+    SystemConfigService systemConfigService;
+
+    /**
+     * 新建日程
+     *
+     * @param title          标题
+     * @param userId         用户ID
+     * @param beginTime      开始时间
+     * @param endTime        结束时间
+     * @param address        地址
+     * @param addressBookIds 通讯录ID列表(jsonArray格式)
+     * @param remark         备注
+     * @param images         相关图片(jsonArray格式)
+     * @return 新建结果
+     */
     @ApiOperation(value = "新建日程", notes = "新建日程")
     @PostMapping(value = "")
     public ResponseEntity<String> addSchedule(
@@ -41,11 +71,32 @@ public class ScheduleController {
             @RequestParam String beginTime,
             @RequestParam String endTime,
             @RequestParam String address,
+            @RequestParam(required = false) String addressBookIds,
             @RequestParam(required = false) String remark,
             @RequestParam(required = false) String images) {
         ResponseEntity<String> responseEntity;
         try {
+            SystemConfig systemConfig = systemConfigService.getSystemConfigByConfigKey("OSS");
+            OssConfig ossConfig = JSON.parseObject(systemConfig.getValue(), OssConfig.class);
+
             Schedule schedule = new Schedule(title, userId, beginTime, endTime, address, remark, images);
+
+            List<String> addressBookIdList = JsonUtil.jsonArrayToList(addressBookIds, String.class);
+            List<String> originImageList = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(addressBookIdList)) {
+                schedule.setPeopleNum(addressBookIdList.size());
+                List<AddressBook> addressBookList = addressBookService.getAddressBookListByIdList(addressBookIdList);
+                for (AddressBook addressBook : addressBookList) {
+                    List<String> imageList = JsonUtil.jsonArrayToList(addressBook.getImages(), String.class);
+                    if (!CollectionUtils.isEmpty(imageList)) {
+                        originImageList.add(imageList.get(0));
+                    }
+                }
+            } else {
+                schedule.setPeopleNum(0);
+            }
+            String scheduleAvatar = AvatarUtil.getCombinationAvatar(originImageList, ossConfig);
+            schedule.setAvatar(scheduleAvatar);
             scheduleService.addSchedule(schedule);
             responseEntity = new ResponseEntity<>(ResponseMsg.
                     ADD_SUCCESS.getResponseCode(), HttpStatus.OK);

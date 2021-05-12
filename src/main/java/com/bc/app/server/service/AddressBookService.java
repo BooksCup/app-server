@@ -3,6 +3,7 @@ package com.bc.app.server.service;
 import com.bc.app.server.entity.AddressBook;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +37,14 @@ public interface AddressBookService {
      * @return 通讯录
      */
     AddressBook getAddressBookById(String id);
+
+    /**
+     * 根据通讯录ID列表查找通讯录列表
+     *
+     * @param idList 通讯录ID列表
+     * @return 通讯录列表
+     */
+    List<AddressBook> getAddressBookListByIdList(List<String> idList);
 
     /**
      * 删除通讯录

@@ -59,6 +59,17 @@ public class AddressBookServiceImpl implements AddressBookService {
     }
 
     /**
+     * 根据通讯录ID列表查找通讯录列表
+     *
+     * @param idList 通讯录ID列表
+     * @return 通讯录列表
+     */
+    @Override
+    public List<AddressBook> getAddressBookListByIdList(List<String> idList) {
+        return addressBookMapper.getAddressBookListByIdList(idList);
+    }
+
+    /**
      * 删除通讯录
      *
      * @param id 通讯录ID

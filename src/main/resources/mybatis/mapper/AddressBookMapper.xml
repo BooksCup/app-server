@@ -77,6 +77,18 @@
         and delete_status = '0'
     </select>
 
+    <select id="getAddressBookListByIdList" resultMap="addressBook" parameterType="list">
+        select
+        *
+        from
+        t_address_book
+        where id in
+        <foreach collection="list" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        and delete_status = '0'
+    </select>
+
     <delete id="deleteAddressBook" parameterType="String">
         update t_address_book
         set delete_status = '1'

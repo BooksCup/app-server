@@ -28,12 +28,20 @@ public interface AddressBookMapper {
     List<AddressBook> getAddressBookList(Map<String, Object> paramMap);
 
     /**
-     * 根据ID查找通讯录
+     * 根据通讯录ID查找通讯录
      *
      * @param id 通讯录ID
      * @return 通讯录
      */
     AddressBook getAddressBookById(String id);
+
+    /**
+     * 根据通讯录ID列表查找通讯录列表
+     *
+     * @param idList 通讯录ID列表
+     * @return 通讯录列表
+     */
+    List<AddressBook> getAddressBookListByIdList(List<String> idList);
 
     /**
      * 删除通讯录

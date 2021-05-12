@@ -6,6 +6,7 @@
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
         <result column="begin_time" property="beginTime" jdbcType="VARCHAR"/>
         <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
@@ -18,7 +19,9 @@
         (
         id,
         title,
+        avatar,
         user_id,
+        people_num,
         begin_time,
         end_time,
         address,
@@ -31,7 +34,9 @@
         (
         #{id},
         #{title},
+        #{avatar},
         #{userId},
+        #{peopleNum},
         #{beginTime},
         #{endTime},
         #{address},

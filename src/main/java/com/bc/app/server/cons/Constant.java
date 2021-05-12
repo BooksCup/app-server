@@ -156,4 +156,14 @@ public class Constant {
     public static final String FONT_PATH_LINUX = "/usr/share/fonts/chinese/SimSun.ttf";
     public static final String FONT_PATH_WINDOWS = "D://simsun.ttc";
 
+    /**
+     * 协议前缀 - "https"
+     */
+    public static final String PROTOCOL_HTTPS_PREFIX = "https:";
+
+    /**
+     * 协议前缀 - "https"
+     */
+    public static final String PROTOCOL_HTTP_PREFIX = "http:";
+
 }

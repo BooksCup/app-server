@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bc.app.server.mapper.SystemConfigMapper">
+
+    <resultMap id="systemConfig" type="com.bc.app.server.entity.SystemConfig">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="config_key" property="key" jdbcType="VARCHAR"/>
+        <result column="config_value" property="value" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getSystemConfigByConfigKey" resultMap="systemConfig" parameterType="String">
+        select *
+        from t_system_config
+        where config_key = #{key}
+    </select>
+
+</mapper>

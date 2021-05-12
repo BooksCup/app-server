@@ -11,7 +11,9 @@ public class Schedule {
 
     private String id;
     private String title;
+    private String avatar;
     private String userId;
+    private Integer peopleNum;
     private String beginTime;
     private String endTime;
     private String address;
@@ -50,12 +52,28 @@ public class Schedule {
         this.title = title;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Integer getPeopleNum() {
+        return peopleNum;
+    }
+
+    public void setPeopleNum(Integer peopleNum) {
+        this.peopleNum = peopleNum;
     }
 
     public String getBeginTime() {

@@ -37,4 +37,11 @@ public interface AddressBookService {
      */
     AddressBook getAddressBookById(String id);
 
+    /**
+     * 删除通讯录
+     *
+     * @param id 通讯录ID
+     */
+    void deleteAddressBook(String id);
+
 }

@@ -58,4 +58,14 @@ public class AddressBookServiceImpl implements AddressBookService {
         return addressBookMapper.getAddressBookById(id);
     }
 
+    /**
+     * 删除通讯录
+     *
+     * @param id 通讯录ID
+     */
+    @Override
+    public void deleteAddressBook(String id) {
+        addressBookMapper.deleteAddressBook(id);
+    }
+
 }

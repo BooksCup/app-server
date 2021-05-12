@@ -74,6 +74,13 @@
         from
         t_address_book
         where id = #{id}
+        and delete_status = '0'
     </select>
+
+    <delete id="deleteAddressBook" parameterType="String">
+        update t_address_book
+        set delete_status = '1'
+        where id = #{id}
+    </delete>
 
 </mapper>

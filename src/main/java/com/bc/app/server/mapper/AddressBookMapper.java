@@ -30,9 +30,16 @@ public interface AddressBookMapper {
     /**
      * 根据ID查找通讯录
      *
-     * @param id ID
+     * @param id 通讯录ID
      * @return 通讯录
      */
     AddressBook getAddressBookById(String id);
+
+    /**
+     * 删除通讯录
+     *
+     * @param id 通讯录ID
+     */
+    void deleteAddressBook(String id);
 
 }

@@ -131,4 +131,30 @@ public class AddressBookController {
         return responseEntity;
     }
 
+    /**
+     * 删除通讯录
+     *
+     * @param userId        用户ID
+     * @param addressBookId 通讯录ID
+     * @return 删除结果
+     */
+    @ApiOperation(value = "删除日程", notes = "删除日程")
+    @DeleteMapping(value = "/{userId}/addressBook/{addressBookId}")
+    public ResponseEntity<String> deleteAddressBook(
+            @PathVariable String userId,
+            @PathVariable String addressBookId) {
+        ResponseEntity<String> responseEntity;
+        try {
+            addressBookService.deleteAddressBook(addressBookId);
+            responseEntity = new ResponseEntity<>(ResponseMsg.
+                    DELETE_SUCCESS.getResponseCode(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("[deleteAddressBook] error: " + e.getMessage());
+            responseEntity = new ResponseEntity<>(ResponseMsg.
+                    DELETE_ERROR.getResponseCode(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return responseEntity;
+    }
+
 }

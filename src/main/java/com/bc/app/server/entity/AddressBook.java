@@ -8,8 +8,10 @@ import com.bc.app.server.utils.CommonUtil;
  * @author zhou
  */
 public class AddressBook {
+
     private String id;
     private String userId;
+    private String type;
     private String name;
     private String phones;
     private String images;
@@ -57,6 +59,14 @@ public class AddressBook {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {
